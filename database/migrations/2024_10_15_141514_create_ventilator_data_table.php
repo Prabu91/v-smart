@@ -14,10 +14,14 @@ return new class extends Migration
         Schema::create('ventilator_data', function (Blueprint $table) {
             $table->id(); // Primary Key
             $table->unsignedBigInteger('observation_id'); // Foreign Key ke tabel observations
+            $table->unsignedBigInteger('ttv_id'); // Foreign Key ke tabel observations
         
             // Data ventilator
+            $table->string('therapy_type')->nullable(); // Mode ventilasi
+            $table->enum('room_type', ['origin', 'icu/picu', 'transfer'])->nullable(); 
+            $table->integer('change_day')->nullable(); // Mode ventilasi
             $table->string('mode_venti')->nullable(); // Mode ventilasi
-            $table->float('ett_depth')->nullable(); // ETT/Kedalaman
+            $table->string('ett_depth')->nullable(); // ETT/Kedalaman
             $table->float('ipl')->nullable(); // IPL
             $table->float('peep')->nullable(); // PEEP
             $table->float('fio2')->nullable(); // FiO2
@@ -26,6 +30,7 @@ return new class extends Migration
         
             // Foreign key relasi
             $table->foreign('observation_id')->references('id')->on('observations')->onDelete('cascade');
+            $table->foreign('ttv_id')->references('id')->on('ttv')->onDelete('cascade');
         });
         
     }

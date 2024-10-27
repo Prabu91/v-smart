@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('patients', function (Blueprint $table) {
-            $table->id(); // Primary Key
-            $table->string('name'); // Nama pasien
-            $table->string('no_cm'); // Nomor catatan medis (CM)
-            $table->timestamps(); // Created at & updated at
+        Schema::create('doctors', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('specialist');
+            $table->timestamps();
         });
-        
     }
 
     /**
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('patiens');
+        Schema::dropIfExists('doctor');
     }
 };

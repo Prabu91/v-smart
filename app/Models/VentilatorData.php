@@ -9,8 +9,14 @@ class VentilatorData extends Model
 {
     use HasFactory;
 
+    protected $table = 'ventilator_data';
+
     protected $fillable = [
         'observation_id',
+        'ttv_id',
+        'therapy_type',
+        'room_type',
+        'change_day',
         'mode_venti',
         'ett_depth',
         'ipl',
@@ -19,10 +25,15 @@ class VentilatorData extends Model
         'rr',
     ];
 
-    // Relasi ke tabel Observation
     public function observation()
     {
         return $this->belongsTo(Observation::class);
     }
+
+    public function ttv()
+    {
+        return $this->belongsTo(Ttv::class);
+    }
 }
+
 

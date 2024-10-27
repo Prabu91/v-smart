@@ -9,17 +9,20 @@ class Therapy extends Model
 {
     use HasFactory;
 
+    protected $table = 'therapies';
+
     protected $fillable = [
         'observation_id',
-        'therapy_type',
         'preparation_extubation_therapy',
+        'excubation_date',
+        'excubation',
         'nebu_adrenalin',
         'dexamethasone',
     ];
 
-    // Relasi ke tabel Observation
     public function observation()
     {
         return $this->belongsTo(Observation::class);
     }
 }
+

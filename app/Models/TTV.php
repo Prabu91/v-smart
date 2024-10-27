@@ -5,22 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TTV extends Model
+class Ttv extends Model
 {
     use HasFactory;
 
+    protected $table = 'ttv';
+
     protected $fillable = [
         'observation_id',
-        'td', // Tekanan darah
-        'saturasi', // Saturasi oksigen
-        'nadi', // Denyut nadi
-        'rr', // Respiratory Rate
-        'spo2', // SpO2 level
+        'td',
+        'saturasi',
+        'nadi',
+        'rr',
+        'spo2',
     ];
 
-    // Relasi ke tabel Observation
     public function observation()
     {
         return $this->belongsTo(Observation::class);
     }
 }
+

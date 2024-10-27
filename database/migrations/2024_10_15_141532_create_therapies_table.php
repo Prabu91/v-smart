@@ -16,10 +16,11 @@ return new class extends Migration
             $table->unsignedBigInteger('observation_id'); // Foreign Key ke tabel observations
         
             // Data terapi
-            $table->text('therapy_type')->nullable(); // Tipe terapi yang diberikan
-            $table->text('preparation_extubation_therapy')->nullable(); // Terapi persiapan extubasi
-            $table->boolean('nebu_adrenalin')->nullable(); // Nebu adrenalin (Ya/Tidak)
-            $table->boolean('dexamethasone')->nullable(); // Dexamethasone (Ya/Tidak)
+            $table->string('preparation_extubation_therapy')->nullable(); // Terapi persiapan extubasi
+            $table->date('excubation_date')->nullable(); // Nebu adrenalin (Ya/Tidak)
+            $table->string('excubation')->nullable(); // Nebu adrenalin (Ya/Tidak)
+            $table->float('nebu_adrenalin')->nullable(); // Nebu adrenalin (Ya/Tidak)
+            $table->float('dexamethasone')->nullable(); // Dexamethasone (Ya/Tidak)
             $table->timestamps(); // Created at & updated at
         
             // Foreign key relasi

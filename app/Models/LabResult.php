@@ -9,21 +9,26 @@ class LabResult extends Model
 {
     use HasFactory;
 
+    protected $table = 'lab_results';
+
     protected $fillable = [
         'observation_id',
         'hb',
         'leukosit',
         'pcv',
         'trombosit',
-        'agd',
+        'room_type',
+        'ph',
+        'pco2',
+        'po2',
         'radiology',
         'ro_thorax',
     ];
 
-    // Relasi ke tabel Observation
     public function observation()
     {
         return $this->belongsTo(Observation::class);
     }
 }
+
 

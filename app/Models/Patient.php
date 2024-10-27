@@ -9,17 +9,17 @@ class Patient extends Model
 {
     use HasFactory;
 
+    protected $table = 'patients';
+    
     protected $fillable = [
         'name',
-        'no_cm',
-        'date_of_birth',
-        'gender',
+        'no_cm'
     ];
 
-    // Relasi satu ke banyak dengan Observations
     public function observations()
     {
         return $this->hasMany(Observation::class);
     }
 }
+
 
