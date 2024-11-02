@@ -11,14 +11,21 @@ class Patient extends Model
 
     protected $table = 'patients';
     
-    protected $fillable = [
-        'name',
-        'no_cm'
-    ];
+    protected $fillable = ['name', 'no_jkn'];
 
-    public function observations()
+    public function originRoom()
     {
-        return $this->hasMany(Observation::class);
+        return $this->hasOne(OriginRoom::class);
+    }
+
+    public function icuRoom()
+    {
+        return $this->hasOne(IcuRoom::class);
+    }
+
+    public function extubation()
+    {
+        return $this->hasOne(Extubation::class);
     }
 }
 

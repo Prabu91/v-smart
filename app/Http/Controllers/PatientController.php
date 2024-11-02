@@ -12,7 +12,7 @@ class PatientController extends Controller
      */
     public function index()
     {
-        //
+        return view('observation.patient');
     }
 
     /**
@@ -28,8 +28,23 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'no_jkn' => 'required|string|size:13|unique:patients',
+        ], [
+            'name.required' => 'Nama harus diisi.',
+            'no_jkn.required' => 'Nomor JKN harus diisi.',
+            'no_jkn.size' => 'Nomor JKN harus terdiri dari tepat 13 angka.',
+            'no_jkn.unique' => 'Nomor JKN sudah terdaftar.',
+        ]);
+        
+
+        Patient::create($request->only('name', 'no_jkn'));
+
+        return redirect()->back()->with('success', 'Patient created successfully.');
     }
+
+
 
     /**
      * Display the specified resource.

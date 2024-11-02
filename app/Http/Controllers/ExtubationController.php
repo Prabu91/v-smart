@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Therapy;
+use App\Models\Extubation;
 use Illuminate\Http\Request;
 
-class TherapyController extends Controller
+class ExtubationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class TherapyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Therapy $therapy)
+    public function show(Extubation $extubation)
     {
         //
     }
@@ -42,7 +42,7 @@ class TherapyController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Therapy $therapy)
+    public function edit(Extubation $extubation)
     {
         //
     }
@@ -50,7 +50,7 @@ class TherapyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Therapy $therapy)
+    public function update(Request $request, Extubation $extubation)
     {
         //
     }
@@ -58,7 +58,7 @@ class TherapyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Therapy $therapy)
+    public function destroy(Extubation $extubation)
     {
         //
     }

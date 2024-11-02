@@ -12,25 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('lab_results', function (Blueprint $table) {
-            $table->id(); // Primary Key
-            $table->unsignedBigInteger('observation_id'); // Foreign Key ke tabel observations
-        
-            // Data hasil laboratorium
-            $table->float('hb')->nullable(); // Hemoglobin
-            $table->float('leukosit')->nullable(); // Leukosit
-            $table->float('pcv')->nullable(); // Packed Cell Volume
-            $table->float('trombosit')->nullable(); // Trombosit
-            $table->enum('room_type', ['origin', 'icu/picu', 'transfer'])->nullable(); // RO Thorax sudah/belum
-            $table->float('ph')->nullable(); // Analisis Gas Darah
-            $table->float('pco2')->nullable(); // Analisis Gas Darah
-            $table->float('po2')->nullable(); // Analisis Gas Darah
-            $table->string('radiology')->nullable(); // Hasil radiologi (misal RO Thorax)
-            $table->string('ro_thorax')->nullable(); // RO Thorax sudah/belum
-            $table->timestamps(); // Created at & updated at
-        
-            // Foreign key relasi
-            $table->foreign('observation_id')->references('id')->on('observations')->onDelete('cascade');
-        });
+            $table->id(); 
+            $table->unsignedBigInteger('patient_id');
+            $table->float('hb')->nullable(); 
+            $table->float('leukosit')->nullable(); 
+            $table->float('pcv')->nullable();
+            $table->float('trombosit')->nullable(); 
+            $table->float('kreatinin')->nullable(); 
+            $table->timestamps(); 
+            });
         
     }
 

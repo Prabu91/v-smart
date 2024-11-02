@@ -6,12 +6,15 @@
     
 <div class="container mx-auto p-6">
     <h1 class="text-2xl font-bold mb-6">Dashboard Observasi Pasien ICU/PICU</h1>
-    
     <!-- Statistik Utama -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
         <div class="bg-white shadow-md rounded-lg p-6">
             <h2 class="text-xl font-bold">Total Pasien ICU</h2>
             <p class="text-3xl mt-2">25</p>
+        </div>
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-xl font-bold">Pasien Intubasi</h2>
+            <p class="text-3xl mt-2">8</p>
         </div>
         <div class="bg-white shadow-md rounded-lg p-6">
             <h2 class="text-xl font-bold">Pasien Diekstubasi</h2>
@@ -19,6 +22,20 @@
         </div>
         <div class="bg-white shadow-md rounded-lg p-6">
             <h2 class="text-xl font-bold">Pasien Diobservasi Hari Ini</h2>
+            <p class="text-3xl mt-2">12</p>
+        </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-xl font-bold">Venti Yang digunakan Hari ini</h2>
+            <p class="text-3xl mt-2">12</p>
+        </div>
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-xl font-bold">Jumlah Total Venti</h2>
+            <p class="text-3xl mt-2">12</p>
+        </div>
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-xl font-bold">Jumlah Ruangan ICU/PICU/ICCU/NICU</h2>
             <p class="text-3xl mt-2">12</p>
         </div>
     </div>

@@ -14,10 +14,12 @@
  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     @stack('styles')
 
 </head>
-<body class="bg-gray-100">
+<body class="bg-[#EBF5F6]">
 
     <!-- Header -->
     <header>
@@ -33,7 +35,7 @@
 
     <!-- Footer (Opsional) -->
     <footer class="bg-white p-4 text-center">
-        © {{ date('Y') }} Your Company. All rights reserved.
+        © {{ date('Y') }} BPJS Kesehatan Cabang Soreang.
     </footer>
 
     <!-- Scripts -->
@@ -41,7 +43,16 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-
+    <script>
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: "{{ session('success') }}",
+            });
+        @endif
+    </script>
+    
     @stack('scripts')
     @vite('resources/js/app.js')
 

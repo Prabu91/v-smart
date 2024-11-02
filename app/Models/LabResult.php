@@ -12,22 +12,17 @@ class LabResult extends Model
     protected $table = 'lab_results';
 
     protected $fillable = [
-        'observation_id',
+        'patient_id',
         'hb',
         'leukosit',
         'pcv',
         'trombosit',
-        'room_type',
-        'ph',
-        'pco2',
-        'po2',
-        'radiology',
-        'ro_thorax',
+        'kreatinin'
     ];
 
-    public function observation()
+    public function patient()
     {
-        return $this->belongsTo(Observation::class);
+        return $this->belongsTo(Patient::class);
     }
 }
 

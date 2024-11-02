@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\VentilatorData;
+use App\Models\Intubation;
 use Illuminate\Http\Request;
 
-class VentilatorDataController extends Controller
+class IntubationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class VentilatorDataController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(VentilatorData $ventilatorData)
+    public function show(Intubation $intubation)
     {
         //
     }
@@ -42,7 +42,7 @@ class VentilatorDataController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(VentilatorData $ventilatorData)
+    public function edit(Intubation $intubation)
     {
         //
     }
@@ -50,7 +50,7 @@ class VentilatorDataController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, VentilatorData $ventilatorData)
+    public function update(Request $request, Intubation $intubation)
     {
         //
     }
@@ -58,7 +58,7 @@ class VentilatorDataController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(VentilatorData $ventilatorData)
+    public function destroy(Intubation $intubation)
     {
         //
     }

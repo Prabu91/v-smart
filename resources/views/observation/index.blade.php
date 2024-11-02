@@ -8,6 +8,7 @@
     <!-- Slide Container -->
     <div class="relative w-full ">
         <form id="observasiForm" action="/observation" method="POST" class="space-y-6">
+            @csrf
             <!-- Slide 1: Data Asal Ruangan -->
             <div id="slide1" class="form-slide">
                 <input type="hidden" name="room_type_origin" value="origin">
@@ -96,6 +97,18 @@
                     </div>
                 </div>
                 <div class="mt-10 bg-white p-8 rounded-xl">
+                    <h2 class="text-xl font-bold mb-4">Intubasi</h2>
+                    <div class="my-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="dr_intubation_name" class="block text-md font-medium text-gray-700">Nama Dokter yang Intubasi</label>
+                            <input type="text" name="dr_intubation_name" id="dr_intubation_name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Nama Dokter">
+                        </div>
+                        <div>
+                            <label for="dr_consultant_name" class="block text-md font-medium text-gray-700">Nama Dokter Konsulan</label>
+                            <input type="text" name="dr_consultant_name" id="dr_consultant_name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Nama Dokter Konsultan">
+                        </div>
+                    </div>
+                    
                     <div class="my-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label for="dr_intubation_name" class="block text-md font-medium text-gray-700">Nama Dokter yang Intubasi</label>
@@ -388,7 +401,7 @@
             
 
             <!-- Slide 3: Data Pindah ke Ruangan -->
-            <div id="slide3" class="form-slide hidden">
+            <div id="slide3" class="form-slide hidden"> 
                 <input type="hidden" name="room_type_transfer" value="transfer">
                 <div class="bg-white p-8 rounded-xl">
                     <h2 class="text-xl font-bold mb-4">Data Pindah Ruangan</h2>
@@ -405,49 +418,49 @@
                     <h2 class="text-xl font-bold my-4">Hasil Lab</h2>
                     <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
                         <div>
-                            <label for="nama_asal_ruangan" class="block text-md font-medium text-gray-700">Hb</label>
-                            <input type="text" name="nama_asal_ruangan" id="nama_asal_ruangan" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Hb">
+                            <label for="hb_transfer_room" class="block text-md font-medium text-gray-700">Hb</label>
+                            <input type="text" name="hb_transfer_room" id="hb_transfer_room" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Hb">
                         </div>
                         <div>
-                            <label for="nama_asal_ruangan" class="block text-md font-medium text-gray-700">Leukosit</label>
-                            <input type="text" name="nama_asal_ruangan" id="nama_asal_ruangan" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Leukosit">
+                            <label for="leukosit_transfer_room" class="block text-md font-medium text-gray-700">Leukosit</label>
+                            <input type="text" name="leukosit_transfer_room" id="leukosit_transfer_room" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Leukosit">
                         </div>
                         <div>
-                            <label for="nama_pasien_asal" class="block text-md font-medium text-gray-700">PCV</label>
-                            <input type="text" name="nama_pasien_asal" id="nama_pasien_asal" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan PCV">
+                            <label for="pcv_transfer_room" class="block text-md font-medium text-gray-700">PCV</label>
+                            <input type="text" name="pcv_transfer_room" id="pcv_transfer_room" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan PCV">
                         </div>
                         <div>
-                            <label for="no_cm" class="block text-md font-medium text-gray-700">Trombosit</label>
-                            <input type="text" name="no_cm" id="no_cm" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Trombosit">
+                            <label for="trobosit_transfer_room" class="block text-md font-medium text-gray-700">Trombosit</label>
+                            <input type="text" name="trobosit_transfer_room" id="trobosit_transfer_room" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Trombosit">
                         </div>
-                        <div>
+                        {{-- <div>
                             <label for="no_cm" class="block text-md font-medium text-gray-700">Hasil Lab Kultur</label>
                             <input type="text" name="no_cm" id="no_cm" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Trombosit">
-                        </div>
+                        </div> --}}
                     </div>
 
                     <!-- TTV -->
                     <h2 class="text-xl font-bold my-4">TTV</h2>
                     <div class="my-4 grid grid-cols-1 md:grid-cols-5 gap-4">
                         <div>
-                            <label for="td" class="block text-md font-medium text-gray-700">TD</label>
-                            <input type="text" name="td[]" id="td" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan TD">
+                            <label for="transfer_room_td" class="block text-md font-medium text-gray-700">TD</label>
+                            <input type="text" name="transfer_room_td" id="transfer_room_td" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan TD">
                         </div>
                         <div>
-                            <label for="s" class="block text-md font-medium text-gray-700">S.</label>
-                            <input type="text" name="s[]" id="s" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan S.">
+                            <label for="transfer_room_saturasi" class="block text-md font-medium text-gray-700">S.</label>
+                            <input type="text" name="transfer_room_saturasi" id="transfer_room_saturasi" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan S.">
                         </div>
                         <div>
-                            <label for="n" class="block text-md font-medium text-gray-700">N.</label>
-                            <input type="text" name="n[]" id="n" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan N.">
+                            <label for="transfer_room_nadi" class="block text-md font-medium text-gray-700">N.</label>
+                            <input type="text" name="transfer_room_nadi" id="transfer_room_nadi" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan N.">
                         </div>
                         <div>
-                            <label for="rr_ttv" class="block text-md font-medium text-gray-700">RR</label>
-                            <input type="text" name="rr_ttv[]" id="rr_ttv" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan RR">
+                            <label for="transfer_room_rr" class="block text-md font-medium text-gray-700">RR</label>
+                            <input type="text" name="transfer_room_rr" id="transfer_room_rr" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan RR">
                         </div>
                         <div>
-                            <label for="spo2" class="block text-md font-medium text-gray-700">SPO2</label>
-                            <input type="text" name="spo2[]" id="spo2" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan SPO2">
+                            <label for="transfer_room_spo2" class="block text-md font-medium text-gray-700">SPO2</label>
+                            <input type="text" name="transfer_room_spo2" id="transfer_room_spo2" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan SPO2">
                         </div>
                     </div>
                     
@@ -456,7 +469,7 @@
                 <!-- Buttons -->
                 <div class="flex justify-between mt-4">
                     <button type="button" id="prev3" class="bg-gray-500 text-white px-4 py-2 rounded-md">Previous</button>
-                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md">Submit</button>
+                    <button type="submit" id="next3" class="bg-green-500 text-white px-4 py-2 rounded-md">Submit</button>
                 </div>
             </div>
         </form>

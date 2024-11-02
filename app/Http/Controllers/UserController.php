@@ -53,6 +53,7 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
             'role' => 'required|string|in:admin,user',
+            'hospital' => 'required|string|max:255  ',
         ]);
         
         try {

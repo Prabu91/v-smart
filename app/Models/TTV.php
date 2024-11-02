@@ -12,17 +12,11 @@ class Ttv extends Model
     protected $table = 'ttv';
 
     protected $fillable = [
-        'observation_id',
         'td',
         'saturasi',
         'nadi',
         'rr',
         'spo2',
     ];
-
-    public function observation()
-    {
-        return $this->belongsTo(Observation::class);
-    }
 }
 

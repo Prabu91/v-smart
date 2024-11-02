@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'rumah_sakit',
     ];
 
     /**
@@ -45,11 +46,5 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    // Relasi satu ke banyak dengan Observations
-    public function observations()
-    {
-        return $this->hasMany(Observation::class);
     }
 }
