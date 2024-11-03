@@ -14,7 +14,7 @@ return new class extends Migration
     Schema::create('origin_rooms', function (Blueprint $table) {
         $table->id();
         $table->unsignedBigInteger('patient_id');
-        $table->date('origin_room_date')->nullable();
+        $table->date('origin_room_datetime')->nullable();
         $table->string('origin_room_name')->nullable();
         $table->string('radiology')->nullable();
         $table->string('ro_thorax')->nullable();

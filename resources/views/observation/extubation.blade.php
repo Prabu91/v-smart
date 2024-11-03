@@ -13,8 +13,8 @@
 				<h2 class="text-xl font-bold my-4">Data Persiapan Extubasi</h2>
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 					<div>
-						<label for="excubation_date" class="block text-sm font-medium text-gray-700">Waktu Extubasi</label>
-						<input type="date" name="excubation_date" id="excubation_date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+						<label for="extubation_datetime" class="block text-md font-medium text-gray-700">Tanggal dan Waktu Extubasi</label>
+						<input type="datetime-local" name="extubation_datetime" id="extubation_datetime" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
 					</div>
 					<div>
 						<label for="preparation_extubation_therapy" class="block text-sm font-medium text-gray-700">Therapi Persiapan Ekstubasi</label>
@@ -25,7 +25,7 @@
 						<input type="text" name="excubation" id="excubation" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Sukses, Tanpa Komplikasi">
 					</div>
 				</div>
-				<div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+				<div class="mt-5 grid grid-cols-1 md:grid-cols-3 gap-4">
 					<div>
 						<label for="nebu_adrenalin" class="block text-sm font-medium text-gray-700">Nebu Adrenalin</label>
 						<div class="relative">
@@ -40,6 +40,16 @@
 							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mg</span>
 						</div>
 					</div>
+					<div>
+						<label for="patient_status" class="block text-sm font-medium text-gray-700">Kondisi Pasien</label>
+						<div class="relative">
+							<select name="patient_status" id="patient_status" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+								<option value="" disabled selected>Pilih Kondisi Pasien</option>
+								<option value="Meninggal">Pasien Meninggal</option>
+								<option value="Tidak Meninggal">Pasien Tidak Meninggal</option>
+							</select>
+						</div>
+					</div>					
 				</div>
 				<div class="flex justify-end mt-10">
 					<button type="button" id="openModalButton" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
@@ -78,7 +88,5 @@
 	});
 </script>
 @endpush
-
-
 @endsection
 

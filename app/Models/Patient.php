@@ -23,10 +23,16 @@ class Patient extends Model
         return $this->hasOne(IcuRoom::class);
     }
 
+    public function transferRoom()
+    {
+        return $this->hasOne(TransferRoom::class);
+    }
+
     public function extubation()
     {
         return $this->hasOne(Extubation::class);
     }
+
 }
 
 

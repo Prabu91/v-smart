@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Extubation;
+use App\Models\TransferRoom;
 use Illuminate\Http\Request;
 
-class ExtubationController extends Controller
+class TransferRoomController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('observation.extubation');
+        return view('observation.transfer-room');
     }
 
     /**
@@ -34,7 +34,7 @@ class ExtubationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Extubation $extubation)
+    public function show(string $id)
     {
         //
     }
@@ -42,7 +42,7 @@ class ExtubationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Extubation $extubation)
+    public function edit(string $id)
     {
         //
     }
@@ -50,7 +50,7 @@ class ExtubationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Extubation $extubation)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -58,7 +58,7 @@ class ExtubationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Extubation $extubation)
+    public function destroy(string $id)
     {
         //
     }

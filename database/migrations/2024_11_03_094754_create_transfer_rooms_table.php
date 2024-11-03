@@ -11,19 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('icu_rooms', function (Blueprint $table) {
+        Schema::create('transfer_rooms', function (Blueprint $table) {
             $table->id();
+
             $table->unsignedBigInteger('patient_id');
-            $table->date('icu_room_datetime')->nullable();
-            $table->string('icu_room_name')->nullable();
-            $table->string('ro')->nullable();
-            $table->string('ro_post_intubation')->nullable();
-            $table->string('blood_culture')->nullable();
+            $table->date('transfer_room_datetime')->nullable();
+            $table->string('transfer_room_name')->nullable();
+            $table->string('main_diagnose')->nullable();
+            $table->string('secondary_diagnose')->nullable();
             $table->unsignedBigInteger('labresult_id')->nullable();
-            $table->unsignedBigInteger('intubation_id')->nullable();
             $table->unsignedBigInteger('agd_id')->nullable();
-            $table->unsignedBigInteger('ttv_id')->nullable();    
+            $table->unsignedBigInteger('ttv_id')->nullable();
             $table->timestamps();
+
+            // Foreign keys
+            $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
         });
     }
 
@@ -32,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('icu_rooms');
+        Schema::dropIfExists('transfer_rooms');
     }
 };
