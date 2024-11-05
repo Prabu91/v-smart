@@ -7,19 +7,27 @@
 
     <div class="relative w-full ">
         <!-- Form -->
-		<form id="originForm" action="/origin" method="POST" class="space-y-6">
+		<form id="originForm" action="{{ route('origin-rooms.store') }}" method="POST" class="space-y-6">
 			@csrf
+			<input type="hidden" name="patient_id" value="{{ $patient_id }}">
 			<div class="bg-white p-8 rounded-xl">
+
 				<h2 class="text-xl font-bold my-4">Data Awal Pasien Masuk</h2>
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<div>
 						<label for="origin_room_datetime" class="block text-md font-medium text-gray-700">Tanggal dan Waktu Masuk</label>
 						<input type="datetime-local" name="origin_room_datetime" id="origin_room_datetime" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+						@error('origin_room_datetime')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
 					</div>
 					
 					<div>
 						<label for="origin_room_name" class="block text-md font-medium text-gray-700">Nama/Nomor Ruangan Asal Pasien</label>
 						<input type="text" name="origin_room_name" id="origin_room_name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Nama Ruangan">
+						@error('origin_room_name')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
 					</div>
 				</div>
 				<h2 class="text-xl font-bold my-4">Hasil Lab Awal Masuk ICU</h2>
@@ -29,6 +37,9 @@
 						<div class="relative">
 							<input type="text" name="hb_origin" id="hb_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="12.5">
 							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">g/dL</span>
+						@error('hb_origin')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
 						</div>
 					</div>
 					<div>
@@ -36,6 +47,9 @@
 						<div class="relative">
 							<input type="text" name="leukosit_origin" id="leukosit_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="8,000">
 							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">/µL</span>
+						@error('leukosit_origin')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
 						</div>
 					</div>
 					<div>
@@ -43,13 +57,19 @@
 						<div class="relative">
 							<input type="text" name="pcv_origin" id="pcv_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="38">
 							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">%</span>
+						@error('pcv_origin')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
 						</div>
 					</div>
 					<div>
-						<label for="trobosit_origin" class="block text-md font-medium text-gray-700">Trombosit</label>
+						<label for="trombosit_origin" class="block text-md font-medium text-gray-700">Trombosit</label>
 						<div class="relative">
-							<input type="text" name="trobosit_origin" id="trobosit_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="250,000">
+							<input type="text" name="trombosit_origin" id="trombosit_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="250,000">
 							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">/µL</span>
+						@error('trombosit_origin')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
 						</div>
 					</div>
 					<div>
@@ -57,6 +77,9 @@
 						<div class="relative">
 							<input type="text" name="kreatinin_origin" id="kreatinin_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="1,0">
 							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mg/dL</span>
+						@error('kreatinin_origin')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
 						</div>
 					</div>
 				</div>
@@ -65,12 +88,18 @@
 					<div>
 						<label for="ph_origin" class="block text-md font-medium text-gray-700">pH</label>
 						<input type="text" name="ph_origin" id="ph_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="7.35">
+						@error('ph_origin')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
 					</div>
 					<div>
 						<label for="pco2_origin" class="block text-md font-medium text-gray-700">pCO<sub>2</sub></label>
 						<div class="relative">
 							<input type="text" name="pco2_origin" id="pco2_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="40">
 							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmHg</span>
+							@error('pco2_origin')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
 						</div>
 					</div>
 					<div>
@@ -78,6 +107,9 @@
 						<div class="relative">
 							<input type="text" name="po2_origin" id="po2_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="80">
 							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmHg</span>
+							@error('po2_origin')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
 						</div>
 					</div>
 					<div>
@@ -85,11 +117,15 @@
 						<div class="relative">
 							<input type="text" name="spo2_origin" id="spo2_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="95">
 							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">%</span>
+							@error('spo2_origin')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
 						</div> 
 					</div> 
 				</div>
 			</div>
 
+			{{-- Radiology --}}
 			<div class="bg-white p-8 rounded-xl">
 				<div class="my-4 grid grid-cols-1 md:grid-cols-2 gap-4">
 					<div>
@@ -126,10 +162,10 @@
 				<div class="mb-4">
 					<label class="block text-md font-medium text-gray-700">Apakah dilakukan intubasi?</label>
 					<div class="flex items-center space-x-4 mt-2">
-						<input type="radio" id="intubation_yes" name="intubation_confirm" value="yes" class="h-4 w-4 text-blue-600 border-gray-300" onclick="toggleIntubationFields(true)">
+						<input type="radio" id="intubation_yes" value="yes" class="h-4 w-4 text-blue-600 border-gray-300" onclick="toggleIntubationFields(true)">
 						<label for="intubation_yes" class="text-gray-700">Ya</label>
 						
-						<input type="radio" id="intubation_no" name="intubation_confirm" value="no" class="h-4 w-4 text-blue-600 border-gray-300" onclick="toggleIntubationFields(false)">
+						<input type="radio" id="intubation_no" value="no" class="h-4 w-4 text-blue-600 border-gray-300" onclick="toggleIntubationFields(false)">
 						<label for="intubation_no" class="text-gray-700">Tidak</label>
 					</div>
 				</div>
@@ -139,10 +175,10 @@
 					<div class="my-4">
 						<label class="block text-md font-medium text-gray-700">Lokasi Intubasi</label>
 						<div class="flex items-center space-x-4 mt-2">
-							<input type="radio" id="origin_room" name="intubation_location" value="origin" class="h-4 w-4 text-blue-600 border-gray-300">
+							<input type="radio" id="intubation_location" name="intubation_location" value="origin" class="h-4 w-4 text-blue-600 border-gray-300">
 							<label for="origin_room" class="text-gray-700">Ruangan Asal</label>
 							
-							<input type="radio" id="er_room" name="intubation_location" value="er" class="h-4 w-4 text-blue-600 border-gray-300">
+							<input type="radio" id="intubation_location" name="intubation_location" value="IGD" class="h-4 w-4 text-blue-600 border-gray-300">
 							<label for="er_room" class="text-gray-700">IGD</label>
 						</div>
 					</div>
@@ -212,33 +248,33 @@
 					<div class="my-4 grid grid-cols-1 md:grid-cols-5 gap-4">
 						<div>
 							<label for="td" class="block text-md font-medium text-gray-700">TD</label>
-							<input type="text" name="ttv[][td]" id="td" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="110/70">
+							<input type="text" name="td" id="td" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="110/70">
 						</div>
 						<div>
 							<label for="saturasi" class="block text-md font-medium text-gray-700">S.</label>
 							<div class="relative">
-								<input type="text" name="ttv[][saturasi]" id="saturasi" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="38.5">
+								<input type="text" name="saturasi" id="saturasi" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="38.5">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">°C</span>
 							</div> 
 						</div>
 						<div>
 							<label for="nadi" class="block text-md font-medium text-gray-700">N.</label>
 							<div class="relative">
-								<input type="text" name="ttv[][nadi]" id="nadi" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="80">
+								<input type="text" name="nadi" id="nadi" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="80">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">bpm</span>
 							</div> 
 						</div>
 						<div>
 							<label for="rr_ttv" class="block text-md font-medium text-gray-700">RR</label>
 							<div class="relative">
-								<input type="text" name="ttv[][rr]" id="rr_ttv" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="18">
+								<input type="text" name="rr_ttv" id="rr_ttv" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="18">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">kali per menit</span>
 							</div> 
 						</div>
 						<div>
 							<label for="spo2" class="block text-md font-medium text-gray-700">SpO<sub>2</sub></label>
 							<div class="relative">
-								<input type="text" name="ttv[][spo2]" id="spo2" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="95">
+								<input type="text" name="spo2" id="spo2" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="95">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">%</span>
 							</div> 
 						</div>

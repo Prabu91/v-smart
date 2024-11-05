@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('ttv', function (Blueprint $table) {
             $table->id(); 
-            $table->float('td')->nullable(); 
+            $table->string('td')->nullable(); 
             $table->float('saturasi')->nullable(); 
             $table->float('nadi')->nullable(); 
             $table->float('rr')->nullable(); 

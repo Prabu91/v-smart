@@ -22,6 +22,9 @@ return new class extends Migration
             $table->enum('patient_status', ['Meninggal', 'Tidak Meninggal']);
             
             $table->timestamps();
+            // Foreign keys
+            $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
+            
         });
     }
 

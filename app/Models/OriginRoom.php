@@ -8,7 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 // OriginRoom.php
 class OriginRoom extends Model
 {
-    protected $fillable = ['patient_id', 'origin_room_date', 'origin_room_name', 'radiology', 'ro_thorax', 'additional_check', 'main_diagnose', 'secondary_diagnose', 'labresult_id', 'intubation_id', 'agd_id', 'ttv_id'];
+    protected $fillable = [
+        'patient_id', 
+        'origin_room_datetime', 
+        'origin_room_name', 
+        'radiology', 
+        'ro_thorax', 
+        'additional_check', 
+        'main_diagnose', 
+        'secondary_diagnose', 
+        'labresult_id', 
+        'intubation_id', 
+        'agd_id', 
+        'ttv_id'];
 
     public function patient()
     {

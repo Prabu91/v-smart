@@ -12,7 +12,6 @@ class LabResult extends Model
     protected $table = 'lab_results';
 
     protected $fillable = [
-        'patient_id',
         'hb',
         'leukosit',
         'pcv',

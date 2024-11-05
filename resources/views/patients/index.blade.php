@@ -36,7 +36,7 @@
 		</form>
 
 		<!-- Modal -->
-		<div id="confirmationModal" class="fixed inset-0 z-50 hidden bg-gray-800 bg-opacity-75 flex items-center justify-center">
+		{{-- <div id="confirmationModal" class="fixed inset-0 z-50 hidden bg-gray-800 bg-opacity-75 flex items-center justify-center">
 			<div class="bg-white rounded-lg shadow-lg p-6">
 				<h3 class="text-lg font-semibold mb-4">Konfirmasi</h3>
 				<p>Apakah Anda yakin ingin menyimpan data pasien?</p>
@@ -45,7 +45,7 @@
 					<button id="confirmButton" class="px-4 py-2 bg-blue-600 text-white rounded-md">Ya, Simpan</button>
 				</div>
 			</div>
-		</div>
+		</div> --}}
 
     </div>
 </div>
@@ -53,17 +53,47 @@
 <!-- Script for Slide Navigation -->
 @push('scripts')
 <script>
-document.getElementById('openModalButton').addEventListener('click', function() {
-    document.getElementById('confirmationModal').classList.remove('hidden');
-});
+	document.getElementById('openModalButton').addEventListener('click', function() {
+		Swal.fire({
+			title: 'Konfirmasi',
+			text: "Apakah Anda yakin ingin menyimpan data ini?",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Ya, simpan!',
+			cancelButtonText: 'Batal'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				// Kirim form jika pengguna mengkonfirmasi
+				document.getElementById('patientForm').submit();
+			}
+		});
+	});
 
-document.getElementById('cancelButton').addEventListener('click', function() {
-    document.getElementById('confirmationModal').classList.add('hidden');
-});
+	// Tangkap event submit dari form
+	document.getElementById('patientForm').addEventListener('submit', function(event) {
+		event.preventDefault(); // Mencegah pengiriman form langsung
 
-document.getElementById('confirmButton').addEventListener('click', function() {
-    document.getElementById('patientForm').submit(); 
-});
+		// Tampilkan SweetAlert kedua setelah form disubmit
+		Swal.fire({
+			title: 'Data Tersimpan!',
+			text: "Ke mana Anda ingin melanjutkan?",
+			icon: 'success',
+			showCancelButton: true,
+			confirmButtonText: 'Halaman Detail Pasien',
+			cancelButtonText: 'Halaman Observasi'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				// Jika pengguna memilih halaman detail pasien
+				window.location.href = '/patient/' + patientId; // Ganti dengan ID pasien yang sesuai
+			} else {
+				// Jika pengguna memilih halaman observasi
+				window.location.href = '/origin-rooms'; // Ganti dengan URL yang sesuai
+			}
+		});
+
+		// Kirim form setelah menampilkan SweetAlert
+		this.submit();
+	});
 
 </script>
 @endpush

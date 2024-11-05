@@ -2,7 +2,8 @@
 
 @section('content')
 <div class="container mx-auto p-6">
-    <h1 class="text-2xl text-center font-bold mb-6">Form Observasi Pasien ICU/PICU</h1>
+    <h1 class="text-2xl text-center font-bold mb-4">Form Observasi Pasien ICU/PICU</h1>
+	<h2 class="text-2xl font-bold mb-6 text-center">Data Pindah Ruangan</h2>
 
     <div class="relative w-full ">
         <!-- Form -->
@@ -10,7 +11,6 @@
 			@csrf
 			<div class="bg-white p-8 rounded-xl">
 				<div class="bg-white p-8 rounded-xl">
-					<h2 class="text-xl font-bold mb-4">Data Pindah Ruangan</h2>
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<div>
 							<label for="transfer_room_date" class="block text-md font-medium text-gray-700">Tanggal Keluar</label>
@@ -21,7 +21,7 @@
 							<input type="text" name="transfer_room_name" id="transfer_room_name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Nama Ruangan">
 						</div>
 					</div>
-					<h2 class="text-xl font-bold my-4">Hasil Lab</h2>
+					<h2 class="text-xl font-bold my-4">Hasil Lab Akhir</h2>
 					<div class="grid grid-cols-1 md:grid-cols-5 gap-4">
 						<div>
 							<label for="hb_transfer_room" class="block text-md font-medium text-gray-700">Hb</label>
@@ -39,10 +39,16 @@
 							<label for="trobosit_transfer_room" class="block text-md font-medium text-gray-700">Trombosit</label>
 							<input type="text" name="trobosit_transfer_room" id="trobosit_transfer_room" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Trombosit">
 						</div>
-						{{-- <div>
-							<label for="no_cm" class="block text-md font-medium text-gray-700">Hasil Lab Kultur</label>
-							<input type="text" name="no_cm" id="no_cm" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Trombosit">
-						</div> --}}
+						<div>
+							<label for="kreatinin_transfer" class="block text-md font-medium text-gray-700">Kreatitin</label>
+							<div class="relative">
+								<input type="text" name="kreatinin_transfer" id="kreatinin_transfer" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="1,0">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mg/dL</span>
+							@error('kreatinin_transfer')
+								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+							@enderror
+							</div>
+						</div>
 					</div>
 
 					<!-- TTV -->
@@ -68,6 +74,12 @@
 							<label for="transfer_room_spo2" class="block text-md font-medium text-gray-700">SPO2</label>
 							<input type="text" name="transfer_room_spo2" id="transfer_room_spo2" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan SPO2">
 						</div>
+					</div>
+
+					<div class="flex justify-end mt-10">
+						<button type="button" id="openModalButton" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+							Simpan Data
+						</button>
 					</div>
 					
 				</div>

@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('lab_results', function (Blueprint $table) {
             $table->id(); 
-            $table->unsignedBigInteger('patient_id');
             $table->float('hb')->nullable(); 
             $table->float('leukosit')->nullable(); 
             $table->float('pcv')->nullable();

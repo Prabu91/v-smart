@@ -12,7 +12,7 @@ class ExtubationController extends Controller
      */
     public function index()
     {
-        return view('observation.extubation');
+        return view('observation.icu-room.extubation.index');
     }
 
     /**

@@ -24,6 +24,12 @@ return new class extends Migration
             $table->unsignedBigInteger('agd_id')->nullable();
             $table->unsignedBigInteger('ttv_id')->nullable();    
             $table->timestamps();
+            // Foreign keys
+        $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
+        $table->foreign('labresult_id')->references('id')->on('lab_results')->onDelete('cascade');
+        $table->foreign('intubation_id')->references('id')->on('intubations')->onDelete('cascade');
+        $table->foreign('agd_id')->references('id')->on('agds')->onDelete('cascade');
+        $table->foreign('ttv_id')->references('id')->on('ttv')->onDelete('cascade');
         });
     }
 

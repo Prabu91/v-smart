@@ -12,7 +12,7 @@ class PatientController extends Controller
      */
     public function index()
     {
-        return view('observation.patient');
+        return view('patients.index');
     }
 
     /**
@@ -39,9 +39,9 @@ class PatientController extends Controller
         ]);
         
 
-        Patient::create($request->only('name', 'no_jkn'));
+        $patient = Patient::create($request->only('name', 'no_jkn'));
 
-        return redirect()->back()->with('success', 'Patient created successfully.');
+        return redirect()->route('patients.show', ['patient' => $patient->id])->with('success', 'Patient created successfully.');
     }
 
 
@@ -49,9 +49,11 @@ class PatientController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Patient $patient)
+    public function show($id)
     {
-        //
+        $patient = Patient::findOrFail($id);
+
+        return view('patients.detail', compact('patient'));
     }
 
     /**

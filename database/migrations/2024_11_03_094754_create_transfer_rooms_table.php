@@ -26,6 +26,9 @@ return new class extends Migration
 
             // Foreign keys
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
+            $table->foreign('labresult_id')->references('id')->on('lab_results')->onDelete('cascade');
+            $table->foreign('agd_id')->references('id')->on('agds')->onDelete('cascade');
+            $table->foreign('ttv_id')->references('id')->on('ttv')->onDelete('cascade');        
         });
     }
 

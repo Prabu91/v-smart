@@ -3,14 +3,14 @@
 @section('content')
 
 <div class="container mx-auto p-6">
-    <h1 class="text-2xl text-center font-bold mb-6">Form Observasi Pasien ICU/PICU</h1>
+    <h1 class="text-2xl text-center font-bold mb-4">Form Observasi Pasien ICU/PICU</h1>
+	<h2 class="text-2xl font-bold my-6 text-center">Data Ruang Intensif</h2>
 
     <div class="relative w-full ">
         <!-- Form -->
 		<form id="patientForm" action="/patient" method="POST" class="space-y-6">
 			@csrf
 			<div class="bg-white p-8 rounded-xl">
-				<h2 class="text-xl font-bold my-4">Data Ruang Intensif</h2>
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<div>
 						<label for="icu_room_datetime" class="block text-md font-medium text-gray-700">Tanggal dan Waktu Masuk</label>

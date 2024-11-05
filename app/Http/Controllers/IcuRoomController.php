@@ -11,7 +11,12 @@ class IcuRoomController extends Controller
      */
     public function index()
     {
-        return view('observation.icu-room');
+        return view('observation.icu-room.index');
+    }
+
+    public function intubation()
+    {
+        return view('observation.icu-room.intubation');
     }
 
     /**

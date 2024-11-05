@@ -12,7 +12,7 @@ class TransferRoomController extends Controller
      */
     public function index()
     {
-        return view('observation.transfer-room');
+        return view('observation.transfer-room.index');
     }
 
     /**
