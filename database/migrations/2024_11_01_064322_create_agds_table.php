@@ -13,11 +13,15 @@ return new class extends Migration
     {
         Schema::create('agds', function (Blueprint $table) {
             $table->id();
-            $table->float('ph')->nullable;
+            $table->unsignedBigInteger('patient_id');
+            $table->decimal('ph')->nullable;
             $table->float('po2')->nullable;
             $table->float('pco2')->nullable;
             $table->float('spo2')->nullable;
             $table->timestamps();
+
+            $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
+
         });
     }
 

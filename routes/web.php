@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExtubationController;
-use App\Http\Controllers\ObservationController;
 use App\Http\Controllers\OriginRoomController;
 use App\Http\Controllers\IcuRoomController;
 use App\Http\Controllers\PatientController;

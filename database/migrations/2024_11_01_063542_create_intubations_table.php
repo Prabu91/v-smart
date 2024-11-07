@@ -13,17 +13,24 @@ return new class extends Migration
     {
         Schema::create('intubations', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('patient_id');
+            $table->unsignedBigInteger('ttv_id');
+            $table->timestamp('intubation_datetime')->nullable();
             $table->string('intubation_location')->nullable();
             $table->string('dr_intubation')->nullable();
             $table->string('dr_consultant')->nullable();
             $table->string('therapy_type')->nullable();
             $table->string('mode_venti')->nullable();
-            $table->string('ett_depth')->nullable();
-            $table->float('ipl')->nullable();
-            $table->float('peep')->nullable();
-            $table->float('fio2')->nullable();
-            $table->float('rr')->nullable();
+            $table->float('diameter', 4, 1)->nullable();
+            $table->float('depth', 5, 1)->nullable();
+            $table->decimal('ipl')->nullable();
+            $table->decimal('peep')->nullable();
+            $table->decimal('fio2')->nullable();
+            $table->integer('rr')->nullable();
             $table->timestamps();
+            $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
+            $table->foreign('ttv_id')->references('id')->on('ttv')->onDelete('cascade');
+
         });
     }
 

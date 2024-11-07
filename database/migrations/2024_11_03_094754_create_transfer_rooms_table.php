@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger('patient_id');
-            $table->date('transfer_room_datetime')->nullable();
+            $table->timestamp('transfer_room_datetime')->nullable();
             $table->string('transfer_room_name')->nullable();
             $table->string('main_diagnose')->nullable();
             $table->string('secondary_diagnose')->nullable();

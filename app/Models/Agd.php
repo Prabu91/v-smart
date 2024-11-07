@@ -11,5 +11,10 @@ class Agd extends Model
 
     protected $table = 'agds';
     
-    protected $fillable = ['ph', 'po2', 'pco2', 'spo2'];
+    protected $fillable = [ 'patient_id', 'ph', 'po2', 'pco2', 'spo2'];
+    
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class, 'patient_id', 'id');
+    }
 }

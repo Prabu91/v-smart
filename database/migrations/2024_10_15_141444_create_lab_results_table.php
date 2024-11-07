@@ -13,12 +13,15 @@ return new class extends Migration
     {
         Schema::create('lab_results', function (Blueprint $table) {
             $table->id(); 
-            $table->float('hb')->nullable(); 
-            $table->float('leukosit')->nullable(); 
+            $table->unsignedBigInteger('patient_id');
+            $table->decimal('hb')->nullable(); 
+            $table->integer('leukosit')->nullable(); 
             $table->float('pcv')->nullable();
-            $table->float('trombosit')->nullable(); 
-            $table->float('kreatinin')->nullable(); 
+            $table->integer('trombosit')->nullable(); 
+            $table->decimal('kreatinin')->nullable(); 
             $table->timestamps(); 
+            $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
+
             });
         
     }

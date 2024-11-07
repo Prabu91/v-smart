@@ -13,12 +13,16 @@ return new class extends Migration
     {
         Schema::create('ttv', function (Blueprint $table) {
             $table->id(); 
-            $table->string('td')->nullable(); 
-            $table->float('saturasi')->nullable(); 
-            $table->float('nadi')->nullable(); 
-            $table->float('rr')->nullable(); 
+            $table->unsignedBigInteger('patient_id');
+            $table->integer('sistolik')->nullable(); 
+            $table->integer('diastolik')->nullable(); 
+            $table->float('suhu')->nullable(); 
+            $table->integer('nadi')->nullable(); 
+            $table->integer('rr')->nullable(); 
             $table->float('spo2')->nullable(); 
             $table->timestamps(); 
+            
+            $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
         });
     }
 

@@ -19,7 +19,6 @@ class IcuRoom extends Model
         'labresult_id',
         'intubation_id',
         'agd_id',
-        'ttv_id',
     ];
 
     // Relasi ke tabel Patient
@@ -44,11 +43,5 @@ class IcuRoom extends Model
     public function agd()
     {
         return $this->belongsTo(AGD::class);
-    }
-
-    // Relasi ke tabel TTV
-    public function ttv()
-    {
-        return $this->belongsTo(TTV::class);
     }
 }

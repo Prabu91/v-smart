@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Extubation;
+use App\Models\IcuRoom;
+use App\Models\Intubation;
+use App\Models\OriginRoom;
 use App\Models\Patient;
+use App\Models\TransferRoom;
+use App\Models\Ttv;
 use Illuminate\Http\Request;
 
 class PatientController extends Controller
@@ -52,9 +58,15 @@ class PatientController extends Controller
     public function show($id)
     {
         $patient = Patient::findOrFail($id);
+        $origin = OriginRoom::with('labResult', 'intubation', 'agd')->where('patient_id', $id)->first();
+        $icu = IcuRoom::where('patient_id', $id)->first();
+        $intubations = Intubation::with('ttv')->where('patient_id', $id)->get();  // Mengambil semua data intubasi
+        $extubation = Extubation::where('patient_id', $id)->first();
+        $transfer = TransferRoom::where('patient_id', $id)->first();
 
-        return view('patients.detail', compact('patient'));
+        return view('patients.detail', compact('patient', 'origin', 'icu', 'intubations', 'extubation', 'transfer'));
     }
+
 
     /**
      * Show the form for editing the specified resource.

@@ -12,11 +12,18 @@ class Ttv extends Model
     protected $table = 'ttv';
 
     protected $fillable = [
-        'td',
-        'saturasi',
+        'patient_id',
+        'sistolik',
+        'diastolik',
+        'suhu',
         'nadi',
         'rr',
         'spo2',
     ];
+
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class, 'patient_id', 'id');
+    }
 }
 

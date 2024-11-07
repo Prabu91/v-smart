@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('extubations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('patient_id');
-            $table->date('extubation_datetime')->nullable();
+            $table->timestamp('extubation_datetime')->nullable();
             $table->string('preparation_extubation_theraphy')->nullable();
             $table->string('extubation')->nullable();
-            $table->float('nebu_adrenalin')->nullable();
-            $table->float('dexamethasone')->nullable();  
+            $table->decimal('nebu_adrenalin')->nullable();
+            $table->decimal('dexamethasone')->nullable();  
             $table->enum('patient_status', ['Meninggal', 'Tidak Meninggal']);
             
             $table->timestamps();

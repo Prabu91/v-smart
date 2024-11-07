@@ -45,56 +45,52 @@ class OriginRoomController extends Controller
             'main_diagnose_origin' => 'nullable|string',
             'secondary_diagnose_origin' => 'nullable|string',
             
-            'hb_origin' => 'nullable|numeric|regex:/^\d+(\.\d+)?$/',
-            'leukosit_origin' => 'nullable|numeric|regex:/^\d+(\.\d+)?$/',
-            'pcv_origin' => 'nullable|numeric|regex:/^\d+(\.\d+)?$/',
-            'trombosit_origin' => 'nullable|numeric|regex:/^\d+(\.\d+)?$/',
-            'kreatinin_origin' => 'nullable|numeric|regex:/^\d+(\.\d+)?$/',
+            'hb_origin' => 'nullable|numeric',
+            'leukosit_origin' => 'nullable|numeric',
+            'pcv_origin' => 'nullable|numeric',
+            'trombosit_origin' => 'nullable|numeric',
+            'kreatinin_origin' => 'nullable|numeric',
             
-            'ph_origin' => 'nullable|numeric|regex:/^\d+(\.\d+)?$/',
-            'pco2_origin' => 'nullable|numeric|regex:/^\d+(\.\d+)?$/',
-            'po2_origin' => 'nullable|numeric|regex:/^\d+(\.\d+)?$/',
-            'spo2_origin' => 'nullable|numeric|regex:/^\d+(\.\d+)?$/',
+            'ph_origin' => 'nullable|numeric',
+            'pco2_origin' => 'nullable|numeric',
+            'po2_origin' => 'nullable|numeric',
+            'spo2_origin' => 'nullable|numeric',
         
             'intubation_location' => 'nullable|string|max:255',
             'dr_intubation_name' => 'nullable|string|max:255',
             'dr_consultant_name' => 'nullable|string|max:255',
             'therapy_type_origin' => 'nullable|string|max:255',
             'mode_venti_origin' => 'nullable|string|max:255',
-            'ett_depth_origin' => 'nullable|string',
-            'ipl_origin' => 'nullable|numeric|regex:/^\d+(\.\d+)?$/',
-            'peep_origin' => 'nullable|numeric|regex:/^\d+(\.\d+)?$/',
-            'fio2_origin' => 'nullable|numeric|regex:/^\d+(\.\d+)?$/',
-            'rr_origin' => 'nullable|numeric|regex:/^\d+(\.\d+)?$/',
+            'diameter_origin' => 'nullable|numeric',
+            'depth_origin' => 'nullable|numeric',
+            'ipl_origin' => 'nullable|numeric',
+            'peep_origin' => 'nullable|numeric',
+            'fio2_origin' => 'nullable|numeric',
+            'rr_origin' => 'nullable|numeric',
         
-            'td' => 'nullable|string',
-            'saturasi' => 'nullable|numeric|regex:/^\d+(\.\d+)?$/',
-            'nadi' => 'nullable|numeric|regex:/^\d+(\.\d+)?$/',
-            'rr_ttv' => 'nullable|numeric|regex:/^\d+(\.\d+)?$/',
-            'spo2' => 'nullable|numeric|regex:/^\d+(\.\d+)?$/',
+            'sistolik' => 'nullable|numeric',
+            'diastolik' => 'nullable|numeric',
+            'suhu' => 'nullable|numeric',
+            'nadi' => 'nullable|numeric',
+            'rr_ttv' => 'nullable|numeric',
+            'spo2' => 'nullable|numeric',
+        // ]);
+
         ], [
             'origin_room_datetime.required' => 'Tanggal dan waktu asal ruangan wajib diisi.',
             'origin_room_datetime.date' => 'Tanggal dan waktu asal ruangan tidak valid.',
             'origin_room_name.required' => 'Nama asal ruangan wajib diisi.',
             'origin_room_name.string' => 'Nama asal ruangan harus berupa teks.',
             'origin_room_name.max' => 'Nama asal ruangan tidak boleh lebih dari 255 karakter.',
-            'hb_origin.numeric' => 'HB harus berupa angka.',
-            'hb_origin.regex' => 'HB harus menggunakan titik (.) sebagai pemisah desimal.',
-            'leukosit_origin.numeric' => 'Leukosit harus berupa angka.',
-            'leukosit_origin.regex' => 'Leukosit harus menggunakan titik (.) sebagai pemisah desimal.',
-            'pcv_origin.numeric' => 'PCV harus berupa angka.',
-            'pcv_origin.regex' => 'PCV harus menggunakan titik (.) sebagai pemisah desimal.',
-            'trombosit_origin.numeric' => 'Trombosit harus berupa angka.',
-            'trombosit_origin.regex' => 'Trombosit harus menggunakan titik (.) sebagai pemisah desimal.',
-            'kreatinin_origin.numeric' => 'Kreatinin harus berupa angka.',
-            'kreatinin_origin.regex' => 'Kreatinin harus menggunakan titik (.) sebagai pemisah desimal.',
-            'ph_origin.numeric' => 'PH harus berupa angka.',
-            'ph_origin.regex' => 'PH harus menggunakan titik (.) sebagai pemisah desimal.',
-            'pco2_origin.numeric' => 'PCO2 harus berupa angka.',
-            'pco2_origin.regex' => 'PCO2 harus menggunakan titik (.) sebagai pemisah desimal.',
-            'po2_origin.numeric' => 'PO2 harus berupa angka.',
-            'po2_origin.regex' => 'PO2 harus menggunakan titik (.) sebagai pemisah desimal.',
-            'spo2_origin.numeric' => 'SPO2 harus berupa angka.',
+            'hb_origin.numeric' => 'HB harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
+            'leukosit_origin.numeric' => 'Leukosit harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
+            'pcv_origin.numeric' => 'PCV harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
+            'trombosit_origin.numeric' => 'Trombosit harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
+            'kreatinin_origin.numeric' => 'Kreatinin harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
+            'ph_origin.numeric' => 'PH harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
+            'pco2_origin.numeric' => 'PCO2 harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
+            'po2_origin.numeric' => 'PO2 harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
+            'spo2_origin.numeric' => 'SPO2 harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
             'spo2_origin.regex' => 'SPO2 harus menggunakan titik (.) sebagai pemisah desimal.',
             'intubation_location.string' => 'Lokasi intubasi harus berupa teks.',
             'intubation_location.max' => 'Lokasi intubasi tidak boleh lebih dari 255 karakter.',
@@ -106,29 +102,25 @@ class OriginRoomController extends Controller
             'therapy_type_origin.max' => 'Tipe terapi tidak boleh lebih dari 255 karakter.',
             'mode_venti_origin.string' => 'Mode ventilasi harus berupa teks.',
             'mode_venti_origin.max' => 'Mode ventilasi tidak boleh lebih dari 255 karakter.',
-            'ett_depth_origin.string' => 'Kedalaman ETT harus berupa teks.',
-            'ipl_origin.numeric' => 'IPL harus berupa angka.',
-            'ipl_origin.regex' => 'IPL harus menggunakan titik (.) sebagai pemisah desimal.',
-            'peep_origin.numeric' => 'PEEP harus berupa angka.',
-            'peep_origin.regex' => 'PEEP harus menggunakan titik (.) sebagai pemisah desimal.',
-            'fio2_origin.numeric' => 'FIO2 harus berupa angka.',
-            'fio2_origin.regex' => 'FIO2 harus menggunakan titik (.) sebagai pemisah desimal.',
-            'rr_origin.numeric' => 'RR harus berupa angka.',
-            'rr_origin.regex' => 'RR harus menggunakan titik (.) sebagai pemisah desimal.',
-            'td.string' => 'TD harus berupa teks.',
-            'saturasi.numeric' => 'Saturasi harus berupa angka.',
-            'saturasi.regex' => 'Saturasi harus menggunakan titik (.) sebagai pemisah desimal.',
-            'nadi.numeric' => 'Nadi harus berupa angka.',
-            'nadi.regex' => 'Nadi harus menggunakan titik (.) sebagai pemisah desimal.',
-            'rr_ttv.numeric' => 'RR TTV harus berupa angka.',
-            'rr_ttv.regex' => 'RR TTV harus menggunakan titik (.) sebagai pemisah desimal.',
-            'spo2.numeric' => 'SPO2 harus berupa angka.',
-            'spo2.regex' => 'SPO2 harus menggunakan titik (.) sebagai pemisah desimal.',
+            'diameter_origin.numeric' => 'Kedalaman ETT harus berupa angka.',
+            'depth_origin.numeric' => 'Kedalaman ETT harus berupa angka.',
+            'ipl_origin.numeric' => 'IPL harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
+            'peep_origin.numeric' => 'PEEP harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
+            'fio2_origin.numeric' => 'FIO2 harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
+            'rr_origin.numeric' => 'RR harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
+            'td.numeric' => 'TD harus berupa angka.',
+            'sistolik.numeric' => 'Kedalaman ETT harus berupa angka.',
+            'diastolik.numeric' => 'Kedalaman ETT harus berupa angka.',
+            'saturasi.numeric' => 'Saturasi harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
+            'nadi.numeric' => 'Nadi harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
+            'rr_ttv.numeric' => 'RR TTV harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
+            'spo2.numeric' => 'SPO2 harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
         ]);
         
         try {
             // Lab Results
             $labResult = LabResult::create([
+                'patient_id' => $request->patient_id,
                 'hb' => $request->hb_origin,
                 'leukosit' => $request->leukosit_origin,
                 'pcv' => $request->pcv_origin,
@@ -138,35 +130,40 @@ class OriginRoomController extends Controller
 
             // AGDS
             $agd = Agd::create([
+                'patient_id' => $request->patient_id,
                 'ph' => $request->ph_origin,
                 'pco2' => $request->pco2_origin,
                 'po2' => $request->po2_origin,
                 'spo2' => $request->spo2_origin,
             ]);
-
-            // Intubations
+            
+            
+            
+            $ttv = Ttv::create([
+                'patient_id' => $request->patient_id,
+                'sistolik' => $request->sistolik,
+                'diastolik' => $request->diastolik,
+                'suhu' => $request->suhu,
+                'nadi' => $request->nadi,
+                'rr' => $request->rr_ttv,
+                'spo2' => $request->spo2,
+            ]);
+            
             $intubation = Intubation::create([
+                'patient_id' => $request->patient_id,
+                'intubation_datetime' => $request->origin_room_datetime,
                 'intubation_location' => $request->intubation_location,
                 'dr_intubation' => $request->dr_intubation_name,
                 'dr_consultant' => $request->dr_consultant_name,
                 'therapy_type' => $request->therapy_type_origin,
                 'mode_venti' => $request->mode_venti_origin,
-                'ett_depth' => $request->ett_depth_origin,
+                'diameter' => $request->diameter_origin,
+                'depth' => $request->depth_origin,
                 'ipl' => $request->ipl_origin,
                 'peep' => $request->peep_origin,
                 'fio2' => $request->fio2_origin,
                 'rr' => $request->rr_origin,
-            ]);
-            // dd($intubation);
-
-
-            // TTV
-            $ttv = Ttv::create([
-                'td' => $request->td,
-                'saturasi' => $request->saturasi,
-                'nadi' => $request->nadi,
-                'rr' => $request->rr_ttv,
-                'spo2' => $request->spo2,
+                'ttv_id' => $ttv->id,
             ]);
 
             // Origin Room
@@ -181,22 +178,14 @@ class OriginRoomController extends Controller
                 'labresult_id' => $labResult->id,
                 'agd_id' => $agd->id,
                 'intubation_id' => $intubation->id,
-                'ttv_id' => $ttv->id,
                 'patient_id' => $request->patient_id,
             ]);
-
 
             return redirect()->route('patients.show', ['patient' => $request->patient_id])
                 ->with('success', 'Data asal ruangan dan data terkait berhasil disimpan.');
             } catch (\Exception $e) {
-                return back()->withErrors(['error' => $e->getMessage()]);
-
-                // return back()->withErrors(['msg' => 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage()]);
+                return back()->withErrors(['msg' => 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage()]);
             }
-
-
-
-            // return redirect()->route('patients.show', ['patient' => $patient->id])->with('success', 'Patient created successfully.');
     }
 
 

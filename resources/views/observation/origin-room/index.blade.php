@@ -16,7 +16,7 @@
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<div>
 						<label for="origin_room_datetime" class="block text-md font-medium text-gray-700">Tanggal dan Waktu Masuk</label>
-						<input type="datetime-local" name="origin_room_datetime" id="origin_room_datetime" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+						<input type="datetime-local" name="origin_room_datetime" id="origin_room_datetime" value="{{ old('origin_room_datetime') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('origin_room_datetime') border-red-500 @else border-gray-300 @enderror">
 						@error('origin_room_datetime')
 							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
 						@enderror
@@ -24,7 +24,7 @@
 					
 					<div>
 						<label for="origin_room_name" class="block text-md font-medium text-gray-700">Nama/Nomor Ruangan Asal Pasien</label>
-						<input type="text" name="origin_room_name" id="origin_room_name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Nama Ruangan">
+						<input type="text" name="origin_room_name" id="origin_room_name" value="{{ old('origin_room_name') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('origin_room_name') border-red-500 @else border-gray-300 @enderror" placeholder="Masukan Nama Ruangan">
 						@error('origin_room_name')
 							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
 						@enderror
@@ -35,59 +35,59 @@
 					<div>
 						<label for="hb_origin" class="block text-md font-medium text-gray-700">Hb</label>
 						<div class="relative">
-							<input type="text" name="hb_origin" id="hb_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="12.5">
+							<input type="number" name="hb_origin" id="hb_origin" value="{{ old('hb_origin') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('hb_origin') border-red-500 @else border-gray-300 @enderror" placeholder="12,5">
 							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">g/dL</span>
+						</div>
 						@error('hb_origin')
 							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
 						@enderror
-						</div>
 					</div>
 					<div>
 						<label for="leukosit_origin" class="block text-md font-medium text-gray-700">Leukosit</label>
 						<div class="relative">
-							<input type="text" name="leukosit_origin" id="leukosit_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="8,000">
+							<input type="number" name="leukosit_origin" id="leukosit_origin" value="{{ old('leukosit_origin') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('leukosit_origin') border-red-500 @else border-gray-300 @enderror" placeholder="8000">
 							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">/µL</span>
+						</div>
 						@error('leukosit_origin')
 							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
 						@enderror
-						</div>
 					</div>
 					<div>
 						<label for="pcv_origin" class="block text-md font-medium text-gray-700">PCV</label>
 						<div class="relative">
-							<input type="text" name="pcv_origin" id="pcv_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="38">
+							<input type="number" name="pcv_origin" id="pcv_origin" value="{{ old('pcv_origin') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('pcv_origin') border-red-500 @else border-gray-300 @enderror" placeholder="38">
 							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">%</span>
+						</div>
 						@error('pcv_origin')
 							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
 						@enderror
-						</div>
 					</div>
 					<div>
 						<label for="trombosit_origin" class="block text-md font-medium text-gray-700">Trombosit</label>
 						<div class="relative">
-							<input type="text" name="trombosit_origin" id="trombosit_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="250,000">
+							<input type="number" name="trombosit_origin" id="trombosit_origin" value="{{ old('trombosit_origin') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('trombosit_origin') border-red-500 @else border-gray-300 @enderror" placeholder="250000">
 							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">/µL</span>
+						</div>
 						@error('trombosit_origin')
 							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
 						@enderror
-						</div>
 					</div>
 					<div>
 						<label for="kreatinin_origin" class="block text-md font-medium text-gray-700">Kreatitin</label>
 						<div class="relative">
-							<input type="text" name="kreatinin_origin" id="kreatinin_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="1,0">
+							<input type="number" name="kreatinin_origin" id="kreatinin_origin" value="{{ old('kreatinin_origin') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('kreatinin_origin') border-red-500 @else border-gray-300 @enderror" placeholder="1,0">
 							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mg/dL</span>
+						</div>
 						@error('kreatinin_origin')
 							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
 						@enderror
-						</div>
 					</div>
 				</div>
 				<h2 class="text-xl font-bold my-4">AGD</h2>
 				<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
 					<div>
 						<label for="ph_origin" class="block text-md font-medium text-gray-700">pH</label>
-						<input type="text" name="ph_origin" id="ph_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="7.35">
+						<input type="number" name="ph_origin" id="ph_origin" value="{{ old('ph_origin') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('ph_origin') border-red-500 @else border-gray-300 @enderror" placeholder="7,35">
 						@error('ph_origin')
 							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
 						@enderror
@@ -95,33 +95,34 @@
 					<div>
 						<label for="pco2_origin" class="block text-md font-medium text-gray-700">pCO<sub>2</sub></label>
 						<div class="relative">
-							<input type="text" name="pco2_origin" id="pco2_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="40">
+							<input type="number" name="pco2_origin" id="pco2_origin" value="{{ old('pco2_origin') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('pco2_origin') border-red-500 @else border-gray-300 @enderror" placeholder="40">
 							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmHg</span>
-							@error('pco2_origin')
-							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-						@enderror
 						</div>
+							@error('pco2_origin')
+								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+							@enderror
 					</div>
 					<div>
 						<label for="po2_origin" class="block text-md font-medium text-gray-700">pO<sub>2</sub></label>
 						<div class="relative">
-							<input type="text" name="po2_origin" id="po2_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="80">
+							<input type="number" name="po2_origin" id="po2_origin" value="{{ old('po2_origin') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('po2_origin') border-red-500 @else border-gray-300 @enderror" placeholder="80">
 							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmHg</span>
-							@error('po2_origin')
-							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-						@enderror
 						</div>
+							@error('po2_origin')
+								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+							@enderror
 					</div>
 					<div>
 						<label for="spo2_origin" class="block text-md font-medium text-gray-700">SpO<sub>2</sub></label>
 						<div class="relative">
-							<input type="text" name="spo2_origin" id="spo2_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="95">
+							<input type="number" name="spo2_origin" id="spo2_origin" value="{{ old('spo2_origin') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('spo2_origin') border-red-500 @else border-gray-300 @enderror" placeholder="95">
 							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">%</span>
-							@error('spo2_origin')
+						</div>
+						@error('spo2_origin')
 							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
 						@enderror
-						</div> 
-					</div> 
+					</div>
+					
 				</div>
 			</div>
 
@@ -131,25 +132,40 @@
 					<div>
 						<label for="radiology" class="block text-md font-medium text-gray-700">Radiologi</label>
 						<p class="text-sm text-gray-500">CT scan / MRI / USG</p>
-						<input type="text" name="radiology" id="radiology" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Hasil Radiologi">
+						<input type="text" name="radiology" id="radiology" value="{{ old('radiology') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('radiology') border-red-500 @else border-gray-300 @enderror" placeholder="Masukan Hasil Radiologi">
+						@error('radiology')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
 					</div>
 					<div>
 						<label for="ro_thorax" class="block text-md font-medium text-gray-700 mb-6">RO Thorax</label>
-						<input type="text" name="ro_thorax" id="ro_thorax" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Hasil RO Thorax">
+						<input type="text" name="ro_thorax" id="ro_thorax" value="{{ old('ro_thorax') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('ro_thorax') border-red-500 @else border-gray-300 @enderror" placeholder="Masukan Hasil RO Thorax">
+						@error('ro_thorax')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
 					</div>
 				</div>
 				<div>
 					<label for="additional_check" class="block text-md font-medium text-gray-700 mb-2">Pemeriksaan Penunjang Lain</label>
-					<textarea name="additional_check" id="additional_check" rows="4" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm resize-none" placeholder="Masukan hasil pemeriksaan lain yang relevan"></textarea>
+					@error('additional_check')
+						<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+					@enderror
+					<textarea name="additional_check" id="additional_check" value="{{ old('additional_check') }}" rows="4" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm resize-none @error('additional_check') border-red-500 @else border-gray-300 @enderror" placeholder="Masukan hasil pemeriksaan lain yang relevan"></textarea>
 				</div>
 				<div class="my-4 grid grid-cols-1 md:grid-cols-2 gap-4">
 					<div>
 						<label for="main_diagnose_origin" class="block text-md font-medium text-gray-700">Diagnosa Utama</label>
-						<input type="text" name="main_diagnose_origin" id="main_diagnose_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Hasil Diagnosa Utama">
+						<input type="text" name="main_diagnose_origin" id="main_diagnose_origin" value="{{ old('main_diagnose_origin') }}" class="mt-1 block w-full px-3 py-2 border  rounded-md shadow-sm @error('main_diagnose_origin') border-red-500 @else border-gray-300 @enderror" placeholder="Masukan Hasil Diagnosa Utama">
+						@error('main_diagnose_origin')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
 					</div>
 					<div>
 						<label for="secondary_diagnose_origin" class="block text-md font-medium text-gray-700">Diagnosa Sekunder</label>
-						<input type="text" name="secondary_diagnose_origin" id="secondary_diagnose_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Hasil Diagnosa Sekunder">
+						<input type="text" name="secondary_diagnose_origin" id="secondary_diagnose_origin" value="{{ old('secondary_diagnose_origin') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('secondary_diagnose_origin') border-red-500 @else border-gray-300 @enderror" placeholder="Masukan Hasil Diagnosa Sekunder">
+						@error('secondary_diagnose_origin')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
 					</div>
 				</div>
 			</div>
@@ -188,10 +204,16 @@
 						<div>
 							<label for="dr_intubation_name" class="block text-md font-medium text-gray-700">Nama Dokter yang Intubasi</label>
 							<input type="text" name="dr_intubation_name" id="dr_intubation_name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Nama Dokter">
+							@error('dr_intubation_name')
+									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+								@enderror
 						</div>
 						<div>
 							<label for="dr_consultant_name" class="block text-md font-medium text-gray-700">Nama Dokter Konsulan</label>
 							<input type="text" name="dr_consultant_name" id="dr_consultant_name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Nama Dokter Konsulan">
+							@error('dr_consultant_name')
+									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+								@enderror
 						</div>
 					</div>
 
@@ -200,14 +222,35 @@
 						<div>
 							<label for="therapy_type_origin" class="block text-md font-medium text-gray-700">Therapy</label>
 							<input type="text" name="therapy_type_origin" id="therapy_type_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Therapy">
+							@error('therapy_type_origin')
+								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+							@enderror
 						</div>
 						<div>
 							<label for="mode_venti_origin" class="block text-md font-medium text-gray-700">Mode Venti</label>
 							<input type="text" name="mode_venti_origin" id="mode_venti_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Mode Venti">
+							@error('mode_venti_origin')
+								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+							@enderror
 						</div>
 						<div>
 							<label for="ett_depth_origin" class="block text-md font-medium text-gray-700">ETT/Kedalaman</label>
-							<input type="text" name="ett_depth_origin" id="ett_depth_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="7.5 mm / 22 cm">
+							<div class="flex space-x-2">
+								<div class="relative w-1/2">
+									<input type="number" name="diameter_origin" id="diameter_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="7.5" min="0">
+									<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mm</span>
+								</div>
+								
+								<span class="flex items-center text-lg">/</span>
+								
+								<div class="relative w-1/2">
+									<input type="number" name="depth_origin" id="depth_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="22" min="0">
+									<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">cm</span>
+								</div>
+								@error('diameter_origin' || 'depth_origin')
+									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+								@enderror
+							</div>
 						</div>
 					</div>
 
@@ -216,29 +259,41 @@
 						<div>
 							<label for="ipl_origin" class="block text-md font-medium text-gray-700">IPL</label>
 							<div class="relative">
-								<input type="text" name="ipl_origin" id="ipl_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="15">
-								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">cm H₂O</span>
+								<input type="number" name="ipl_origin" id="ipl_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="15">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">cmH₂O</span>
+								@error('ipl_origin')
+									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+								@enderror
 							</div>
 						</div>
 						<div>
 							<label for="peep_origin" class="block text-md font-medium text-gray-700">PEEP</label>
 							<div class="relative">
-								<input type="text" name="peep_origin" id="peep_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="5">
-								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">cm H₂O</span>
+								<input type="number" name="peep_origin" id="peep_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="5">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">cmH₂O</span>
+								@error('peep_origin')
+									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+								@enderror
 							</div>
 						</div>
 						<div>
 							<label for="fio2_origin" class="block text-md font-medium text-gray-700">FiO<sub>2</sub></label>
 							<div class="relative">
-								<input type="text" name="fio2_origin" id="fio2_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="40">
+								<input type="number" name="fio2_origin" id="fio2_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="40">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">%</span>
+								@error('fio2_origin')
+									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+								@enderror
 							</div>
 						</div>
 						<div>
 							<label for="rr_origin" class="block text-md font-medium text-gray-700">RR</label>
 							<div class="relative">
-								<input type="text" name="rr_origin" id="rr_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="20">
+								<input type="number" name="rr_origin" id="rr_origin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="20">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">kali per menit</span>
+								@error('rr_origin')
+									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+								@enderror
 							</div>
 						</div>
 					</div>
@@ -248,34 +303,54 @@
 					<div class="my-4 grid grid-cols-1 md:grid-cols-5 gap-4">
 						<div>
 							<label for="td" class="block text-md font-medium text-gray-700">TD</label>
-							<input type="text" name="td" id="td" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="110/70">
+							<div class="flex space-x-2">
+								<input type="number" name="sistolik" id="sistolik" class="mt-1 block w-1/2 px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="110" min="0">
+								<span class="mt-1">/</span>
+								<input type="number" name="diastolik" id="diastolik" class="mt-1 block w-1/2 px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="70" min="0">
+								@error('td')
+									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+								@enderror
+							</div>
 						</div>
+						
 						<div>
-							<label for="saturasi" class="block text-md font-medium text-gray-700">S.</label>
+							<label for="suhu" class="block text-md font-medium text-gray-700">S.</label>
 							<div class="relative">
-								<input type="text" name="saturasi" id="saturasi" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="38.5">
+								<input type="number" name="suhu" id="suhu" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="38.5">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">°C</span>
+								@error('suhu')
+									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+								@enderror
 							</div> 
 						</div>
 						<div>
 							<label for="nadi" class="block text-md font-medium text-gray-700">N.</label>
 							<div class="relative">
-								<input type="text" name="nadi" id="nadi" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="80">
+								<input type="number" name="nadi" id="nadi" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="80">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">bpm</span>
+								@error('nadi')
+									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+								@enderror
 							</div> 
 						</div>
 						<div>
 							<label for="rr_ttv" class="block text-md font-medium text-gray-700">RR</label>
 							<div class="relative">
-								<input type="text" name="rr_ttv" id="rr_ttv" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="18">
+								<input type="number" name="rr_ttv" id="rr_ttv" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="18">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">kali per menit</span>
+								@error('rr_ttv')
+									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+								@enderror
 							</div> 
 						</div>
 						<div>
 							<label for="spo2" class="block text-md font-medium text-gray-700">SpO<sub>2</sub></label>
 							<div class="relative">
-								<input type="text" name="spo2" id="spo2" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="95">
+								<input type="number" name="spo2" id="spo2" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="95">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">%</span>
+								@error('spo2')
+									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+								@enderror
 							</div> 
 						</div>
 					</div>

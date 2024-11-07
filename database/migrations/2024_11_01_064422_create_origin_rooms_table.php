@@ -14,7 +14,7 @@ return new class extends Migration
     Schema::create('origin_rooms', function (Blueprint $table) {
         $table->id();
         $table->unsignedBigInteger('patient_id');
-        $table->date('origin_room_datetime')->nullable();
+        $table->timestamp('origin_room_datetime')->nullable();
         $table->string('origin_room_name')->nullable();
         $table->string('radiology')->nullable();
         $table->string('ro_thorax')->nullable();
@@ -24,7 +24,6 @@ return new class extends Migration
         $table->unsignedBigInteger('labresult_id')->nullable();
         $table->unsignedBigInteger('intubation_id')->nullable();
         $table->unsignedBigInteger('agd_id')->nullable();
-        $table->unsignedBigInteger('ttv_id')->nullable();
         $table->timestamps();
 
         // Foreign keys
@@ -32,7 +31,6 @@ return new class extends Migration
         $table->foreign('labresult_id')->references('id')->on('lab_results')->onDelete('cascade');
         $table->foreign('intubation_id')->references('id')->on('intubations')->onDelete('cascade');
         $table->foreign('agd_id')->references('id')->on('agds')->onDelete('cascade');
-        $table->foreign('ttv_id')->references('id')->on('ttv')->onDelete('cascade');
     });
 }
 
