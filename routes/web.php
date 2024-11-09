@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExtubationController;
 use App\Http\Controllers\OriginRoomController;
 use App\Http\Controllers\IcuRoomController;
+use App\Http\Controllers\IntubationController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\TransferRoomController;
 use App\Http\Controllers\UserController;
@@ -39,7 +40,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('patients', PatientController::class);
     Route::resource('origin-rooms', OriginRoomController::class);
     Route::resource('icu-rooms', IcuRoomController::class);
-    Route::get('intubation', [IcuRoomController::class, 'intubation'])->name('observation.icu-room.intubation');
+    Route::resource('intubation', IntubationController::class);
     Route::resource('extubations', ExtubationController::class);
     Route::resource('transfer-rooms', TransferRoomController::class);
 

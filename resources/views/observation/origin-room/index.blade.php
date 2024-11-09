@@ -3,7 +3,9 @@
 @section('content')
 
 <div class="container mx-auto p-6">
-    <h1 class="text-2xl text-center font-bold mb-6">Form Observasi Pasien ICU/PICU</h1>
+    {{-- <h1 class="text-2xl text-center font-bold mb-6">Form Observasi Pasien ICU/PICU</h1> --}}
+	<h1 class="text-2xl font-bold mb-6 text-center">Data Ruang Asal Pasien</h1>
+
 
     <div class="relative w-full ">
         <!-- Form -->
@@ -305,7 +307,7 @@
 							<label for="td" class="block text-md font-medium text-gray-700">TD</label>
 							<div class="flex space-x-2">
 								<input type="number" name="sistolik" id="sistolik" class="mt-1 block w-1/2 px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="110" min="0">
-								<span class="mt-1">/</span>
+								<span class="flex items-center text-lg">/</span>
 								<input type="number" name="diastolik" id="diastolik" class="mt-1 block w-1/2 px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="70" min="0">
 								@error('td')
 									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>

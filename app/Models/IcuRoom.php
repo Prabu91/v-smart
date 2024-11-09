@@ -11,7 +11,7 @@ class IcuRoom extends Model
 
     protected $fillable = [
         'patient_id',
-        'icu_room_date',
+        'icu_room_datetime',
         'icu_room_name',
         'ro',
         'ro_post_intubation',
@@ -21,27 +21,27 @@ class IcuRoom extends Model
         'agd_id',
     ];
 
-    // Relasi ke tabel Patient
     public function patient()
     {
-        return $this->belongsTo(Patient::class);
+        return $this->belongsTo(Patient::class, 'patient_id', 'id');
     }
 
     // Relasi ke tabel LabResult
     public function labResult()
     {
-        return $this->belongsTo(LabResult::class);
+        return $this->belongsTo(LabResult::class, 'labresult_id', 'id');
     }
 
     // Relasi ke tabel Intubation
     public function intubation()
     {
-        return $this->belongsTo(Intubation::class);
+        return $this->belongsTo(Intubation::class, 'intubation_id', 'id');
     }
 
     // Relasi ke tabel AGD
     public function agd()
     {
-        return $this->belongsTo(AGD::class);
+        return $this->belongsTo(AGD::class, 'agd_id', 'id');
     }
+    
 }

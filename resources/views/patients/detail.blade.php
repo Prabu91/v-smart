@@ -12,7 +12,7 @@
 	</div>
 	@endif
 
-    <h1 class="text-2xl text-center font-bold mb-10">Detail Data Pasien ICU</h1>
+    <h1 class="text-3xl text-center font-bold mb-10">Detail Data Pasien ICU</h1>
 	
 	{{-- Data Pasien --}}
 	<div class="bg-white shadow-md rounded-lg p-6 my-4">
@@ -238,11 +238,189 @@
 	</div>
 	<div class="bg-white shadow-xl rounded-lg p-6 my-4">
 		<h2 class="text-2xl text-left font-bold mb-6">Pasien di Ruang Intensif</h2>
-		@if ($icu)
-		<p>Data Ruang Intensif</p>
-		@else
-		<p>Tidak Ada Data</p>
+		{{-- button Intensif --}}
+		@if(!$icu)
+			<a href="{{ route('icu-rooms.create') }}?patient_id={{ $patient->id }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded float-right mx-4">
+				Tambah Data Ruang Intensif
+			</a>
 		@endif
+			<a href="{{ route('intubation.create') }}?patient_id={{ $patient->id }}" class="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded float-right">
+				Tambah Data Intubasi
+			</a>
+		{{-- End Button Intensif --}}
+
+		{{-- Data Intensif --}}
+		@if ($icu)
+		<table>
+			<tr>
+				<td>Waktu dan Tanggal Masuk Ruangan Intensif</td>
+				<td class="px-4">:</td>
+				<td>
+					@if($icu && $icu->icu_room_datetime)
+						{{ Carbon::parse($icu->icu_room_datetime)->format('H:i d/m/Y') }}
+					@else
+						Tidak ada data
+					@endif
+				</td>			
+			</tr>
+			<tr>
+				<td>Nama Ruangan Intensif</td>
+				<td class="px-4">:</td>
+				<td>
+					@if($icu && $icu->icu_room_name)
+					{{ $icu->icu_room_name }}
+					@else
+					Tidak ada data
+					@endif
+				</td>
+			</tr>
+		</table>
+		<h2 class="text-xl font-bold my-4">Hasil Lab</h2>
+		<table>
+			<tr>
+				<td>Hb</td>
+				<td class="px-4">:</td>
+				<td>
+					@if($icu && $icu->labResult->hb)
+					{{ $icu->labResult->hb }} g/dL
+					@else
+					Tidak ada data
+					@endif
+				</td>
+			</tr>
+			<tr>
+				<td>Leukosit</td>
+				<td class="px-4">:</td>
+				<td>
+					@if($icu && $icu->labResult->leukosit)
+					{{ $icu->labResult->leukosit }} /µL
+					@else
+					Tidak ada data
+					@endif
+				</td>
+			</tr>
+			<tr>
+				<td>PCV</td>
+				<td class="px-4">:</td>
+				<td>
+					@if($icu && $icu->labResult->pcv)
+					{{ $icu->labResult->pcv }} %
+					@else
+					Tidak ada data
+					@endif
+				</td>
+			</tr>
+			<tr>
+				<td>Trombosit</td>
+				<td class="px-4">:</td>
+				<td>
+					@if($icu && $icu->labResult->trombosit)
+					{{ $icu->labResult->trombosit }} /µL
+					@else
+					Tidak ada data
+					@endif
+				</td>
+			</tr>
+			<tr>
+				<td>Kreatinin</td>
+				<td class="px-4">:</td>
+				<td>
+					@if($icu && $icu->labResult->kreatinin)
+					{{ $icu->labResult->kreatinin }} mg/dL
+					@else
+					Tidak ada data
+					@endif
+				</td>
+			</tr>
+		</table>
+
+		<h2 class="text-xl font-bold my-4">Analisis Gas Darah</h2>
+		<table>
+			<tr>
+				<td>pH</td>
+				<td class="px-4">:</td>
+				<td>
+					@if($icu && $icu->agd->ph)
+					{{ $icu->agd->ph }}
+					@else
+					Tidak ada data
+					@endif
+				</td>
+			</tr>
+			<tr>
+				<td>pCO<sub>2</sub></td>
+				<td class="px-4">:</td>
+				<td>
+					@if($icu && $icu->agd->pco2)
+					{{ $icu->agd->pco2 }} mmHg
+					@else
+					Tidak ada data
+					@endif
+				</td>
+			</tr>
+			<tr>
+				<td>pO<sub>2</sub></td>
+				<td class="px-4">:</td>
+				<td>
+					@if($icu && $icu->agd->po2)
+					{{ $icu->agd->po2 }} mmHg
+					@else
+					Tidak ada data
+					@endif
+				</td>
+			</tr>
+			<tr>
+				<td>SpO<sub>2</sub></td>
+				<td class="px-4">:</td>
+				<td>
+					@if($icu && $icu->agd->spo2)
+					{{ $icu->agd->spo2 }} %
+					@else
+					Tidak ada data
+					@endif
+				</td>
+			</tr>
+		</table>
+
+		<table class="my-4">
+			<tr>
+				<td>RO</td>
+				<td class="px-4">:</td>
+				<td>
+					@if($icu && $icu->ro)
+					{{ $icu->ro }}
+					@else
+					Tidak ada data
+					@endif
+				</td>
+			</tr>
+			<tr>
+				<td>RO Thorax</td>
+				<td class="px-4">:</td>
+				<td>
+					@if($icu && $icu->ro_post_incubation)
+					{{ $icu->ro_post_incubation }}
+					@else
+					Tidak ada data
+					@endif
+				</td>
+			</tr>
+			<tr>
+				<td>Kultur Darah</td>
+				<td class="px-4">:</td>
+				<td class="py-4  ">
+					@if($icu && $icu->blood_culutre)
+					{{ $icu->blood_culture }}
+					@else
+					Tidak ada data
+					@endif
+				</td>
+			</tr>
+		</table>
+		@else
+			<p>Tidak Ada Data</p>
+		@endif
+		{{-- End Data Intensif --}}
 
 		{{-- INTUBATION --}}
 		@if ($intubations)

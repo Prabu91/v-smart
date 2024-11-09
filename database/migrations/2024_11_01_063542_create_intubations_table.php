@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ttv_id');
             $table->timestamp('intubation_datetime')->nullable();
             $table->string('intubation_location')->nullable();
+            $table->integer('change_mode_day')->nullable();
             $table->string('dr_intubation')->nullable();
             $table->string('dr_consultant')->nullable();
             $table->string('therapy_type')->nullable();

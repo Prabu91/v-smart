@@ -59,11 +59,10 @@ class PatientController extends Controller
     {
         $patient = Patient::findOrFail($id);
         $origin = OriginRoom::with('labResult', 'intubation', 'agd')->where('patient_id', $id)->first();
-        $icu = IcuRoom::where('patient_id', $id)->first();
+        $icu = IcuRoom::with('labResult', 'intubation', 'agd')->where('patient_id', $id)->first();
         $intubations = Intubation::with('ttv')->where('patient_id', $id)->get();  // Mengambil semua data intubasi
         $extubation = Extubation::where('patient_id', $id)->first();
         $transfer = TransferRoom::where('patient_id', $id)->first();
-
         return view('patients.detail', compact('patient', 'origin', 'icu', 'intubations', 'extubation', 'transfer'));
     }
 
