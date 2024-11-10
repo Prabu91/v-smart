@@ -13,6 +13,7 @@ class Ttv extends Model
 
     protected $fillable = [
         'patient_id',
+        'user_id',
         'sistolik',
         'diastolik',
         'suhu',
@@ -24,6 +25,10 @@ class Ttv extends Model
     public function patient()
     {
         return $this->belongsTo(Patient::class, 'patient_id', 'id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }
 

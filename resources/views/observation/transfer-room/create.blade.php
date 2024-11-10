@@ -9,6 +9,7 @@
 		<form id="transferForm" action="{{ route('transfer-rooms.store') }}" method="POST" class="space-y-6">
 			@csrf
 			<input type="hidden" name="patient_id" value="{{ $patient_id }}">
+			<input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
 
 			<div class="bg-white p-8 rounded-xl">
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-4">

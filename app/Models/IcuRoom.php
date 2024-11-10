@@ -11,6 +11,7 @@ class IcuRoom extends Model
 
     protected $fillable = [
         'patient_id',
+        'user_id',
         'icu_room_datetime',
         'icu_room_name',
         'ro',
@@ -24,6 +25,11 @@ class IcuRoom extends Model
     public function patient()
     {
         return $this->belongsTo(Patient::class, 'patient_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     // Relasi ke tabel LabResult

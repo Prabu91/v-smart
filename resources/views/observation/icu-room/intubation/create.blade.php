@@ -12,6 +12,8 @@
 			<form id="intubationForm" action="{{ route('intubation.store') }}" method="POST" class="space-y-6">
 				@csrf
 				<input type="hidden" name="patient_id" value="{{ $patient_id }}">
+				<input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+
 				<!-- Location of Intubation -->
 				<input type="text" id="intubation_location" name="intubation_location" value="ICU" class="h-4 w-4 text-blue-600 border-gray-300 hidden">
 				

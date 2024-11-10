@@ -13,6 +13,7 @@ class LabResult extends Model
 
     protected $fillable = [
         'patient_id',
+        'user_id',
         'hb',
         'leukosit',
         'pcv',
@@ -20,6 +21,11 @@ class LabResult extends Model
         'kreatinin'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+    
     public function patient()
     {
         return $this->belongsTo(Patient::class, 'patient_id', 'id');

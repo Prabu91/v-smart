@@ -27,7 +27,7 @@ class OriginRoomController extends Controller
     public function create(Request $request)
     {
         $patient_id = $request->query('patient_id');
-        return view('observation.origin-room.index', compact('patient_id'));
+        return view('observation.origin-room.create', compact('patient_id'));
     }
 
 
@@ -133,6 +133,7 @@ class OriginRoomController extends Controller
             // Lab Results
             $labResult = LabResult::create([
                 'patient_id' => $request->patient_id,
+                'user_id' => $request->user_id,
                 'hb' => $request->hb_origin,
                 'leukosit' => $request->leukosit_origin,
                 'pcv' => $request->pcv_origin,
@@ -143,6 +144,7 @@ class OriginRoomController extends Controller
             // AGDS
             $agd = Agd::create([
                 'patient_id' => $request->patient_id,
+                'user_id' => $request->user_id,
                 'ph' => $request->ph_origin,
                 'pco2' => $request->pco2_origin,
                 'po2' => $request->po2_origin,
@@ -152,6 +154,7 @@ class OriginRoomController extends Controller
                 if ($request->intConf === 'yes') {
                     $ttv = Ttv::create([
                         'patient_id' => $request->patient_id,
+                        'user_id' => $request->user_id,
                         'sistolik' => $request->sistolik,
                         'diastolik' => $request->diastolik,
                         'suhu' => $request->suhu,
@@ -162,6 +165,7 @@ class OriginRoomController extends Controller
             
                     $intubation = Intubation::create([
                         'patient_id' => $request->patient_id,
+                        'user_id' => $request->user_id,
                         'intubation_datetime' => $request->origin_room_datetime,
                         'intubation_location' => $request->intubation_location,
                         'dr_intubation' => $request->dr_intubation_name,
@@ -181,6 +185,7 @@ class OriginRoomController extends Controller
                 }
             
                 OriginRoom::create([
+                    'user_id' => $request->user_id,
                     'origin_room_datetime' => $request->origin_room_datetime,
                     'origin_room_name' => $request->origin_room_name,
                     'radiology' => $request->radiology,

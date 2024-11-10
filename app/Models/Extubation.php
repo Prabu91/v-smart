@@ -11,6 +11,7 @@ class Extubation extends Model
 
     protected $fillable = [
         'patient_id',
+        'user_id',
         'extubation_datetime',
         'preparation_extubation_therapy',
         'extubation',
@@ -23,5 +24,9 @@ class Extubation extends Model
     public function patient()
     {
         return $this->belongsTo(Patient::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

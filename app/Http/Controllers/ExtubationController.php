@@ -22,7 +22,7 @@ class ExtubationController extends Controller
     public function create(Request $request)
     {        
         $patient_id = $request->query('patient_id');
-        return view('observation.icu-room.extubation.index',compact('patient_id'));
+        return view('observation.icu-room.extubation.create',compact('patient_id'));
 
     }
 
@@ -55,6 +55,7 @@ class ExtubationController extends Controller
         try {
                 Extubation::create([
                     'patient_id' => $request->patient_id,
+                    'user_id' => $request->user_id,
                     'extubation_datetime' => $request->extubation_datetime,
                     'preparation_extubation_therapy' => $request->preparation_extubation_therapy,
                     'extubation' => $request->extubation,

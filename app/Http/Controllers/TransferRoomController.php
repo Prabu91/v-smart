@@ -24,7 +24,7 @@ class TransferRoomController extends Controller
     public function create(Request $request)
     {
         $patient_id = $request->query('patient_id');
-        return view('observation.transfer-room.index', compact('patient_id'));
+        return view('observation.transfer-room.create', compact('patient_id'));
     }
 
     /**
@@ -74,6 +74,7 @@ class TransferRoomController extends Controller
             DB::transaction(function () use ($request) {
                 $labResult = LabResult::create([
                     'patient_id' => $request->patient_id,
+                    'user_id' => $request->user_id,
                     'hb' => $request->hb_transfer,
                     'leukosit' => $request->leukosit_transfer,
                     'pcv' => $request->pcv_transfer,
@@ -83,6 +84,7 @@ class TransferRoomController extends Controller
 
                 $ttv = Ttv::create([
                     'patient_id' => $request->patient_id,
+                    'user_id' => $request->user_id,
                     'sistolik' => $request->sistolik,
                     'diastolik' => $request->diastolik,
                     'suhu' => $request->suhu,
@@ -92,6 +94,7 @@ class TransferRoomController extends Controller
                 ]);
 
                 $transferRoom = TransferRoom::create([
+                    'user_id' => $request->user_id,
                     'transfer_room_datetime' => $request->transfer_room_datetime,
                     'transfer_room_name' => $request->transfer_room_name,
                     'lab_culture_data' => $request->lab_culture_data,

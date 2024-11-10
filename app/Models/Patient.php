@@ -11,7 +11,12 @@ class Patient extends Model
 
     protected $table = 'patients';
     
-    protected $fillable = ['name', 'no_jkn'];
+    protected $fillable = ['name', 'no_jkn', 'user_id'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 
     public function originRoom()
     {

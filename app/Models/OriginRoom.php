@@ -10,6 +10,7 @@ class OriginRoom extends Model
 {
     protected $fillable = [
         'patient_id', 
+        'user_id', 
         'origin_room_datetime', 
         'origin_room_name', 
         'radiology', 
@@ -25,6 +26,11 @@ class OriginRoom extends Model
     public function patient()
     {
         return $this->belongsTo(Patient::class, 'patient_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     // Relasi ke tabel LabResult

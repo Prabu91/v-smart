@@ -16,7 +16,7 @@ class IntubationController extends Controller
      */
     public function index()
     {
-        return view('observation.icu-room.intubation');
+        return view('observation.icu-room.index');
     }
 
     /**
@@ -25,7 +25,7 @@ class IntubationController extends Controller
     public function create(Request $request)
     {
         $patient_id = $request->query('patient_id');
-        return view('observation.icu-room.intubation', compact('patient_id'));
+        return view('observation.icu-room.create', compact('patient_id'));
     }
 
     /**
@@ -33,8 +33,6 @@ class IntubationController extends Controller
      */
     public function store(Request $request)
     {
-
-        
         $request->validate([
             'intubation_datetime' => 'required',
             'dr_intubation_name' => 'nullable|string|max:255',
@@ -86,6 +84,7 @@ class IntubationController extends Controller
 
                 $ttv = Ttv::create([
                     'patient_id' => $request->patient_id,
+                    'user_id' => $request->user_id,
                     'sistolik' => $request->sistolik,
                     'diastolik' => $request->diastolik,
                     'suhu' => $request->suhu,
@@ -96,6 +95,7 @@ class IntubationController extends Controller
 
                 $intubation = Intubation::create([
                     'patient_id' => $request->patient_id,
+                    'user_id' => $request->user_id,
                     'intubation_datetime' => $request->intubation_datetime,
                     'intubation_location' => $intubation_location,
                     'dr_intubation' => $request->dr_intubation_name,

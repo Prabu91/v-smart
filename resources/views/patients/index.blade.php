@@ -9,6 +9,8 @@
         <!-- Form -->
 		<form id="patientForm" action="{{ route('patients.store') }}" method="POST" class="space-y-6">
 			@csrf
+			<input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+
 			<div class="bg-white p-8 rounded-xl">
 				<h2 class="text-xl font-bold mb-4">Data Awal Pasien Masuk</h2>
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">

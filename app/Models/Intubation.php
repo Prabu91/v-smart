@@ -10,6 +10,7 @@ class Intubation extends Model
 
     protected $fillable = [
         'patient_id',
+        'user_id',
         'intubation_datetime',
         'intubation_location',
         'dr_intubation',
@@ -28,6 +29,11 @@ class Intubation extends Model
     public function patient()
     {
         return $this->belongsTo(Patient::class, 'patient_id', 'id');
+    }
+    
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function ttv()

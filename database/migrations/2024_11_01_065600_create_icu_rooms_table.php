@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('icu_rooms', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('patient_id');
+            $table->unsignedBigInteger('user_id');
+
             $table->timestamp('icu_room_datetime')->nullable();
             $table->string('icu_room_name')->nullable();
             $table->string('ro')->nullable();
@@ -24,10 +26,12 @@ return new class extends Migration
             $table->unsignedBigInteger('agd_id')->nullable();  
             $table->timestamps();
             // Foreign keys
-        $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
-        $table->foreign('labresult_id')->references('id')->on('lab_results')->onDelete('cascade');
-        $table->foreign('intubation_id')->references('id')->on('intubations')->onDelete('cascade');
-        $table->foreign('agd_id')->references('id')->on('agds')->onDelete('cascade');
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
+            $table->foreign('labresult_id')->references('id')->on('lab_results')->onDelete('cascade');
+            $table->foreign('intubation_id')->references('id')->on('intubations')->onDelete('cascade');
+            $table->foreign('agd_id')->references('id')->on('agds')->onDelete('cascade');
         });
     }
 

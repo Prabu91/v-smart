@@ -26,7 +26,7 @@ class IcuRoomController extends Controller
     public function create(Request $request)
     {
         $patient_id = $request->query('patient_id');
-        return view('observation.icu-room.index', compact('patient_id'));
+        return view('observation.icu-room.create', compact('patient_id'));
     }
 
     /**
@@ -116,6 +116,7 @@ class IcuRoomController extends Controller
                 // Lab Results
                 $labResult = LabResult::create([
                     'patient_id' => $request->patient_id,
+                    'user_id' => $request->user_id,
                     'hb' => $request->hb_icu,
                     'leukosit' => $request->leukosit_icu,
                     'pcv' => $request->pcv_icu,
@@ -126,6 +127,7 @@ class IcuRoomController extends Controller
                 // AGDS
                 $agd = Agd::create([
                     'patient_id' => $request->patient_id,
+                    'user_id' => $request->user_id,
                     'ph' => $request->ph_icu,
                     'pco2' => $request->pco2_icu,
                     'po2' => $request->po2_icu,
@@ -134,6 +136,7 @@ class IcuRoomController extends Controller
                 
                 $ttv = Ttv::create([
                     'patient_id' => $request->patient_id,
+                    'user_id' => $request->user_id,
                     'sistolik' => $request->sistolik,
                     'diastolik' => $request->diastolik,
                     'suhu' => $request->suhu,
@@ -144,6 +147,7 @@ class IcuRoomController extends Controller
                 
                 $intubation = Intubation::create([
                     'patient_id' => $request->patient_id,
+                    'user_id' => $request->user_id,
                     'intubation_datetime' => $request->icu_room_datetime,
                     'intubation_location' => $request->icu_room_name,
                     'dr_intubation' => $request->dr_intubation_name,
@@ -161,6 +165,7 @@ class IcuRoomController extends Controller
 
                 // ICU Room
                 $icuRoom = IcuRoom::create([
+                    'user_id' => $request->user_id,
                     'icu_room_datetime' => $request->icu_room_datetime,
                     'icu_room_name' => $request->icu_room_name,
                     'ro' => $request->ro,

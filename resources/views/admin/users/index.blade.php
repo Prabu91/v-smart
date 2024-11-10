@@ -17,21 +17,24 @@
                 <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
                 <input type="text" name="name" id="name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" >
 				<x-input-error :messages="$errors->get('name')" class="mt-2" />
-
             </div>
-
+            
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                 <input type="email" name="email" id="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" >
 				<x-input-error :messages="$errors->get('email')" class="mt-2" />
-
             </div>
-
+                
             <div>
                 <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                 <input type="password" name="password" id="password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-				<x-input-error :messages="$errors->get('password')" class="mt-2" />
+                <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            </div>
 
+            <div>
+                <label for="hospital" class="block text-sm font-medium text-gray-700">Hospital</label>
+                <input type="text" name="hospital" id="hospital" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" >
+                <x-input-error :messages="$errors->get('hospital')" class="mt-2" />
             </div>
 
             <div>
@@ -57,6 +60,7 @@
                     <th class="px-4 py-2 border-b">Name</th>
                     <th class="px-4 py-2 border-b">Email</th>
                     <th class="px-4 py-2 border-b">Role</th>
+                    <th class="px-4 py-2 border-b">Hospital</th>
                     <th class="px-4 py-2 border-b">Actions</th>
                 </tr>
             </thead>
@@ -75,9 +79,10 @@
             { data: 'name', name: 'name' },
             { data: 'email', name: 'email' },
             { data: 'role', name: 'role' },
+            { data: 'hospital', name: 'hospital' },
             { data: 'action', name: 'action', orderable: false, searchable: false, render: function(data, type, row) {
 				return `
-					<button class="edit" data-id="${row.id}" data-name="${row.name}" data-email="${row.email}" data-role="${row.role}" style="background-color: #3490dc; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; margin-right: 5px; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#2779bd';" onmouseout="this.style.backgroundColor='#3490dc';">Edit</button>
+					<button class="edit" data-id="${row.id}" data-name="${row.name}" data-email="${row.email}" data-hospital="${row.hospital}" data-role="${row.role}" style="background-color: #3490dc; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; margin-right: 5px; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#2779bd';" onmouseout="this.style.backgroundColor='#3490dc';">Edit</button>
 					<button class="delete" data-id="${row.id}" style="background-color: #e3342f; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#cc1f1a';" onmouseout="this.style.backgroundColor='#e3342f';">Delete</button>
 
 				`;
@@ -94,6 +99,7 @@
 		var userName = $(this).data('name');
 		var userEmail = $(this).data('email');
 		var userPassword = $(this).data('password');
+        var userHospital = $(this).data('hospital');
 		var userRole = $(this).data('role');
 
 		// Ubah judul form menjadi "Edit Pengguna" pada h1 dengan id form-heading
@@ -103,6 +109,7 @@
 		$('#name').val(userName);
 		$('#email').val(userEmail);
 		$('#password').val(userPassword);
+		$('#hospital').val(userHospital);
 		$('#role').val(userRole);
 
 		// Ganti action form ke route update
@@ -119,6 +126,7 @@
 	function resetForm() {
 		$('#name').val('');
 		$('#email').val('');
+		$('#hospital').val('');
 		$('#role').val('user');
 		$('form').attr('action', '{{ route("admin.users.store") }}');
 		$('form').find('input[name="_method"]').remove(); // Hapus input method PATCH jika ada

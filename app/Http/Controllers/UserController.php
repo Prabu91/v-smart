@@ -16,8 +16,8 @@ class UserController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $users = User::select(['id', 'name', 'email', 'role']);
-            
+            $users = User::select(['id', 'name', 'email', 'hospital', 'role' ]);
+
             return DataTables::of($users)
             ->addColumn('action', function ($user) {
                 return '
@@ -89,6 +89,7 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'role' => 'required|string|in:admin,user',
+            'hospital' => 'required|string|max:255  ',
         ]);
         
         try {

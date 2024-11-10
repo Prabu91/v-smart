@@ -12,6 +12,7 @@
 		<form id="originForm" action="{{ route('origin-rooms.store') }}" method="POST" class="space-y-6">
 			@csrf
 			<input type="hidden" name="patient_id" value="{{ $patient_id }}">
+			<input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
 			<div class="bg-white p-8 rounded-xl">
 
 				<h2 class="text-xl font-bold my-4">Data Awal Pasien Masuk</h2>

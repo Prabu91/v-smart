@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('extubations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('patient_id');
+            $table->unsignedBigInteger('patient_id');            
+            $table->unsignedBigInteger('user_id');
+
             $table->timestamp('extubation_datetime')->nullable();
             $table->string('preparation_extubation_therapy')->nullable();
             $table->string('extubation')->nullable();
@@ -23,7 +25,8 @@ return new class extends Migration
             $table->timestamps();
             // Foreign keys
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
-            
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
         });
     }
 

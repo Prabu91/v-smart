@@ -26,7 +26,6 @@ class PatientController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -45,7 +44,7 @@ class PatientController extends Controller
         ]);
         
 
-        $patient = Patient::create($request->only('name', 'no_jkn'));
+        $patient = Patient::create($request->only('name', 'no_jkn', 'user_id'));
 
         return redirect()->route('patients.show', ['patient' => $patient->id])->with('success', 'Patient created successfully.');
     }

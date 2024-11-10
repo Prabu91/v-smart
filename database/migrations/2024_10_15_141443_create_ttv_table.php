@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('ttv', function (Blueprint $table) {
             $table->id(); 
             $table->unsignedBigInteger('patient_id');
+            $table->unsignedBigInteger('user_id');
+
             $table->integer('sistolik')->nullable(); 
             $table->integer('diastolik')->nullable(); 
             $table->float('suhu')->nullable(); 
@@ -22,6 +24,7 @@ return new class extends Migration
             $table->float('spo2')->nullable(); 
             $table->timestamps(); 
             
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
         });
     }
