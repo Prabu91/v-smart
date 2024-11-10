@@ -3,61 +3,93 @@
 @section('content')
 
 <div class="container mx-auto p-6">
-    <h1 class="text-2xl text-center font-bold mb-4">Form Observasi Pasien ICU/PICU</h1>
-	<h2 class="text-2xl font-bold my-6 text-center">Data Persiapan Extubasi</h2>
+	<h2 class="text-2xl font-bold mb-6 text-center">Data Persiapan Extubasi</h2>
 
     <div class="relative w-full ">
         <!-- Form -->
-		<form id="extubationForm" action="/extubation" method="POST" class="space-y-6">
+		<form id="extubationForm" action="{{ route('extubations.store') }}" method="POST" class="space-y-6">
 			@csrf
+			<input type="hidden" name="patient_id" value="{{ $patient_id }}">
+
 			<div class="bg-white p-8 rounded-xl">
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 					<div>
 						<label for="extubation_datetime" class="block text-md font-medium text-gray-700">Tanggal dan Waktu Extubasi</label>
-						<input type="datetime-local" name="extubation_datetime" id="extubation_datetime" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+						<input type="datetime-local" name="extubation_datetime" id="extubation_datetime" 
+								class="mt-1 block w-full px-3 py-2 border @error('extubation_datetime') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm">
+						@error('extubation_datetime')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
 					</div>
+					
 					<div>
 						<label for="preparation_extubation_therapy" class="block text-sm font-medium text-gray-700">Therapi Persiapan Ekstubasi</label>
-						<input type="text" name="preparation_extubation_therapy" id="preparation_extubation_therapy" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Dexamethasone, Nebu Adrenaline">
+						<input type="text" name="preparation_extubation_therapy" id="preparation_extubation_therapy" 
+								class="mt-1 block w-full px-3 py-2 border @error('preparation_extubation_therapy') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" 
+								placeholder="Dexamethasone, Nebu Adrenaline">
+						@error('preparation_extubation_therapy')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
 					</div>
+					
 					<div>
-						<label for="excubation" class="block text-sm font-medium text-gray-700">Tindakan Ekstubasi</label>
-						<input type="text" name="excubation" id="excubation" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Sukses, Tanpa Komplikasi">
+						<label for="extubation" class="block text-sm font-medium text-gray-700">Tindakan Ekstubasi</label>
+						<input type="text" name="extubation" id="extubation" 
+								class="mt-1 block w-full px-3 py-2 border @error('extubation') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" 
+								placeholder="Sukses, Tanpa Komplikasi">
+						@error('extubation')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
 					</div>
-				</div>
-				<div class="mt-5 grid grid-cols-1 md:grid-cols-3 gap-4">
+					
 					<div>
 						<label for="nebu_adrenalin" class="block text-sm font-medium text-gray-700">Nebu Adrenalin</label>
 						<div class="relative">
-							<input type="text" name="nebu_adrenalin" id="nebu_adrenalin" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="2">
+							<input type="number" name="nebu_adrenalin" id="nebu_adrenalin" 
+									class="mt-1 block w-full px-3 py-2 border @error('nebu_adrenalin') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" 
+									placeholder="2">
 							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mL</span>
 						</div>
+						@error('nebu_adrenalin')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
 					</div>
+				
 					<div>
 						<label for="dexamethasone" class="block text-sm font-medium text-gray-700">Dexamethasone</label>
 						<div class="relative">
-							<input type="text" name="dexamethasone" id="dexamethasone" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="5">
+							<input type="number" name="dexamethasone" id="dexamethasone" 
+									class="mt-1 block w-full px-3 py-2 border @error('dexamethasone') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" 
+									placeholder="5">
 							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mg</span>
 						</div>
+						@error('dexamethasone')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
 					</div>
+				
 					<div>
 						<label for="patient_status" class="block text-sm font-medium text-gray-700">Kondisi Pasien</label>
 						<div class="relative">
-							<select name="patient_status" id="patient_status" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+							<select name="patient_status" id="patient_status" 
+									class="mt-1 block w-full px-3 py-2 border @error('patient_status') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm">
 								<option value="" disabled selected>Pilih Kondisi Pasien</option>
 								<option value="Meninggal">Pasien Meninggal</option>
 								<option value="Tidak Meninggal">Pasien Tidak Meninggal</option>
 							</select>
 						</div>
-					</div>					
+						@error('patient_status')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
+					</div>
+					
 				</div>
+
 				<div class="flex justify-end mt-10">
 					<button type="button" id="openModalButton" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
 						Simpan Data
 					</button>
 				</div>
-			</div>
-
 
 		</form>
 
@@ -85,6 +117,11 @@
 
 	document.getElementById('cancelButton').addEventListener('click', function() {
 		document.getElementById('confirmationModal').classList.add('hidden');
+	});
+	
+
+	document.getElementById('confirmButton').addEventListener('click', function() {
+		document.getElementById('extubationForm').submit(); 
 	});
 </script>
 @endpush

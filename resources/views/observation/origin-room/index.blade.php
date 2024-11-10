@@ -180,10 +180,10 @@
 				<div class="mb-4">
 					<label class="block text-md font-medium text-gray-700">Apakah dilakukan intubasi?</label>
 					<div class="flex items-center space-x-4 mt-2">
-						<input type="radio" id="intubation_yes" value="yes" class="h-4 w-4 text-blue-600 border-gray-300" onclick="toggleIntubationFields(true)">
+						<input type="radio" id="intubation_yes" value="yes" name="intConf" class="h-4 w-4 text-blue-600 border-gray-300" onclick="toggleIntubationFields(true)">
 						<label for="intubation_yes" class="text-gray-700">Ya</label>
 						
-						<input type="radio" id="intubation_no" value="no" class="h-4 w-4 text-blue-600 border-gray-300" onclick="toggleIntubationFields(false)">
+						<input type="radio" id="intubation_no" value="no" name="intConf" class="h-4 w-4 text-blue-600 border-gray-300" onclick="toggleIntubationFields(false)">
 						<label for="intubation_no" class="text-gray-700">Tidak</label>
 					</div>
 				</div>

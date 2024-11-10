@@ -9,6 +9,7 @@ use App\Models\Intubation;
 use App\Models\Ttv;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OriginRoomController extends Controller
 {
@@ -35,7 +36,6 @@ class OriginRoomController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
         $request->validate([
             'origin_room_datetime' => 'required|date',
             'origin_room_name' => 'required|string|max:255',
@@ -45,16 +45,16 @@ class OriginRoomController extends Controller
             'main_diagnose_origin' => 'nullable|string',
             'secondary_diagnose_origin' => 'nullable|string',
             
-            'hb_origin' => 'nullable|numeric',
-            'leukosit_origin' => 'nullable|numeric',
-            'pcv_origin' => 'nullable|numeric',
-            'trombosit_origin' => 'nullable|numeric',
-            'kreatinin_origin' => 'nullable|numeric',
+            'hb_origin' => 'required|numeric',
+            'leukosit_origin' => 'required|numeric',
+            'pcv_origin' => 'required|numeric',
+            'trombosit_origin' => 'required|numeric',
+            'kreatinin_origin' => 'required|numeric',
             
-            'ph_origin' => 'nullable|numeric',
-            'pco2_origin' => 'nullable|numeric',
-            'po2_origin' => 'nullable|numeric',
-            'spo2_origin' => 'nullable|numeric',
+            'ph_origin' => 'required|numeric',
+            'pco2_origin' => 'required|numeric',
+            'po2_origin' => 'required|numeric',
+            'spo2_origin' => 'required|numeric',
         
             'intubation_location' => 'nullable|string|max:255',
             'dr_intubation_name' => 'nullable|string|max:255',
@@ -82,15 +82,26 @@ class OriginRoomController extends Controller
             'origin_room_name.required' => 'Nama asal ruangan wajib diisi.',
             'origin_room_name.string' => 'Nama asal ruangan harus berupa teks.',
             'origin_room_name.max' => 'Nama asal ruangan tidak boleh lebih dari 255 karakter.',
+
             'hb_origin.numeric' => 'HB harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
             'leukosit_origin.numeric' => 'Leukosit harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
             'pcv_origin.numeric' => 'PCV harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
             'trombosit_origin.numeric' => 'Trombosit harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
             'kreatinin_origin.numeric' => 'Kreatinin harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
+            'hb_origin.required' => 'Kolom Wajib diisi.',
+            'leukosit_origin.required' => 'Kolom Wajib diisi.',
+            'pcv_origin.required' => 'Kolom Wajib diisi.',
+            'trombosit_origin.required' => 'Kolom Wajib diisi.',
+            'kreatinin_origin.required' => 'Kolom Wajib diisi.',
+
             'ph_origin.numeric' => 'PH harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
             'pco2_origin.numeric' => 'PCO2 harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
             'po2_origin.numeric' => 'PO2 harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
             'spo2_origin.numeric' => 'SPO2 harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
+            'ph_origin.required' => 'Kolom Wajib diisi.',
+            'pco2_origin.required' => 'Kolom Wajib diisi.',
+            'po2_origin.required' => 'Kolom Wajib diisi.',
+            'spo2_origin.required' => 'Kolom Wajib diisi.',
             'spo2_origin.regex' => 'SPO2 harus menggunakan titik (.) sebagai pemisah desimal.',
             'intubation_location.string' => 'Lokasi intubasi harus berupa teks.',
             'intubation_location.max' => 'Lokasi intubasi tidak boleh lebih dari 255 karakter.',
@@ -118,6 +129,7 @@ class OriginRoomController extends Controller
         ]);
         
         try {
+            DB::transaction(function () use ($request) {
             // Lab Results
             $labResult = LabResult::create([
                 'patient_id' => $request->patient_id,
@@ -137,54 +149,56 @@ class OriginRoomController extends Controller
                 'spo2' => $request->spo2_origin,
             ]);
             
+                if ($request->intConf === 'yes') {
+                    $ttv = Ttv::create([
+                        'patient_id' => $request->patient_id,
+                        'sistolik' => $request->sistolik,
+                        'diastolik' => $request->diastolik,
+                        'suhu' => $request->suhu,
+                        'nadi' => $request->nadi,
+                        'rr' => $request->rr_ttv,
+                        'spo2' => $request->spo2,
+                    ]);
             
+                    $intubation = Intubation::create([
+                        'patient_id' => $request->patient_id,
+                        'intubation_datetime' => $request->origin_room_datetime,
+                        'intubation_location' => $request->intubation_location,
+                        'dr_intubation' => $request->dr_intubation_name,
+                        'dr_consultant' => $request->dr_consultant_name,
+                        'therapy_type' => $request->therapy_type_origin,
+                        'mode_venti' => $request->mode_venti_origin,
+                        'diameter' => $request->diameter_origin,
+                        'depth' => $request->depth_origin,
+                        'ipl' => $request->ipl_origin,
+                        'peep' => $request->peep_origin,
+                        'fio2' => $request->fio2_origin,
+                        'rr' => $request->rr_origin,
+                        'ttv_id' => $ttv->id,
+                    ]);
+                } else {
+                    $intubation = null;
+                }
             
-            $ttv = Ttv::create([
-                'patient_id' => $request->patient_id,
-                'sistolik' => $request->sistolik,
-                'diastolik' => $request->diastolik,
-                'suhu' => $request->suhu,
-                'nadi' => $request->nadi,
-                'rr' => $request->rr_ttv,
-                'spo2' => $request->spo2,
-            ]);
-            
-            $intubation = Intubation::create([
-                'patient_id' => $request->patient_id,
-                'intubation_datetime' => $request->origin_room_datetime,
-                'intubation_location' => $request->intubation_location,
-                'dr_intubation' => $request->dr_intubation_name,
-                'dr_consultant' => $request->dr_consultant_name,
-                'therapy_type' => $request->therapy_type_origin,
-                'mode_venti' => $request->mode_venti_origin,
-                'diameter' => $request->diameter_origin,
-                'depth' => $request->depth_origin,
-                'ipl' => $request->ipl_origin,
-                'peep' => $request->peep_origin,
-                'fio2' => $request->fio2_origin,
-                'rr' => $request->rr_origin,
-                'ttv_id' => $ttv->id,
-            ]);
-
-            // Origin Room
-            $originRoom = OriginRoom::create([
-                'origin_room_datetime' => $request->origin_room_datetime,
-                'origin_room_name' => $request->origin_room_name,
-                'radiology' => $request->radiology,
-                'ro_thorax' => $request->ro_thorax,
-                'additional_check' => $request->additional_check,
-                'main_diagnose' => $request->main_diagnose_origin,
-                'secondary_diagnose' => $request->secondary_diagnose_origin,
-                'labresult_id' => $labResult->id,
-                'agd_id' => $agd->id,
-                'intubation_id' => $intubation->id,
-                'patient_id' => $request->patient_id,
-            ]);
+                OriginRoom::create([
+                    'origin_room_datetime' => $request->origin_room_datetime,
+                    'origin_room_name' => $request->origin_room_name,
+                    'radiology' => $request->radiology,
+                    'ro_thorax' => $request->ro_thorax,
+                    'additional_check' => $request->additional_check,
+                    'main_diagnose' => $request->main_diagnose_origin,
+                    'secondary_diagnose' => $request->secondary_diagnose_origin,
+                    'labresult_id' => $labResult->id,
+                    'agd_id' => $agd->id,
+                    'intubation_id' => $intubation?->id,
+                    'patient_id' => $request->patient_id,
+                ]);
+            });
 
             return redirect()->route('patients.show', ['patient' => $request->patient_id])
                 ->with('success', 'Data asal ruangan dan data terkait berhasil disimpan.');
             } catch (\Exception $e) {
-                return back()->withErrors(['msg' => 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage()]);
+                dd($e->getMessage());
             }
     }
 

@@ -8,6 +8,7 @@ use App\Models\Intubation;
 use App\Models\LabResult;
 use App\Models\Ttv;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class IcuRoomController extends Controller
 {
@@ -111,71 +112,71 @@ class IcuRoomController extends Controller
         ]);
 
         try {
-            // Lab Results
-            $labResult = LabResult::create([
-                'patient_id' => $request->patient_id,
-                'hb' => $request->hb_icu,
-                'leukosit' => $request->leukosit_icu,
-                'pcv' => $request->pcv_icu,
-                'trombosit' => $request->trombosit_icu,
-                'kreatinin' => $request->kreatinin_icu,
-            ]);
+            DB::transaction(function () use ($request) {
+                // Lab Results
+                $labResult = LabResult::create([
+                    'patient_id' => $request->patient_id,
+                    'hb' => $request->hb_icu,
+                    'leukosit' => $request->leukosit_icu,
+                    'pcv' => $request->pcv_icu,
+                    'trombosit' => $request->trombosit_icu,
+                    'kreatinin' => $request->kreatinin_icu,
+                ]);
 
-            // AGDS
-            $agd = Agd::create([
-                'patient_id' => $request->patient_id,
-                'ph' => $request->ph_icu,
-                'pco2' => $request->pco2_icu,
-                'po2' => $request->po2_icu,
-                'spo2' => $request->spo2_icu,
-            ]);
-            
-            
-            
-            $ttv = Ttv::create([
-                'patient_id' => $request->patient_id,
-                'sistolik' => $request->sistolik,
-                'diastolik' => $request->diastolik,
-                'suhu' => $request->suhu,
-                'nadi' => $request->nadi,
-                'rr' => $request->rr_ttv,
-                'spo2' => $request->spo2,
-            ]);
-            
-            $intubation = Intubation::create([
-                'patient_id' => $request->patient_id,
-                'intubation_datetime' => $request->icu_room_datetime,
-                'intubation_location' => $request->icu_room_name,
-                'dr_intubation' => $request->dr_intubation_name,
-                'dr_consultant' => $request->dr_consultant_name,
-                'therapy_type' => $request->therapy_type_icu,
-                'mode_venti' => $request->mode_venti_icu,
-                'diameter' => $request->diameter_icu,
-                'depth' => $request->depth_icu,
-                'ipl' => $request->ipl_icu,
-                'peep' => $request->peep_icu,
-                'fio2' => $request->fio2_icu,
-                'rr' => $request->rr_icu,
-                'ttv_id' => $ttv->id,
-            ]);
+                // AGDS
+                $agd = Agd::create([
+                    'patient_id' => $request->patient_id,
+                    'ph' => $request->ph_icu,
+                    'pco2' => $request->pco2_icu,
+                    'po2' => $request->po2_icu,
+                    'spo2' => $request->spo2_icu,
+                ]);
+                
+                $ttv = Ttv::create([
+                    'patient_id' => $request->patient_id,
+                    'sistolik' => $request->sistolik,
+                    'diastolik' => $request->diastolik,
+                    'suhu' => $request->suhu,
+                    'nadi' => $request->nadi,
+                    'rr' => $request->rr_ttv,
+                    'spo2' => $request->spo2,
+                ]);
+                
+                $intubation = Intubation::create([
+                    'patient_id' => $request->patient_id,
+                    'intubation_datetime' => $request->icu_room_datetime,
+                    'intubation_location' => $request->icu_room_name,
+                    'dr_intubation' => $request->dr_intubation_name,
+                    'dr_consultant' => $request->dr_consultant_name,
+                    'therapy_type' => $request->therapy_type_icu,
+                    'mode_venti' => $request->mode_venti_icu,
+                    'diameter' => $request->diameter_icu,
+                    'depth' => $request->depth_icu,
+                    'ipl' => $request->ipl_icu,
+                    'peep' => $request->peep_icu,
+                    'fio2' => $request->fio2_icu,
+                    'rr' => $request->rr_icu,
+                    'ttv_id' => $ttv->id,
+                ]);
 
-            // ICU Room
-            $icuRoom = IcuRoom::create([
-                'icu_room_datetime' => $request->icu_room_datetime,
-                'icu_room_name' => $request->icu_room_name,
-                'ro' => $request->ro,
-                'ro_post_intubation' => $request->ro_post_intubation,
-                'blood_culture' => $request->blood_culture,
-                'labresult_id' => $labResult->id,
-                'agd_id' => $agd->id,
-                'intubation_id' => $intubation->id,
-                'patient_id' => $request->patient_id,
-            ]);
+                // ICU Room
+                $icuRoom = IcuRoom::create([
+                    'icu_room_datetime' => $request->icu_room_datetime,
+                    'icu_room_name' => $request->icu_room_name,
+                    'ro' => $request->ro,
+                    'ro_post_intubation' => $request->ro_post_intubation,
+                    'blood_culture' => $request->blood_culture,
+                    'labresult_id' => $labResult->id,
+                    'agd_id' => $agd->id,
+                    'intubation_id' => $intubation->id,
+                    'patient_id' => $request->patient_id,
+                ]);
+            });
 
             return redirect()->route('patients.show', ['patient' => $request->patient_id])
-                ->with('success', 'Data ruangan intensif dan data terkait berhasil disimpan.');
+                ->with('success', 'Data Ruang Intensif berhasil disimpan.');
             } catch (\Exception $e) {
-                return back()->withErrors(['msg' => 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage()]);
+                dd($e->getMessage());
             }
     }
 

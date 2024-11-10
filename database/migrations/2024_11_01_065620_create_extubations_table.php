@@ -15,12 +15,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('patient_id');
             $table->timestamp('extubation_datetime')->nullable();
-            $table->string('preparation_extubation_theraphy')->nullable();
+            $table->string('preparation_extubation_therapy')->nullable();
             $table->string('extubation')->nullable();
             $table->decimal('nebu_adrenalin')->nullable();
             $table->decimal('dexamethasone')->nullable();  
             $table->enum('patient_status', ['Meninggal', 'Tidak Meninggal']);
-            
             $table->timestamps();
             // Foreign keys
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');

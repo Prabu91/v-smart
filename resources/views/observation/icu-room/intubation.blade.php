@@ -16,18 +16,11 @@
 				<input type="text" id="intubation_location" name="intubation_location" value="ICU" class="h-4 w-4 text-blue-600 border-gray-300 hidden">
 				
 				<!-- Doctor Information Section -->
-				<div class="my-4 grid grid-cols-1 md:grid-cols-4 gap-4">
+				<div class="my-4 grid grid-cols-1 md:grid-cols-3 gap-4">
 					<div>
 						<label for="intubation_datetime" class="block text-md font-medium text-gray-700">Tanggal dan Waktu Masuk</label>
 						<input type="datetime-local" name="intubation_datetime" id="intubation_datetime" class="mt-1 block w-full px-3 py-2 border @error('intubation_datetime') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm">
 						@error('intubation_datetime')
-							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-						@enderror
-					</div>
-					<div>
-						<label for="change_mode_day" class="block text-md font-medium text-gray-700">Ganti Mode Venti Hari ke-</label>
-						<input type="number" name="change_mode_day" id="change_mode_day" class="mt-1 block w-full px-3 py-2 border @error('change_mode_day') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="3">
-						@error('change_mode_day')
 							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
 						@enderror
 					</div>

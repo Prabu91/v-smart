@@ -7,6 +7,7 @@ use App\Models\IcuRoom;
 use App\Models\Intubation;
 use App\Models\Ttv;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class IntubationController extends Controller
 {
@@ -33,8 +34,6 @@ class IntubationController extends Controller
     public function store(Request $request)
     {
 
-        $icuRoom = IcuRoom::where('patient_id', $request->patient_id)->first();
-        $intubation_location = $icuRoom->icu_room_name;
         
         $request->validate([
             'intubation_datetime' => 'required',
@@ -72,47 +71,51 @@ class IntubationController extends Controller
             'peep.numeric' => 'PEEP harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
             'fio2.numeric' => 'FIO2 harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
             'rr.numeric' => 'RR harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
-            'td.numeric' => 'TD harus berupa angka.',
-            'sistolik.numeric' => 'Kedalaman ETT harus berupa angka.',
-            'diastolik.numeric' => 'Kedalaman ETT harus berupa angka.',
-            'saturasi.numeric' => 'Saturasi harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
+            'sistolik.numeric' => 'Sistolik harus berupa angka.',
+            'diastolik.numeric' => 'Diastolik harus berupa angka.',
+            'suhu.numeric' => 'Suhu harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
             'nadi.numeric' => 'Nadi harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
             'rr_ttv.numeric' => 'RR TTV harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
             'spo2.numeric' => 'SPO2 harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
         ]);
 
         try {
-        $ttv = Ttv::create([
-            'patient_id' => $request->patient_id,
-            'sistolik' => $request->sistolik,
-            'diastolik' => $request->diastolik,
-            'suhu' => $request->suhu,
-            'nadi' => $request->nadi,
-            'rr' => $request->rr_ttv,
-            'spo2' => $request->spo2,
-        ]);
+            DB::transaction(function () use ($request) {
+                $icuRoom = IcuRoom::where('patient_id', $request->patient_id)->first();
+                $intubation_location = $icuRoom->icu_room_name;
 
-        $intubation = Intubation::create([
-            'patient_id' => $request->patient_id,
-            'intubation_datetime' => $request->intubation_datetime,
-            'intubation_location' => $intubation_location,
-            'dr_intubation' => $request->dr_intubation_name,
-            'dr_consultant' => $request->dr_consultant_name,
-            'therapy_type' => $request->therapy_type,
-            'mode_venti' => $request->mode_venti,
-            'diameter' => $request->diameter,
-            'depth' => $request->depth,
-            'ipl' => $request->ipl,
-            'peep' => $request->peep,
-            'fio2' => $request->fio2,
-            'rr' => $request->rr,
-            'ttv_id' => $ttv->id,
-        ]);
+                $ttv = Ttv::create([
+                    'patient_id' => $request->patient_id,
+                    'sistolik' => $request->sistolik,
+                    'diastolik' => $request->diastolik,
+                    'suhu' => $request->suhu,
+                    'nadi' => $request->nadi,
+                    'rr' => $request->rr_ttv,
+                    'spo2' => $request->spo2,
+                ]);
+
+                $intubation = Intubation::create([
+                    'patient_id' => $request->patient_id,
+                    'intubation_datetime' => $request->intubation_datetime,
+                    'intubation_location' => $intubation_location,
+                    'dr_intubation' => $request->dr_intubation_name,
+                    'dr_consultant' => $request->dr_consultant_name,
+                    'therapy_type' => $request->therapy_type,
+                    'mode_venti' => $request->mode_venti,
+                    'diameter' => $request->diameter,
+                    'depth' => $request->depth,
+                    'ipl' => $request->ipl,
+                    'peep' => $request->peep,
+                    'fio2' => $request->fio2,
+                    'rr' => $request->rr,
+                    'ttv_id' => $ttv->id,
+                ]);
+            });
 
         return redirect()->route('patients.show', ['patient' => $request->patient_id])
             ->with('success', 'Data intubasi dan data terkait berhasil disimpan.');
         } catch (\Exception $e) {
-            return back()->withErrors(['msg' => 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage()]);
+            dd($e->getMessage());
         }
 
 
