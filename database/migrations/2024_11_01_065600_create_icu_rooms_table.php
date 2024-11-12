@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
 
             $table->timestamp('icu_room_datetime')->nullable();
+            $table->integer('icu_room_bednum')->nullable();
             $table->string('icu_room_name')->nullable();
             $table->string('ro')->nullable();
             $table->string('ro_post_intubation')->nullable();

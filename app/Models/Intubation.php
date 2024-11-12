@@ -14,16 +14,7 @@ class Intubation extends Model
         'intubation_datetime',
         'intubation_location',
         'dr_intubation',
-        'dr_consultant',
-        'therapy_type',
-        'mode_venti',
-        'depth',
-        'diameter',
-        'ipl',
-        'peep',
-        'fio2',
-        'rr',
-        'ttv_id'
+        'dr_consultant'
     ];
 
     public function patient()
@@ -35,9 +26,9 @@ class Intubation extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
-
-    public function ttv()
+    
+    public function ventilators()
     {
-        return $this->belongsTo(TTV::class, 'ttv_id', 'id');
+        return $this->hasMany(Ventilator::class, 'intubation_id', 'id');
     }
 }

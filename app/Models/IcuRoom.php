@@ -14,6 +14,7 @@ class IcuRoom extends Model
         'user_id',
         'icu_room_datetime',
         'icu_room_name',
+        'icu_room_bednum',
         'ro',
         'ro_post_intubation',
         'blood_culture',

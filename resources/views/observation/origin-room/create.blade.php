@@ -4,7 +4,7 @@
 
 <div class="container mx-auto p-6">
     {{-- <h1 class="text-2xl text-center font-bold mb-6">Form Observasi Pasien ICU/PICU</h1> --}}
-	<h1 class="text-2xl font-bold mb-6 text-center">Data Ruang Asal Pasien</h1>
+	<h1 class="text-3xl font-bold mb-6 text-center">Data Ruang Asal Pasien</h1>
 
 
     <div class="relative w-full ">

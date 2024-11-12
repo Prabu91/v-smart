@@ -2,22 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Agd;
-use App\Models\IcuRoom;
 use App\Models\Intubation;
 use App\Models\Ttv;
 use App\Models\Ventilator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class IntubationController extends Controller
+class VentilatorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('observation.icu-room.intubation.index');
+        //
     }
 
     /**
@@ -26,7 +24,7 @@ class IntubationController extends Controller
     public function create(Request $request)
     {
         $patient_id = $request->query('patient_id');
-        return view('observation.icu-room.intubation.create', compact('patient_id'));
+        return view('observation.icu-room.ventilator.create', compact('patient_id'));
     }
 
     /**
@@ -35,10 +33,7 @@ class IntubationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'intubation_datetime' => 'required',
-            'intubation_location' => 'required',
-            'dr_intubation_name' => 'nullable|string|max:255',
-            'dr_consultant_name' => 'nullable|string|max:255',
+            'venti_datetime' => 'required',
             'therapy_type' => 'nullable|string|max:255',
             'mode_venti' => 'nullable|string|max:255',
             'diameter' => 'nullable|numeric',
@@ -55,12 +50,7 @@ class IntubationController extends Controller
             'rr_ttv' => 'nullable|numeric',
             'spo2' => 'nullable|numeric',
         ], [
-            'intubation_datetime.required' => 'Lokasi intubasi harus diisi.',
-            'change_mode_day' => 'Field harus diisi.',
-            'dr_intubation_name.string' => 'Nama dokter intubasi harus berupa teks.',
-            'dr_intubation_name.max' => 'Nama dokter intubasi tidak boleh lebih dari 255 karakter.',
-            'dr_consultant_name.string' => 'Nama dokter konsultan harus berupa teks.',
-            'dr_consultant_name.max' => 'Nama dokter konsultan tidak boleh lebih dari 255 karakter.',
+            'venti_datetime.required' => 'Waktu harus diisi.',
             'therapy_type.string' => 'Tipe terapi harus berupa teks.',
             'therapy_type.max' => 'Tipe terapi tidak boleh lebih dari 255 karakter.',
             'mode_venti.string' => 'Mode ventilasi harus berupa teks.',
@@ -81,6 +71,8 @@ class IntubationController extends Controller
 
         try {
             DB::transaction(function () use ($request) {
+                $intubation = Intubation::where('patient_id', $request->patient_id)->first();
+
                 $ttv = Ttv::create([
                     'patient_id' => $request->patient_id,
                     'user_id' => $request->user_id,
@@ -91,23 +83,13 @@ class IntubationController extends Controller
                     'rr' => $request->rr_ttv,
                     'spo2' => $request->spo2,
                 ]);
-
-                
-                $intubation = Intubation::create([
-                    'patient_id' => $request->patient_id,
-                    'user_id' => $request->user_id,
-                    'intubation_datetime' => $request->intubation_datetime,
-                    'intubation_location' => $request->intubation_location,
-                    'dr_intubation' => $request->dr_intubation_name,
-                    'dr_consultant' => $request->dr_consultant_name,
-                ]);
                 
                 $ventilator = Ventilator::create([
                     'patient_id' => $request->patient_id,
                     'user_id' => $request->user_id,
                     'ttv_id' => $ttv->id,
                     'intubation_id' => $intubation->id,
-                    'venti_datetime' => $request->intubation_datetime,
+                    'venti_datetime' => $request->venti_datetime,
                     'therapy_type' => $request->therapy_type,
                     'mode_venti' => $request->mode_venti,
                     'diameter' => $request->diameter,
@@ -119,7 +101,7 @@ class IntubationController extends Controller
                 ]);
             });
 
-        return redirect()->route('icu-rooms.create', ['patient' => $request->patient_id])
+        return redirect()->route('patients.show', ['patient' => $request->patient_id])
             ->with('success', 'Data intubasi dan data terkait berhasil disimpan.');
         } catch (\Exception $e) {
             dd($e->getMessage());
@@ -129,7 +111,7 @@ class IntubationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Intubation $intubation)
+    public function show(Ventilator $ventilator)
     {
         //
     }
@@ -137,7 +119,7 @@ class IntubationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Intubation $intubation)
+    public function edit(Ventilator $ventilator)
     {
         //
     }
@@ -145,7 +127,7 @@ class IntubationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Intubation $intubation)
+    public function update(Request $request, Ventilator $ventilator)
     {
         //
     }
@@ -153,7 +135,7 @@ class IntubationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Intubation $intubation)
+    public function destroy(Ventilator $ventilator)
     {
         //
     }

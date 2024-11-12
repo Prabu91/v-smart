@@ -3,61 +3,26 @@
 @section('content')
 
 <div class="container mx-auto p-6">
-    <h1 class="text-3xl text-center font-bold mb-6">Tambah Data Intubasi</h1>
+    <h1 class="text-3xl text-center font-bold mb-6">Tambah Data Pemakaian Ventilator</h1>
 
     {{-- Intubasi --}}
 	<div class="mt-10 bg-white p-8 rounded-xl">
 		<h2 class="text-xl font-bold mb-4">Intubasi</h2>
-		<div id="intubation-fields">
-			<form id="intubationForm" method="POST" action="{{ route('intubations.store') }}" class="space-y-6">
+		<div id="ventilator-fields">
+			<form id="ventilatorForm" action="{{ route('ventilators.store') }}" method="POST" class="space-y-6">
 				@csrf
 				<input type="hidden" name="patient_id" value="{{ $patient_id }}">
 				<input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
 
-				<!-- Location of Intubation -->
-				<div class="my-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-					<div>
-						<label for="intubation_datetime" class="block text-md font-medium text-gray-700">Tanggal dan Waktu Masuk</label>
-						<input type="datetime-local" name="intubation_datetime" id="intubation_datetime" class="mt-1 block w-full px-3 py-2 border @error('intubation_datetime') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm">
-						@error('intubation_datetime')
-							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-						@enderror
-					</div>
-					<div>
-						<label for="intubation_location" class="block text-md font-medium text-gray-700">Ruangan</label>
-						<select name="intubation_location" id="intubation_location" class="mt-1 block w-full px-3 py-2 border @error('intubation_location') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm">
-							<option value="">Pilih Ruangan</option>
-							<option value="ICU">ICU</option>
-							<option value="PICU">PICU</option>
-							<option value="NICU">NICU</option>
-							<option value="IGD">IGD</option>
-							<option value="OK">OK</option>
-						</select>
-						@error('intubation_room_name')
-							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-						@enderror
-					</div>
-				</div>
-				<!-- Doctor Information Section -->
-				<div class="my-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-					<div>
-						<label for="dr_intubation_name" class="block text-md font-medium text-gray-700">Nama Dokter yang Intubasi</label>
-						<input type="text" name="dr_intubation_name" id="dr_intubation_name" class="mt-1 block w-full px-3 py-2 border @error('dr_intubation_name') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="Masukan Nama Dokter">
-						@error('dr_intubation_name')
-							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-						@enderror
-					</div>
-					<div>
-						<label for="dr_consultant_name" class="block text-md font-medium text-gray-700">Nama Dokter Konsulan</label>
-						<input type="text" name="dr_consultant_name" id="dr_consultant_name" class="mt-1 block w-full px-3 py-2 border @error('dr_consultant_name') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="Masukan Nama Dokter Konsulan">
-						@error('dr_consultant_name')
-							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-						@enderror
-					</div>
-				</div>
-
 				<!-- Therapy and Ventilator Settings Section -->
-				<div class="my-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+				<div class="my-4 grid grid-cols-1 md:grid-cols-4 gap-4">
+					<div>
+						<label for="venti_datetime" class="block text-md font-medium text-gray-700">Tanggal dan Waktu</label>
+						<input type="datetime-local" name="venti_datetime" id="venti_datetime" class="mt-1 block w-full px-3 py-2 border @error('venti_datetime') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm">
+						@error('venti_datetime')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
+					</div>
 					<div>
 						<label for="therapy_type" class="block text-md font-medium text-gray-700">Therapy</label>
 						<input type="text" name="therapy_type" id="therapy_type" class="mt-1 block w-full px-3 py-2 border @error('therapy_type') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="Masukan Therapy">
@@ -193,6 +158,7 @@
 						</div> 
 					</div>
 				</div>
+				
 				<div class="flex justify-end mt-10">
 					<button type="button" id="openModalButton" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
 						Simpan Data
@@ -229,7 +195,7 @@
 	});
 
 	document.getElementById('confirmButton').addEventListener('click', function() {
-		document.getElementById('intubationForm').submit(); 
+		document.getElementById('ventilatorForm').submit(); 
 	});
 </script>
 @endpush

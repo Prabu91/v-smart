@@ -10,6 +10,7 @@ use App\Http\Controllers\IntubationController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\TransferRoomController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VentilatorController;
 
 // Route untuk tampilan login
 Route::get('/', [AuthController::class, 'showLoginForm'])
@@ -40,7 +41,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('patients', PatientController::class);
     Route::resource('origin-rooms', OriginRoomController::class);
     Route::resource('icu-rooms', IcuRoomController::class);
-    Route::resource('intubation', IntubationController::class);
+    Route::resource('ventilators', VentilatorController::class);
+    Route::resource('intubations', IntubationController::class);
     Route::resource('extubations', ExtubationController::class);
     Route::resource('transfer-rooms', TransferRoomController::class);
 
