@@ -36,15 +36,17 @@ class PatientController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'no_jkn' => 'required|string|size:13|unique:patients',
+            'no_rm' => 'required|string',
         ], [
             'name.required' => 'Nama harus diisi.',
             'no_jkn.required' => 'Nomor JKN harus diisi.',
             'no_jkn.size' => 'Nomor JKN harus terdiri dari tepat 13 angka.',
             'no_jkn.unique' => 'Nomor JKN sudah terdaftar.',
+            'no_rm.required' => 'Nomor Rekam Medis harus diisi.',
         ]);
         
 
-        $patient = Patient::create($request->only('name', 'no_jkn', 'user_id'));
+        $patient = Patient::create($request->only('name', 'no_jkn', 'no_rm','user_id'));
 
         return redirect()->route('patients.show', ['patient' => $patient->id])->with('success', 'Patient created successfully.');
     }
@@ -60,11 +62,11 @@ class PatientController extends Controller
         $origin = OriginRoom::with('labResult', 'intubation', 'agd')->where('patient_id', $id)->first();
         $icu = IcuRoom::with('labResult', 'intubation', 'agd')->where('patient_id', $id)->first();
         $intubations = Intubation::where('patient_id', $id)
-        ->with(['ventilators.ttv'])
-        ->first();
+            ->with(['ventilators.ttv'])
+            ->first();
         // $intubations = Intubation::with('ttv')->where('patient_id', $id)->get();  // Mengambil semua data intubasi
         $extubation = Extubation::where('patient_id', $id)->first();
-        $transfer = TransferRoom::where('patient_id', $id)->first();
+        $transfer = TransferRoom::with('labResult', 'ttv')->where('patient_id', $id)->first();
         return view('patients.detail', compact('patient', 'origin', 'icu', 'intubations', 'extubation', 'transfer'));
     }
 

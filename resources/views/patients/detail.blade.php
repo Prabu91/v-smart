@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends($layout)
 
 @section('content')
 @php
@@ -28,6 +28,11 @@
 				<td>No Kartu JKN</td>
 				<td class="px-4">:</td>
 				<td>{{ $patient->no_jkn }}</td>
+			</tr>
+			<tr>
+				<td>No Rekam Medis</td>
+				<td class="px-4">:</td>
+				<td>{{ $patient->no_rm }}</td>
 			</tr>
 		</table>
 	</div>
@@ -248,7 +253,7 @@
 					</a>
 				@endif
 
-				@if ($icu)
+				@if ($icu && !$extubation)
 					<a href="{{ route('ventilators.create') }}?patient_id={{ $patient->id }}" class="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
 						Tambah Data Pemakaian Ventilator
 					</a>
@@ -625,8 +630,8 @@
 				<td>Waktu dan Tanggal Pindah Ruangan</td>
 				<td class="px-4">:</td>
 				<td>
-					@if($transfer && $transfer->transfer_room_date)
-						{{ Carbon::parse($transfer->transfer_room_date)->format('H:i d/m/Y') }}
+					@if($transfer && $transfer->transfer_room_datetime)
+						{{ Carbon::parse($transfer->transfer_room_datetime)->format('H:i d/m/Y') }}
 					@else
 						Tidak ada data
 					@endif

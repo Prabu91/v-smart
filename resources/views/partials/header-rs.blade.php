@@ -23,12 +23,6 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.users.index') }}" class="flex items-center text-gray-600 hover:text-gray-900 {{ request()->is('user') ? 'font-semibold text-blue-600' : '' }}">
-                        <i class="fas fa-user-friends mr-2"></i>
-                        <span>Pengguna</span>
-                    </a>
-                </li>
-                <li>
                     <a href="{{ route('patients.index') }}" class="flex items-center text-gray-600 hover:text-gray-900 {{ request()->is('user') ? 'font-semibold text-blue-600' : '' }}">
                         <i class="fas fa-clipboard mr-2"></i>
                         

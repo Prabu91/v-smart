@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Hospital;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
@@ -11,36 +12,27 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
-        // Menambah Admin
+        $adminHospital = Hospital::firstWhere('name', 'KC Soreang');
+        
         User::create([
             'name' => 'Admin',
-            'email' => 'admin@gmail.com', 
+            'email' => 'admin@vsmart.com',
             'password' => Hash::make('password'),
-            'role' => 'admin', 
-            'hospital' => 'KC Soreang', 
+            'role' => 'admin',
+            'hospital_id' => $adminHospital->id,
         ]);
-        
-        // Menambah 3 user menggunakan factory
-        User::factory()->count(1)->create([
-            'name' => 'RS Hermina',
-            'email' => 'hermina@gmail.com', 
-            'hospital' => 'RS Hermina',
-            'role' => 'user',
-        ]);
-        
-        User::factory()->count(1)->create([
-            'name' => 'RSUD Otista',
-            'email' => 'otista@gmail.com',
-            'hospital' => 'RSUD Otista',
-            'role' => 'user',
-        ]);
-        
-        User::factory()->count(1)->create([
-            'name' => 'RSU Bina Sehat',
-            'email' => 'bina.sehat@gmail.com',
-            'hospital' => 'RSU Bina Sehat',
-            'role' => 'user',
-        ]);
+
+        // Menambah 3 user dengan nama sesuai dengan nama rumah sakit
+        $hospitals = Hospital::whereIn('name', ['RS Hermina', 'RSUD Otista', 'RSU Bina Sehat'])->get();
+
+        foreach ($hospitals as $hospital) {
+            User::factory()->create([
+                'name' => $hospital->name,
+                'email' => strtolower(str_replace(' ', '.', $hospital->name)) . '@vsmart.com',
+                'role' => 'user',
+                'hospital_id' => $hospital->id,
+            ]);
+        }
     }
 }
 

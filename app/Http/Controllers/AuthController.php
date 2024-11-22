@@ -7,14 +7,25 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    /**
+     * Show the login form.
+     *
+     * @return \Illuminate\View\View
+     */
     public function showLoginForm()
     {
-        return view('auth.login');  
+        return view('auth.login');
     }
 
+    /**
+     * Handle the login process.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function login(Request $request)
     {
-        $request->validate([
+        $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ], [
@@ -22,21 +33,31 @@ class AuthController extends Controller
             'email.email' => 'Email tidak valid.',
             'password.required' => 'Password harus diisi.',
         ]);
-    
-        // Cek apakah pengguna terdaftar
-        if (Auth::attempt($request->only('email', 'password'))) {
-            return redirect()->intended('dashboard');
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate(); // Regenerate session to prevent fixation attacks
+            return redirect()->intended('dashboard')->with('success', 'Login berhasil.');
         }
-    
+
         return back()->withErrors([
             'email' => 'Email atau password tidak terdaftar.',
-        ]);
+        ])->onlyInput('email'); // Keep the email input but clear password
     }
 
-    public function logout()
+    /**
+     * Handle the logout process.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function logout(Request $request)
     {
         Auth::logout();
-        return redirect('/login');
+
+        // Invalidate and regenerate session after logout
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login')->with('success', 'Logout berhasil.');
     }
 }
-

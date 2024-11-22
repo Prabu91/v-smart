@@ -22,7 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'hospital',
+        'hospital_id',
     ];
 
     /**
@@ -46,5 +46,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function hospital()
+    {
+        return $this->belongsTo(Hospital::class, 'hospital_id', 'id');
     }
 }

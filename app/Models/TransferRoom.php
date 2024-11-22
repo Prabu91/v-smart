@@ -21,12 +21,12 @@ class TransferRoom extends Model
     // Relasi ke tabel LabResult
     public function labResult()
     {
-        return $this->belongsTo(LabResult::class);
+        return $this->belongsTo(LabResult::class, 'user_id', 'id');
     }
 
     // Relasi ke tabel TTV
     public function ttv()
     {
-        return $this->belongsTo(TTV::class);
+        return $this->belongsTo(TTV::class, 'user_id', 'id');
     }
 }

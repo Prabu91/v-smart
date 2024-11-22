@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends($layout)
 
 @section('content')
 
@@ -24,7 +24,7 @@
 					</div>
 					
 					<div>
-						<label for="preparation_extubation_therapy" class="block text-sm font-medium text-gray-700">Therapi Persiapan Ekstubasi</label>
+						<label for="preparation_extubation_therapy" class="block text-md font-medium text-gray-700">Therapi Persiapan Ekstubasi</label>
 						<input type="text" name="preparation_extubation_therapy" id="preparation_extubation_therapy" 
 								class="mt-1 block w-full px-3 py-2 border @error('preparation_extubation_therapy') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" 
 								placeholder="Dexamethasone, Nebu Adrenaline">
@@ -34,7 +34,7 @@
 					</div>
 					
 					<div>
-						<label for="extubation" class="block text-sm font-medium text-gray-700">Tindakan Ekstubasi</label>
+						<label for="extubation" class="block text-md font-medium text-gray-700">Tindakan Ekstubasi</label>
 						<input type="text" name="extubation" id="extubation" 
 								class="mt-1 block w-full px-3 py-2 border @error('extubation') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" 
 								placeholder="Sukses, Tanpa Komplikasi">
@@ -44,7 +44,7 @@
 					</div>
 					
 					<div>
-						<label for="nebu_adrenalin" class="block text-sm font-medium text-gray-700">Nebu Adrenalin</label>
+						<label for="nebu_adrenalin" class="block text-md font-medium text-gray-700">Nebulizers</label>
 						<div class="relative">
 							<input type="number" name="nebu_adrenalin" id="nebu_adrenalin" 
 									class="mt-1 block w-full px-3 py-2 border @error('nebu_adrenalin') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" 
@@ -57,7 +57,7 @@
 					</div>
 				
 					<div>
-						<label for="dexamethasone" class="block text-sm font-medium text-gray-700">Dexamethasone</label>
+						<label for="dexamethasone" class="block text-md font-medium text-gray-700">Dexamethasone</label>
 						<div class="relative">
 							<input type="number" name="dexamethasone" id="dexamethasone" 
 									class="mt-1 block w-full px-3 py-2 border @error('dexamethasone') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" 
@@ -70,7 +70,7 @@
 					</div>
 				
 					<div>
-						<label for="patient_status" class="block text-sm font-medium text-gray-700">Kondisi Pasien</label>
+						<label for="patient_status" class="block text-md font-medium text-gray-700">Kondisi Pasien</label>
 						<div class="relative">
 							<select name="patient_status" id="patient_status" 
 									class="mt-1 block w-full px-3 py-2 border @error('patient_status') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm">

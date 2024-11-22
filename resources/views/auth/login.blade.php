@@ -14,13 +14,14 @@
 					<a class="font-bold" href="{{ route('login') }}">
 						<img src="{{ asset('images/logo-bpjs-sm.png') }}" width="100" class="mx-auto mb-5" />
 					</a>
-					<h1 class="text-3xl font-bold mb-2 text-gray-800">V-SMART</h1>
+					<img src="{{ asset('images/vsmart.png') }}" width="200" class="mx-auto mb-5" />
+					{{-- <h1 class="text-3xl font-bold mb-2 text-gray-800">V-SMART</h1> --}}
 					<h2 class="text-lg font-medium text-gray-600">Silahkan Login Terlebih Dahulu!</h2>
 				</div>
 				<!-- END Header -->
 	
 				<!-- Sign In Form -->
-				<form method="POST" action="{{ route('login') }}">
+				<form method="POST" action="{{ route('login.process') }}">
 					@csrf
 					<div class="mb-4">
 						<label class="block text-sm font-medium text-gray-700" for="email">
@@ -40,7 +41,7 @@
 					</div>
 					<div class="flex justify-center">
 						<button type="submit" class="mt-4 px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg">
-							Login Sekarang
+							Login
 						</button>
 					</div>
 				</form>

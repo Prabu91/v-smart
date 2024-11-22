@@ -32,12 +32,6 @@
             </div>
 
             <div>
-                <label for="hospital" class="block text-sm font-medium text-gray-700">Hospital</label>
-                <input type="text" name="hospital" id="hospital" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" >
-                <x-input-error :messages="$errors->get('hospital')" class="mt-2" />
-            </div>
-
-            <div>
                 <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
                 <select name="role" id="role" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     <option value="user">User</option>
@@ -60,7 +54,6 @@
                     <th class="px-4 py-2 border-b">Name</th>
                     <th class="px-4 py-2 border-b">Email</th>
                     <th class="px-4 py-2 border-b">Role</th>
-                    <th class="px-4 py-2 border-b">Hospital</th>
                     <th class="px-4 py-2 border-b">Actions</th>
                 </tr>
             </thead>
@@ -79,10 +72,9 @@
             { data: 'name', name: 'name' },
             { data: 'email', name: 'email' },
             { data: 'role', name: 'role' },
-            { data: 'hospital', name: 'hospital' },
             { data: 'action', name: 'action', orderable: false, searchable: false, render: function(data, type, row) {
 				return `
-					<button class="edit" data-id="${row.id}" data-name="${row.name}" data-email="${row.email}" data-hospital="${row.hospital}" data-role="${row.role}" style="background-color: #3490dc; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; margin-right: 5px; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#2779bd';" onmouseout="this.style.backgroundColor='#3490dc';">Edit</button>
+					<button class="edit" data-id="${row.id}" data-name="${row.name}" data-email="${row.email}" data-role="${row.role}" style="background-color: #3490dc; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; margin-right: 5px; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#2779bd';" onmouseout="this.style.backgroundColor='#3490dc';">Edit</button>
 					<button class="delete" data-id="${row.id}" style="background-color: #e3342f; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#cc1f1a';" onmouseout="this.style.backgroundColor='#e3342f';">Delete</button>
 
 				`;
@@ -100,6 +92,7 @@
 		var userEmail = $(this).data('email');
 		var userPassword = $(this).data('password');
         var userHospital = $(this).data('hospital');
+        var userVenti = $(this).data('venti');
 		var userRole = $(this).data('role');
 
 		// Ubah judul form menjadi "Edit Pengguna" pada h1 dengan id form-heading
@@ -110,6 +103,7 @@
 		$('#email').val(userEmail);
 		$('#password').val(userPassword);
 		$('#hospital').val(userHospital);
+		$('#venti').val(userVenti);
 		$('#role').val(userRole);
 
 		// Ganti action form ke route update

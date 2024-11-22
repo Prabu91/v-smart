@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends($layout)
 
 @section('content')
 
@@ -28,7 +28,7 @@
 							<label for="icu_room_name" class="block text-md font-medium text-gray-700">Ruangan</label>
 							<select name="icu_room_name" id="icu_room_name" class="mt-1 block w-full px-3 py-2 border @error('icu_room_name') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm">
 								<option value="">Pilih Ruangan</option>
-								<option value="ICU 1">ICU</option>
+								<option value="ICU">ICU</option>
 								<option value="PICU">PICU</option>
 								<option value="NICU">NICU</option>
 								<option value="IGD">IGD</option>
@@ -46,6 +46,114 @@
 							@enderror
 						</div>
 					</div>
+					
+					<div class="grid grid-cols-1 md:grid-cols-5 gap-4 mt-6">
+						<div>
+							<label for="leukosit_icu" class="block text-md font-medium text-gray-700">Albumin</label>
+							<div class="relative">
+								<input type="number" name="leukosit_icu" id="leukosit_icu" value="{{ old('leukosit_icu') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('leukosit_icu') border-red-500 @else border-gray-300 @enderror" placeholder="4,0">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">g/dL</span>
+							</div>
+							@error('leukosit_icu')
+								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+							@enderror
+						</div>
+						<div>
+							<label for="pcv_icu" class="block text-md font-medium text-gray-700">Laktat</label>
+							<div class="relative">
+								<input type="number" name="pcv_icu" id="pcv_icu" value="{{ old('pcv_icu') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('pcv_icu') border-red-500 @else border-gray-300 @enderror" placeholder="0,8">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmol/L</span>
+							</div>
+							@error('pcv_icu')
+								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+							@enderror
+						</div>
+						<div>
+							<label for="trombosit_icu" class="block text-md font-medium text-gray-700">SBPT</label>
+							<div class="relative">
+								<input type="number" name="trombosit_icu" id="trombosit_icu" value="{{ old('trombosit_icu') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('trombosit_icu') border-red-500 @else border-gray-300 @enderror" placeholder="24">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmol/L</span>
+							</div>
+							@error('trombosit_icu')
+								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+							@enderror
+						</div>
+						<div>
+							<label for="kreatinin_icu" class="block text-md font-medium text-gray-700">SBUT</label>
+							<div class="relative">
+								<input type="number" name="kreatinin_icu" id="kreatinin_icu" value="{{ old('kreatinin_icu') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('kreatinin_icu') border-red-500 @else border-gray-300 @enderror" placeholder="0">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmol/L</span>
+							</div>
+							@error('kreatinin_icu')
+								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+							@enderror
+						</div>
+						<div>
+							<label for="kreatinin_icu" class="block text-md font-medium text-gray-700">Ureum</label>
+							<div class="relative">
+								<input type="number" name="kreatinin_icu" id="kreatinin_icu" value="{{ old('kreatinin_icu') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('kreatinin_icu') border-red-500 @else border-gray-300 @enderror" placeholder="10">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mg/dL</span>
+							</div>
+							@error('kreatinin_icu')
+								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+							@enderror
+						</div>
+					</div>
+					<h2 class="text-xl font-bold my-4">Elektrolit</h2>
+					<div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+						<div>
+							<label for="ph_icu" class="block text-md font-medium text-gray-700">Na<sup>+</sup></label>
+							<div class="relative">
+								<input type="number" name="ph_icu" id="ph_icu" value="{{ old('ph_icu') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('ph_icu') border-red-500 @else border-gray-300 @enderror" placeholder="135">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmol/L</span>
+							</div>
+							@error('ph_icu')
+								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+							@enderror
+						</div>
+						<div>
+							<label for="pco2_icu" class="block text-md font-medium text-gray-700">K<sup>+</sup></label>
+							<div class="relative">
+								<input type="number" name="pco2_icu" id="pco2_icu" value="{{ old('pco2_icu') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('pco2_icu') border-red-500 @else border-gray-300 @enderror" placeholder="4,0">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmol/L</span>
+							</div>
+								@error('pco2_icu')
+									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+								@enderror
+						</div>
+						<div>
+							<label for="po2_icu" class="block text-md font-medium text-gray-700">Ca<sup>2+</sup></label>
+							<div class="relative">
+								<input type="number" name="po2_icu" id="po2_icu" value="{{ old('po2_icu') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('po2_icu') border-red-500 @else border-gray-300 @enderror" placeholder="8,5">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mg/dL</span>
+							</div>
+								@error('po2_icu')
+									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+								@enderror
+						</div>
+						<div>
+							<label for="spo2_icu" class="block text-md font-medium text-gray-700">Mg<sup>2+</sup></label>
+							<div class="relative">
+								<input type="number" name="spo2_icu" id="spo2_icu" value="{{ old('spo2_icu') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('spo2_icu') border-red-500 @else border-gray-300 @enderror" placeholder="1,7">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mg/dL</span>
+							</div>
+							@error('spo2_icu')
+								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+							@enderror
+						</div>
+						<div>
+							<label for="spo2_icu" class="block text-md font-medium text-gray-700">Cl<sup>-</sup></label>
+							<div class="relative">
+								<input type="number" name="spo2_icu" id="spo2_icu" value="{{ old('spo2_icu') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('spo2_icu') border-red-500 @else border-gray-300 @enderror" placeholder="97">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmol/L</span>
+							</div>
+							@error('spo2_icu')
+								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+							@enderror
+						</div>
+						
+					</div>
+
 					<h2 class="text-xl font-bold my-4">Hasil Lab</h2>
 					<div class="grid grid-cols-1 md:grid-cols-5 gap-4">
 						<div>

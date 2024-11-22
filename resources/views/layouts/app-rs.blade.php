@@ -27,7 +27,7 @@
 
     <!-- Header -->
     <header>
-        @include('partials.header') <!-- Komponen header yang telah dibuat -->
+        @include('partials.header-rs') <!-- Komponen header yang telah dibuat -->
     </header>
 
     <!-- Main Content -->

@@ -1,9 +1,9 @@
-@extends('layouts.app')
+@extends($layout)
 
 @section('content')
 
 <div class="container mx-auto p-6">
-    <h1 class="text-2xl text-center font-bold mb-6">Form Observasi Pasien ICU/PICU</h1>
+    <h1 class="text-3xl text-center font-bold mb-6">Data Pasien</h1>
 
     <div class="relative w-full ">
         <!-- Form -->
@@ -12,8 +12,8 @@
 			<input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
 
 			<div class="bg-white p-8 rounded-xl">
-				<h2 class="text-xl font-bold mb-4">Data Awal Pasien Masuk</h2>
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+				{{-- <h2 class="text-xl font-bold mb-4">Data Pasien</h2> --}}
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 					<div>
 						<label for="name" class="block text-md font-medium text-gray-700">Nama Pasien</label>
 						<input type="text" name="name" id="name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Nama Pasien" required>
@@ -25,6 +25,13 @@
 						<label for="no_jkn" class="block text-md font-medium text-gray-700">No Kartu JKN</label>
 						<input type="text" name="no_jkn" id="no_jkn" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan No Kartu JKN" required>
 						@error('no_jkn')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
+					</div>
+					<div>
+						<label for="no_rm" class="block text-md font-medium text-gray-700">No Kartu Rekam Medis</label>
+						<input type="text" name="no_rm" id="no_rm" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan No Kartu Rekam Medis" required>
+						@error('no_rm')
 							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
 						@enderror
 					</div>

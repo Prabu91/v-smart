@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 // OriginRoom.php
 class OriginRoom extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'patient_id', 
         'user_id', 

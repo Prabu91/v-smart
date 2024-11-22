@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends($layout)
 
 @section('content')
 
@@ -56,19 +56,23 @@
 					</div>
 				</div>
 
+				<!-- Pre-Intubation -->
+				<div class="my-4 grid grid-cols-1 md:grid-cols-1 gap-4">
+					<div>
+						<label for="preintubation" class="block text-lg font-medium text-gray-700">Pre-Intubation</label>
+						<input type="text" name="preintubation" id="preintubation" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="">
+						@error('preintubation')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
+					</div>
+				</div>
+
 				<!-- Therapy and Ventilator Settings Section -->
-				<div class="my-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+				<div class="my-4 grid grid-cols-1 md:grid-cols-2 gap-4">
 					<div>
 						<label for="therapy_type" class="block text-md font-medium text-gray-700">Therapy</label>
 						<input type="text" name="therapy_type" id="therapy_type" class="mt-1 block w-full px-3 py-2 border @error('therapy_type') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="Masukan Therapy">
 						@error('therapy_type')
-							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-						@enderror
-					</div>
-					<div>
-						<label for="mode_venti" class="block text-md font-medium text-gray-700">Mode Venti</label>
-						<input type="text" name="mode_venti" id="mode_venti" class="mt-1 block w-full px-3 py-2 border @error('mode_venti') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="Masukan Mode Venti">
-						@error('mode_venti')
 							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
 						@enderror
 					</div>
@@ -87,50 +91,6 @@
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">cm</span>
 							</div>
 							@error('diameter' || 'depth')
-								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-							@enderror
-						</div>
-					</div>
-				</div>
-
-				<!-- Additional Ventilation Settings -->
-				<div class="my-4 grid grid-cols-1 md:grid-cols-4 gap-4">
-					<div>
-						<label for="ipl" class="block text-md font-medium text-gray-700">IPL</label>
-						<div class="relative">
-							<input type="number" name="ipl" id="ipl" class="mt-1 block w-full px-3 py-2 border @error('ipl') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="15">
-							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">cmH₂O</span>
-							@error('ipl')
-								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-							@enderror
-						</div>
-					</div>
-					<div>
-						<label for="peep" class="block text-md font-medium text-gray-700">PEEP</label>
-						<div class="relative">
-							<input type="number" name="peep" id="peep" class="mt-1 block w-full px-3 py-2 border @error('peep') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="5">
-							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">cmH₂O</span>
-							@error('peep')
-								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-							@enderror
-						</div>
-					</div>
-					<div>
-						<label for="fio2" class="block text-md font-medium text-gray-700">FiO<sub>2</sub></label>
-						<div class="relative">
-							<input type="number" name="fio2" id="fio2" class="mt-1 block w-full px-3 py-2 border @error('fio2') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="40">
-							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">%</span>
-							@error('fio2')
-								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-							@enderror
-						</div>
-					</div>
-					<div>
-						<label for="rr" class="block text-md font-medium text-gray-700">RR</label>
-						<div class="relative">
-							<input type="number" name="rr" id="rr" class="mt-1 block w-full px-3 py-2 border @error('rr') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="20">
-							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">kali per menit</span>
-							@error('rr')
 								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
 							@enderror
 						</div>
@@ -193,6 +153,71 @@
 						</div> 
 					</div>
 				</div>
+
+				<!-- Post-Intubation -->
+				<div class="my-4 grid grid-cols-1 md:grid-cols-1 gap-4">
+					<div>
+						<label for="postintubation" class="block text-lg font-medium text-gray-700">Post-Intubation</label>
+						<input type="text" name="postintubation" id="postintubation" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="">
+						@error('postintubation')
+							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+						@enderror
+					</div>
+				</div>
+
+				<h2 class="text-xl font-bold mb-6 mt-10 ">Ventilator</h2>
+				<div class="my-4">
+					<label for="mode_venti" class="block text-md font-medium text-gray-700">Mode Venti</label>
+					<input type="text" name="mode_venti" id="mode_venti" class="mt-1 block w-full px-3 py-2 border @error('mode_venti') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="Masukan Mode Venti">
+					@error('mode_venti')
+						<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+					@enderror
+				</div>
+				<!-- Additional Ventilation Settings -->
+				<div class="my-4 grid grid-cols-1 md:grid-cols-4 gap-4">
+					<div>
+						<label for="ipl" class="block text-md font-medium text-gray-700">IPL</label>
+						<div class="relative">
+							<input type="number" name="ipl" id="ipl" class="mt-1 block w-full px-3 py-2 border @error('ipl') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="15">
+							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">cmH₂O</span>
+							@error('ipl')
+								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+							@enderror
+						</div>
+					</div>
+					<div>
+						<label for="peep" class="block text-md font-medium text-gray-700">PEEP</label>
+						<div class="relative">
+							<input type="number" name="peep" id="peep" class="mt-1 block w-full px-3 py-2 border @error('peep') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="5">
+							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">cmH₂O</span>
+							@error('peep')
+								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+							@enderror
+						</div>
+					</div>
+					<div>
+						<label for="fio2" class="block text-md font-medium text-gray-700">FiO<sub>2</sub></label>
+						<div class="relative">
+							<input type="number" name="fio2" id="fio2" class="mt-1 block w-full px-3 py-2 border @error('fio2') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="40">
+							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">%</span>
+							@error('fio2')
+								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+							@enderror
+						</div>
+					</div>
+					<div>
+						<label for="rr" class="block text-md font-medium text-gray-700">RR</label>
+						<div class="relative">
+							<input type="number" name="rr" id="rr" class="mt-1 block w-full px-3 py-2 border @error('rr') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="20">
+							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">kali per menit</span>
+							@error('rr')
+								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+							@enderror
+						</div>
+					</div>
+				</div>
+				
+
 				<div class="flex justify-end mt-10">
 					<button type="button" id="openModalButton" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
 						Simpan Data
