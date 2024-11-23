@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Agd extends Model
 {
@@ -11,7 +12,21 @@ class Agd extends Model
 
     protected $table = 'agds';
     
-    protected $fillable = [ 'patient_id', 'user_id', 'ph', 'po2', 'pco2', 'spo2'];
+    protected $fillable = [ 'patient_id', 'user_id', 'ph', 'po2', 'pco2', 'spo2', 'base_excees'];
+
+    protected $keyType = 'string';
+    public $incrementing = false;
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->id)) {
+                $model->id = (string) Str::uuid();
+            }
+        });
+    }
     
     public function patient()
     {

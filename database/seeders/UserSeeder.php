@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Hospital;
+use App\Models\UserDetail;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
@@ -12,25 +12,25 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
-        $adminHospital = Hospital::firstWhere('name', 'KC Soreang');
+        $adminHospital = UserDetail::firstWhere('hospital', 'KC Soreang');
         
         User::create([
             'name' => 'Admin',
             'email' => 'admin@vsmart.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
-            'hospital_id' => $adminHospital->id,
+            'user_detail_id' => $adminHospital->id,
         ]);
 
         // Menambah 3 user dengan nama sesuai dengan nama rumah sakit
-        $hospitals = Hospital::whereIn('name', ['RS Hermina', 'RSUD Otista', 'RSU Bina Sehat'])->get();
+        $hospitals = UserDetail::whereIn('hospital', ['RS Hermina', 'RSUD Otista', 'RSU Bina Sehat'])->get();
 
         foreach ($hospitals as $hospital) {
             User::factory()->create([
-                'name' => $hospital->name,
-                'email' => strtolower(str_replace(' ', '.', $hospital->name)) . '@vsmart.com',
+                'name' => $hospital->hospital,
+                'email' => strtolower(str_replace(' ', '.', $hospital->hospital)) . '@vsmart.com',
                 'role' => 'user',
-                'hospital_id' => $hospital->id,
+                'user_detail_id' => $hospital->id,
             ]);
         }
     }

@@ -29,7 +29,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Admin routes
     Route::prefix('admin')->name('admin.')->group(function () {
-        Route::resource('users', UserController::class)->except(['show']);
+        Route::resource('users', UserController::class);
     });
     Route::get('hospital/{id}', [DashboardController::class, 'showDetails'])->name('hospital.details');
 

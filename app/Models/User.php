@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -22,8 +23,22 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'hospital_id',
+        'user_detail_id',
     ];
+
+    protected $keyType = 'string';
+    public $incrementing = false;
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->id)) {
+                $model->id = (string) Str::uuid();
+            }
+        });
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -48,8 +63,8 @@ class User extends Authenticatable
         ];
     }
 
-    public function hospital()
+    public function userDetails()
     {
-        return $this->belongsTo(Hospital::class, 'hospital_id', 'id');
+        return $this->belongsTo(UserDetail::class, 'user_detail_id', 'id');
     }
 }

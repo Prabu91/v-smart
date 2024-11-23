@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('lab_results', function (Blueprint $table) {
-            $table->id(); 
-            $table->unsignedBigInteger('patient_id');
-            $table->unsignedBigInteger('user_id');
+            $table->uuid('id')->primary(); 
+            $table->uuid('patient_id');
+            $table->uuid('user_id');
 
             $table->decimal('hb')->nullable(); 
             $table->integer('leukosit')->nullable(); 
@@ -22,10 +22,9 @@ return new class extends Migration
             $table->integer('trombosit')->nullable(); 
             $table->decimal('kreatinin')->nullable(); 
             $table->timestamps(); 
+
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
-
             });
         
     }

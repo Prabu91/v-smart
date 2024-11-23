@@ -10,6 +10,7 @@ use App\Models\Intubation;
 use App\Models\OriginRoom;
 use App\Models\TransferRoom;
 use App\Models\User;
+use App\Models\UserDetail;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Auth;
@@ -32,11 +33,11 @@ class DashboardController extends Controller
                 ->select(['id', 'name', 'no_jkn', 'updated_at'])
                 ->get();
         } else {
-            $patients = Patient::with(['icuRoom', 'extubation', 'originRoom', 'transferRoom', 'user.hospital']) 
+            $patients = Patient::with(['icuRoom', 'extubation', 'originRoom', 'transferRoom', 'user.user_detail']) 
                 ->select(['id', 'name', 'no_jkn', 'user_id', 'updated_at'])
                 ->get()
                 ->map(function ($patients) {
-                    $patients->hospital = $patients->user ? $patients->user->hospital->name : 'No Hospital';
+                    $patients->hospital = $patients->user ? $patients->user->user_detail->name : 'No Hospital';
                     return $patients;
                 });
         }
@@ -78,13 +79,11 @@ class DashboardController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-
-            // Ambil semua hospital kecuali hospital dengan ID 1
-            $hospitals = Hospital::where('id', '!=', 1)->get();
+            $hospitals = UserDetail::where('id', '!=', 1)->get();
 
             $hospitalData = $hospitals->map(function ($hospital) {
             // Get the users associated with this hospital
-            $users = User::where('hospital_id', $hospital->id)->get();
+            $users = User::where('user_detail_id', $hospital->id)->get();
             
             // Count the number of intubated patients in the hospital via users
             $intubatedCount = Intubation::whereIn('user_id', $users->pluck('id'))
@@ -111,7 +110,7 @@ class DashboardController extends Controller
 
     public function showDetails(Request $request, $id)
     {
-        $hospital = Hospital::findOrFail($id);
+        $hospital = UserDetail::findOrFail($id);
         $users = User::where('hospital_id', $id)->where('role', 'user')->get();
 
         $intubatedCount = Intubation::whereIn('user_id', $users->pluck('id'))

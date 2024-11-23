@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ttv', function (Blueprint $table) {
-            $table->id(); 
-            $table->unsignedBigInteger('patient_id');
-            $table->unsignedBigInteger('user_id');
+            $table->uuid('id')->primary(); 
+            $table->uuid('patient_id');
+            $table->uuid('user_id');
 
             $table->integer('sistolik')->nullable(); 
             $table->integer('diastolik')->nullable(); 

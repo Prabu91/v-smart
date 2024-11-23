@@ -11,10 +11,16 @@ class Intubation extends Model
     protected $fillable = [
         'patient_id',
         'user_id',
+        'ttv_id',
         'intubation_datetime',
         'intubation_location',
         'dr_intubation',
-        'dr_consultant'
+        'dr_consultant',
+        'therapy_type',
+        'diameter',
+        'depth',
+        'pre_intubation',
+        'post_intubation',
     ];
 
     public function patient()
@@ -30,5 +36,10 @@ class Intubation extends Model
     public function ventilators()
     {
         return $this->hasMany(Ventilator::class, 'intubation_id', 'id');
+    }
+
+    public function ttv()
+    {
+        return $this->belongsTo(TTV::class, 'ttv_id', 'id');
     }
 }

@@ -242,7 +242,6 @@
 </div>
 
 
-	<!-- Script for Slide Navigation -->
 @push('scripts')
 <script>
 	document.getElementById('openModalButton').addEventListener('click', function() {

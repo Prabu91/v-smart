@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 // OriginRoom.php
 class OriginRoom extends Model
@@ -13,17 +14,34 @@ class OriginRoom extends Model
     protected $fillable = [
         'patient_id', 
         'user_id', 
-        'origin_room_datetime', 
         'origin_room_name', 
         'radiology', 
-        'ro_thorax', 
+        'physical_check', 
         'additional_check', 
+        'ews', 
+        'natrium', 
+        'kalium', 
+        'gds', 
         'main_diagnose', 
         'secondary_diagnose', 
         'labresult_id', 
         'intubation_id', 
         'agd_id'
     ];
+
+    protected $keyType = 'string';
+    public $incrementing = false;
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->id)) {
+                $model->id = (string) Str::uuid();
+            }
+        });
+    }
 
     public function patient()
     {

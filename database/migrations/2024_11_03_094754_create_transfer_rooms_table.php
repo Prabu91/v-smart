@@ -12,18 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transfer_rooms', function (Blueprint $table) {
-            $table->id();
-
-            $table->unsignedBigInteger('patient_id');
-            $table->unsignedBigInteger('user_id');
+            $table->uuid('id')->primary();
+            $table->uuid('patient_id');
+            $table->uuid('user_id');
 
             $table->timestamp('transfer_room_datetime')->nullable();
             $table->string('transfer_room_name')->nullable();
             $table->string('main_diagnose')->nullable();
             $table->string('secondary_diagnose')->nullable();
             $table->string('lab_culture_data')->nullable();
-            $table->unsignedBigInteger('labresult_id')->nullable();
-            $table->unsignedBigInteger('ttv_id')->nullable();
+            $table->uuid('labresult_id')->nullable();
+            $table->uuid('ttv_id')->nullable();
             $table->timestamps();
 
             // Foreign keys

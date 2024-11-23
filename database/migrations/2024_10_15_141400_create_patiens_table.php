@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('patients', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('name');
             $table->string('no_jkn', 13)->unique(); 
             $table->string('no_rm')->unique(); 
-            $table->unsignedBigInteger('user_id');
+            $table->uuid('user_id');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -5,7 +5,7 @@
 @section('content')
     
 <div class="container mx-auto p-6">
-    <h1 class="text-2xl font-bold mb-6">Dashboard Penggunaan Ventilator {{ $user->hospital->name }}</h1>
+    <h1 class="text-2xl font-bold mb-6">Dashboard Penggunaan Ventilator {{ $user->user_detail->name }}</h1>
     <!-- Statistik Utama -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <div class="bg-white shadow-md rounded-lg p-6">
@@ -14,7 +14,7 @@
         </div>
         <div class="bg-white shadow-md rounded-lg p-6">
             <h2 class="text-xl font-bold">Jumlah Ventilator</h2>
-            <p class="text-3xl mt-2">{{ $user->hospital->venti }}</p>
+            <p class="text-3xl mt-2">{{ $user->user_detail->venti }}</p>
         </div>
     </div>
 

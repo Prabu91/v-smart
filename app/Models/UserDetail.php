@@ -6,23 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class Ttv extends Model
+class UserDetail extends Model
 {
     use HasFactory;
 
-    protected $table = 'ttv';
-
-    protected $fillable = [
-        'patient_id',
-        'user_id',
-        'sistolik',
-        'diastolik',
-        'suhu',
-        'nadi',
-        'rr',
-        'spo2',
-    ];
-
+    protected $table = 'user_details';
+    
+    protected $fillable = ['hospital', 'venti', 'bed'];
+    
     protected $keyType = 'string';
     public $incrementing = false;
 
@@ -37,13 +28,8 @@ class Ttv extends Model
         });
     }
 
-    public function patient()
+    public function users()
     {
-        return $this->belongsTo(Patient::class, 'patient_id', 'id');
-    }
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->hasMany(User::class,'user_detail_id', 'id');
     }
 }
-

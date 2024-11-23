@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('extubations', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('patient_id');            
-            $table->unsignedBigInteger('user_id');
+            $table->uuid('id')->primary();
+            $table->uuid('patient_id');            
+            $table->uuid('user_id');
 
             $table->timestamp('extubation_datetime')->nullable();
             $table->string('preparation_extubation_therapy')->nullable();

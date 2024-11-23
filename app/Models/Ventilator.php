@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Ventilator extends Model
 {
@@ -11,18 +12,28 @@ class Ventilator extends Model
     protected $fillable = [
         'patient_id',
         'user_id',
-        'intubation_id',
-        'ttv_id',
+        'icu_id',
         'venti_datetime',
-        'therapy_type',
         'mode_venti',
-        'depth',
-        'diameter',
         'ipl',
         'peep',
         'fio2',
         'rr',
     ];
+
+    protected $keyType = 'string';
+    public $incrementing = false;
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->id)) {
+                $model->id = (string) Str::uuid();
+            }
+        });
+    }
 
     public function patient()
     {
@@ -34,13 +45,8 @@ class Ventilator extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function intubation()
+    public function icu()
     {
-        return $this->belongsTo(Intubation::class, 'intubation_id', 'id');
-    }
-
-    public function ttv()
-    {
-        return $this->belongsTo(TTV::class, 'ttv_id', 'id');
+        return $this->belongsTo(IcuRoom::class, 'icu_id', 'id');
     }
 }

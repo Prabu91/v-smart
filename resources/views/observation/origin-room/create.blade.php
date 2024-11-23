@@ -15,22 +15,12 @@
 			<input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
 			<div class="bg-white p-8 rounded-xl">
 				<h2 class="text-xl font-bold my-4">Data Awal Pasien Masuk</h2>
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-					<div>
-						<label for="origin_room_datetime" class="block text-lg font-medium text-gray-700">Tanggal dan Waktu Masuk</label>
-						<input type="datetime-local" name="origin_room_datetime" id="origin_room_datetime" value="{{ old('origin_room_datetime') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('origin_room_datetime') border-red-500 @else border-gray-300 @enderror">
-						@error('origin_room_datetime')
-							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-						@enderror
-					</div>
-					
-					<div>
-						<label for="origin_room_name" class="block text-lg font-medium text-gray-700">Nama/Nomor Ruangan Asal Pasien</label>
-						<input type="text" name="origin_room_name" id="origin_room_name" value="{{ old('origin_room_name') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('origin_room_name') border-red-500 @else border-gray-300 @enderror" placeholder="Masukan Nama Ruangan">
-						@error('origin_room_name')
-							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-						@enderror
-					</div>
+				<div>
+					<label for="origin_room_name" class="block text-lg font-medium text-gray-700">Nama/Nomor Ruangan Asal Pasien</label>
+					<input type="text" name="origin_room_name" id="origin_room_name" value="{{ old('origin_room_name') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('origin_room_name') border-red-500 @else border-gray-300 @enderror" placeholder="Masukan Nama Ruangan">
+					@error('origin_room_name')
+						<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+					@enderror
 				</div>
 				<div>
 					<label for="physical_check" class="block text-lg font-medium text-gray-700 mt-4">Pemeriksaan Fisik</label>
@@ -273,7 +263,14 @@
 					</div>
 
 					<!-- Doctor Information Section -->
-					<div class="my-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+					<div class="my-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+						<div>
+							<label for="icu_room_datetime" class="block text-md font-medium text-gray-700">Tanggal dan Waktu Masuk</label>
+							<input type="datetime-local" name="icu_room_datetime" id="icu_room_datetime" class="mt-1 block w-full px-3 py-2 border @error('icu_room_datetime') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm">
+							@error('icu_room_datetime')
+								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+							@enderror
+						</div>
 						<div>
 							<label for="dr_intubation_name" class="block text-lg font-medium text-gray-700">Nama Dokter yang Intubasi</label>
 							<input type="text" name="dr_intubation_name" id="dr_intubation_name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Masukan Nama Dokter">
