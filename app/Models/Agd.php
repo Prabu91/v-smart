@@ -12,7 +12,7 @@ class Agd extends Model
 
     protected $table = 'agds';
     
-    protected $fillable = [ 'patient_id', 'user_id', 'ph', 'po2', 'pco2', 'spo2', 'base_excees'];
+    protected $fillable = [ 'patient_id', 'user_id', 'ph', 'po2', 'pco2', 'spo2', 'base_excees', 'sbpt'];
 
     protected $keyType = 'string';
     public $incrementing = false;

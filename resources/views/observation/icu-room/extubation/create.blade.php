@@ -18,57 +18,15 @@
 						<label for="extubation_datetime" class="block text-md font-medium text-gray-700">Tanggal dan Waktu Extubasi</label>
 						<input type="datetime-local" name="extubation_datetime" id="extubation_datetime" 
 								class="mt-1 block w-full px-3 py-2 border @error('extubation_datetime') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm">
-						@error('extubation_datetime')
-							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-						@enderror
+						<x-input-error :messages="$errors->get('extubation_datetime')" class="mt-2" />
 					</div>
-					
-					<div>
-						<label for="preparation_extubation_therapy" class="block text-md font-medium text-gray-700">Therapi Persiapan Ekstubasi</label>
-						<input type="text" name="preparation_extubation_therapy" id="preparation_extubation_therapy" 
-								class="mt-1 block w-full px-3 py-2 border @error('preparation_extubation_therapy') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" 
-								placeholder="Dexamethasone, Nebu Adrenaline">
-						@error('preparation_extubation_therapy')
-							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-						@enderror
-					</div>
-					
 					<div>
 						<label for="extubation" class="block text-md font-medium text-gray-700">Tindakan Ekstubasi</label>
 						<input type="text" name="extubation" id="extubation" 
 								class="mt-1 block w-full px-3 py-2 border @error('extubation') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" 
 								placeholder="Sukses, Tanpa Komplikasi">
-						@error('extubation')
-							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-						@enderror
+						<x-input-error :messages="$errors->get('extubation')" class="mt-2" />
 					</div>
-					
-					<div>
-						<label for="nebu_adrenalin" class="block text-md font-medium text-gray-700">Nebulizers</label>
-						<div class="relative">
-							<input type="number" name="nebu_adrenalin" id="nebu_adrenalin" 
-									class="mt-1 block w-full px-3 py-2 border @error('nebu_adrenalin') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" 
-									placeholder="2">
-							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mL</span>
-						</div>
-						@error('nebu_adrenalin')
-							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-						@enderror
-					</div>
-				
-					<div>
-						<label for="dexamethasone" class="block text-md font-medium text-gray-700">Dexamethasone</label>
-						<div class="relative">
-							<input type="number" name="dexamethasone" id="dexamethasone" 
-									class="mt-1 block w-full px-3 py-2 border @error('dexamethasone') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" 
-									placeholder="5">
-							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mg</span>
-						</div>
-						@error('dexamethasone')
-							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-						@enderror
-					</div>
-				
 					<div>
 						<label for="patient_status" class="block text-md font-medium text-gray-700">Kondisi Pasien</label>
 						<div class="relative">
@@ -79,11 +37,65 @@
 								<option value="Tidak Meninggal">Pasien Tidak Meninggal</option>
 							</select>
 						</div>
-						@error('patient_status')
-							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-						@enderror
+						<x-input-error :messages="$errors->get('patient_status')" class="mt-2" />
 					</div>
 					
+				</div>
+
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<div>
+						<label for="nebulizer" class="block text-md font-medium text-gray-700 mt-4 mb-2">Nebulizer</label>
+						<x-input-error :messages="$errors->get('nebulizer')" class="mt-2" />
+						<textarea name="nebulizer" id="nebulizer" value="{{ old('nebulizer') }}" rows="4" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm resize-none @error('nebulizer') border-red-500 @else border-gray-300 @enderror" placeholder="Masukan Nebulizer"></textarea>
+					</div>
+					<div>
+						<label for="preparation_extubation_therapy" class="block text-md font-medium text-gray-700 mt-4 mb-2">Therapy Persiapan Ekstubasi</label>
+						<x-input-error :messages="$errors->get('preparation_extubation_therapy')" class="mt-2" />
+						<textarea name="preparation_extubation_therapy" id="preparation_extubation_therapy" value="{{ old('preparation_extubation_therapy') }}" rows="4" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm resize-none @error('preparation_extubation_therapy') border-red-500 @else border-gray-300 @enderror" placeholder="Masukan Therapy Persiapan Ekstubasi"></textarea>
+					</div>
+				</div>
+			
+				{{-- TTV --}}
+				<div id="ttv-section" class="hidden">
+					<h2 class="text-xl font-bold mb-6 mt-10 ">TTV</h2>
+					<div class="my-4 grid grid-cols-1 md:grid-cols-5 gap-4">
+						<div>
+							<label for="td" class="block text-md font-medium text-gray-700">TD</label>
+							<div class="flex space-x-2">
+								<input type="number" name="sistolik" id="sistolik" class="mt-1 block w-1/2 px-3 py-2 border rounded-md shadow-sm" placeholder="110" min="0">
+								<span class="flex items-center text-lg">/</span>
+								<input type="number" name="diastolik" id="diastolik" class="mt-1 block w-1/2 px-3 py-2 border rounded-md shadow-sm" placeholder="70" min="0">
+							</div>
+						</div>
+						<div>
+							<label for="suhu" class="block text-md font-medium text-gray-700">S.</label>
+							<div class="relative">
+								<input type="number" name="suhu" id="suhu" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm" placeholder="38.5">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">°C</span>
+							</div>
+						</div>
+						<div>
+							<label for="nadi" class="block text-md font-medium text-gray-700">N.</label>
+							<div class="relative">
+								<input type="number" name="nadi" id="nadi" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm" placeholder="80">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">bpm</span>
+							</div>
+						</div>
+						<div>
+							<label for="rr_ttv" class="block text-md font-medium text-gray-700">RR</label>
+							<div class="relative">
+								<input type="number" name="rr_ttv" id="rr_ttv" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm" placeholder="18">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">kali per menit</span>
+							</div>
+						</div>
+						<div>
+							<label for="spo2" class="block text-md font-medium text-gray-700">SpO<sub>2</sub></label>
+							<div class="relative">
+								<input type="number" name="spo2" id="spo2" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm" placeholder="95">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">%</span>
+							</div>
+						</div>
+					</div>
 				</div>
 
 				<div class="flex justify-end mt-10">
@@ -112,6 +124,19 @@
 <!-- Script for Slide Navigation -->
 @push('scripts')
 <script>
+	document.addEventListener('DOMContentLoaded', function () {
+        const selectPatientStatus = document.getElementById('patient_status');
+        const ttvSection = document.getElementById('ttv-section');
+
+        selectPatientStatus.addEventListener('change', function () {
+            if (this.value === 'Tidak Meninggal') {
+                ttvSection.classList.remove('hidden'); 
+            } else {
+                ttvSection.classList.add('hidden'); 
+            }
+        });
+    });
+
 	document.getElementById('openModalButton').addEventListener('click', function() {
 		document.getElementById('confirmationModal').classList.remove('hidden');
 	});
@@ -122,7 +147,7 @@
 	
 
 	document.getElementById('confirmButton').addEventListener('click', function() {
-		document.getElementById('extubationForm').submit(); 
+		document.getElementById('extubationForm~').submit(); 
 	});
 </script>
 @endpush

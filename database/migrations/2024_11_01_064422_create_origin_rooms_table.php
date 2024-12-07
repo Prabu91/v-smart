@@ -17,8 +17,8 @@ return new class extends Migration
         $table->uuid('user_id');
 
         $table->string('origin_room_name')->nullable();
-        $table->string('physical_check')->nullable();
-        $table->text('radiology')->nullable();
+        $table->text('physical_check')->nullable();
+        $table->string('radiology')->nullable();
         $table->text('additional_check')->nullable();
         $table->string('main_diagnose')->nullable();
         $table->string('secondary_diagnose')->nullable();

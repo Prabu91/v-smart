@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ $title ?? 'Dashboard' }}</title>
+    <title>V-SMART</title>
 	
     <!-- Tailwind CSS -->
     @vite('resources/css/app.css')
@@ -25,24 +25,19 @@
 </head>
 <body class="bg-[#EBF5F6]">
 
-    <!-- Header -->
     <header>
-        @include('partials.header') <!-- Komponen header yang telah dibuat -->
+        @include('partials.header')
     </header>
 
-    <!-- Main Content -->
     <main class="flex flex-col md:flex-row min-h-screen">
         <section class="w-full mx-auto p-6">
-            @yield('content') <!-- Konten utama halaman -->
+            @yield('content') 
         </section>
     </main>
 
-    <!-- Footer (Opsional) -->
     <footer class="bg-white p-4 text-center">
         © {{ date('Y') }} BPJS Kesehatan Cabang Soreang.
     </footer>
-
-    <!-- Scripts -->
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

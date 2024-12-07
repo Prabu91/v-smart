@@ -21,6 +21,11 @@ return new class extends Migration
             $table->float('pcv')->nullable();
             $table->integer('trombosit')->nullable(); 
             $table->decimal('kreatinin')->nullable(); 
+            $table->float('albumin')->nullable();
+            $table->float('laktat')->nullable();
+            $table->float('sbut')->nullable();
+            $table->float('ureum')->nullable();
+            
             $table->timestamps(); 
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agd;
+use App\Models\Elektrolit;
 use App\Models\IcuRoom;
 use App\Models\Intubation;
 use App\Models\LabResult;
 use App\Models\Ttv;
+use App\Models\Ventilator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -26,9 +28,13 @@ class IcuRoomController extends Controller
     
     public function create(Request $request)
     {
-        $patient_id = $request->query('patient');
-        return view('observation.icu-room.create', compact('patient_id'));
+        $patient_id = $request->query('patient_id');
+        
+        $icuData = IcuRoom::where('patient_id', $patient_id)->first(); 
+    
+        return view('observation.icu-room.create', compact('patient_id', 'icuData'));
     }
+    
 
 
     /**
@@ -36,51 +42,6 @@ class IcuRoomController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'icu_room_datetime' => 'required|date',
-            'icu_room_name' => 'required|string|max:255',
-            'icu_room_bednum' => 'required|numeric',
-            'ro' => 'required|string',
-            'ro_post_incubation' => 'nullable|string',
-            'blood_culture' => 'nullable|string',
-            
-            'hb_icu' => 'required|numeric',
-            'leukosit_icu' => 'required|numeric',
-            'pcv_icu' => 'required|numeric',
-            'trombosit_icu' => 'required|numeric',
-            'kreatinin_icu' => 'required|numeric',
-            
-            'ph_icu' => 'required|numeric',
-            'pco2_icu' => 'required|numeric',
-            'po2_icu' => 'required|numeric',
-            'spo2_icu' => 'required|numeric',
-        ], [
-            'icu_room_datetime.required' => 'Tanggal dan waktu asal ruangan wajib diisi.',
-            'icu_room_datetime.date' => 'Tanggal dan waktu asal ruangan tidak valid.',
-            'icu_room_name.required' => 'Nama asal ruangan wajib diisi.',
-            'icu_room_name.string' => 'Nama asal ruangan harus berupa teks.',
-            'icu_room_bednum.required' => 'Kolom wajib diisi.',
-            'icu_room_name.max' => 'Nama asal ruangan tidak boleh lebih dari 255 karakter.',
-            'hb_icu.required' => 'Kolom wajib diisi.',
-            'hb_icu.numeric' => 'HB harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
-            'leukosit_icu.required' => 'Kolom wajib diisi.',
-            'leukosit_icu.numeric' => 'Leukosit harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
-            'pcv_icu.required' => 'Kolom wajib diisi.',
-            'pcv_icu.numeric' => 'PCV harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
-            'trombosit_icu.required' => 'Kolom wajib diisi.',
-            'trombosit_icu.numeric' => 'Trombosit harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
-            'kreatinin_icu.required' => 'Kolom wajib diisi.',
-            'kreatinin_icu.numeric' => 'Kreatinin harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
-            'ph_icu.required' => 'Kolom wajib diisi.',
-            'ph_icu.numeric' => 'PH harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
-            'pco2_icu.required' => 'Kolom wajib diisi.',
-            'pco2_icu.numeric' => 'PCO2 harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
-            'po2_icu.required' => 'Kolom wajib diisi.',
-            'po2_icu.numeric' => 'PO2 harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
-            'spo2_icu.required' => 'Kolom wajib diisi.',
-            'spo2_icu.numeric' => 'SPO2 harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
-        ]);
-
         try {
             DB::transaction(function () use ($request) {
                 // Lab Results
@@ -92,6 +53,21 @@ class IcuRoomController extends Controller
                     'pcv' => $request->pcv_icu,
                     'trombosit' => $request->trombosit_icu,
                     'kreatinin' => $request->kreatinin_icu,
+                    'albumin' => $request->albumin,
+                    'laktat' => $request->laktat,
+                    'sbut' => $request->sbut,
+                    'ureum' => $request->ureum,
+                ]);
+
+                // Elektrolit
+                $elk = Elektrolit::create([
+                    'patient_id' => $request->patient_id,
+                    'user_id' => $request->user_id,
+                    'natrium' => $request->natrium,
+                    'kalium' => $request->kalium,
+                    'calsium' => $request->calsium,
+                    'magnesium' => $request->magnesium,
+                    'clorida' => $request->clorida,
                 ]);
 
                 // AGDS
@@ -102,6 +78,32 @@ class IcuRoomController extends Controller
                     'pco2' => $request->pco2_icu,
                     'po2' => $request->po2_icu,
                     'spo2' => $request->spo2_icu,
+                    'base_excees' => $request->be_icu,
+                    'sbpt' => $request->sbpt,
+                ]);
+
+                // Venti
+                $venti = Ventilator::create([
+                    'patient_id' => $request->patient_id,
+                    'user_id' => $request->user_id,
+                    'venti_datetime' => $request->venti_datetime,
+                    'mode_venti' => $request->mode_venti,
+                    'ipl' => $request->ipl,
+                    'peep' => $request->peep,
+                    'fio2' => $request->fio2,
+                    'rr' => $request->rr,
+                ]);
+
+                // Venti
+                $ttv = Ttv::create([
+                    'patient_id' => $request->patient_id,
+                    'user_id' => $request->user_id,
+                    'sistolik' => $request->sistolik,
+                    'diastolik' => $request->diastolik,
+                    'suhu' => $request->suhu,
+                    'nadi' => $request->nadi,
+                    'rr' => $request->rr_ttv,
+                    'spo2' => $request->spo2,
                 ]);
 
                 // ICU Room
@@ -113,18 +115,21 @@ class IcuRoomController extends Controller
                     'ro' => $request->ro,
                     'ro_post_intubation' => $request->ro_post_intubation,
                     'blood_culture' => $request->blood_culture,
+                    'ttv_id' => $ttv->id,
                     'labresult_id' => $labResult->id,
+                    'elektrolit_id' => $elk->id,
                     'agd_id' => $agd->id,
-                    // 'intubation_id' => $intubation->id,
+                    'ventilator_id' => $venti->id,
                     'patient_id' => $request->patient_id,
                 ]);
             });
 
             return redirect()->route('patients.show', ['patient' => $request->patient_id])
-                ->with('success', 'Data Ruang Intensif berhasil disimpan.');
-            } catch (\Exception $e) {
-                dd($e->getMessage());
-            }
+                ->with('success', 'Berhasil Menyimpan Data.');
+        } catch (\Exception $e) {
+            return redirect()->route('patients.show', ['patient' => $request->patient_id])
+            ->with('error', 'Gagal Menyimpan Data!');
+        }
     }
 
     /**
@@ -132,7 +137,9 @@ class IcuRoomController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $icuRecords = IcuRoom::with('ttv')->findOrFail($id);
+
+        return view('observation.icu-room.show', compact('icuRecords'));
     }
 
     /**

@@ -3,12 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
-use App\Models\IcuRoom;
-use App\Models\Extubation;
-use App\Models\Hospital;
 use App\Models\Intubation;
-use App\Models\OriginRoom;
-use App\Models\TransferRoom;
 use App\Models\User;
 use App\Models\UserDetail;
 use Illuminate\Http\Request;
@@ -28,8 +23,8 @@ class DashboardController extends Controller
             ->count();
 
         if ($user->role === 'user') {
-            $patients = Patient::with(['icuRoom', 'extubation', 'originRoom', 'transferRoom'])
-                ->where('user_id', $user->id)  // Filter by the user_id of the logged-in user
+            $patients = Patient::with(['icuRoom', 'intubation', 'extubation', 'originRoom', 'transferRoom'])
+                ->where('user_id', $user->id) 
                 ->select(['id', 'name', 'no_jkn', 'updated_at'])
                 ->get();
         } else {
@@ -43,7 +38,6 @@ class DashboardController extends Controller
         }
         
         if ($request->ajax()) {
-
             return DataTables::of($patients)
                 ->addColumn('hospital', function ($patient) {
                     return $patient->hospital;
@@ -51,7 +45,7 @@ class DashboardController extends Controller
                 ->addColumn('status', function ($patient) {
                     if ($patient->extubation && $patient->extubation->patient_status) {
                         return $patient->extubation->patient_status;
-                    } elseif ($patient->icuRoom) {
+                    } elseif ($patient->intubation) {
                         return 'Sedang Intubasi';
                     } else {
                         return 'Belum Intubasi';

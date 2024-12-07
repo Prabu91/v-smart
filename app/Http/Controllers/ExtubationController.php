@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreExtubationRequest;
 use App\Models\Extubation;
+use App\Models\Ttv;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -23,51 +25,46 @@ class ExtubationController extends Controller
     {        
         $patient_id = $request->query('patient_id');
         return view('observation.icu-room.extubation.create',compact('patient_id'));
-
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreExtubationRequest $request)
     {
-        $request->validate([
-            'extubation_datetime' => 'required|date',
-            'preparation_extubation_therapy' => 'required|string|max:255',
-            'extubation' => 'required|string',
-            'nebu_adrenalin' => 'required|numeric',
-            'dexamethasone' => 'required|numeric',
-            'patient_status' => 'required|string',
-        ], [
-            'extubation_datetime.required' => 'Tanggal dan waktu Extubasi wajib diisi.',
-            'extubation_datetime.date' => 'Tanggal dan waktu Extubasi tidak valid.',
-            'preparation_extubation_theraphy.required' => 'Theraphy Extubasi wajib diisi.',
-            'preparation_extubation_theraphy.string' => 'Theraphy Extubasi harus berupa teks.',
-            'extubation.required' => 'Tindakan Extubasi wajib diisi.',
-            'extubation.string' => 'Tindakan Extubasi harus berupa teks.',
-            'nebu_adrenalin.required' => 'Nebu Adrenalin wajib diisi.',
-            'nebu_adrenalin.numeric' => 'Nebu Adrenalin harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
-            'dexamethasone.required' => 'Tindakan Extubasi wajib diisi.',
-            'dexamethasone.numeric' => 'Dexamethasone harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
-            'patient_status.required' => 'Status Pasien wajib diisi.'
-        ]);
-        
         try {
+            if($request->patient_status == "Tidak Meninggal"){
+                $ttv = Ttv::create([
+                    'patient_id' => $request->patient_id,
+                    'user_id' => $request->user_id,
+
+                    'sistolik' => $request->sistolik,
+                    'diastolik' => $request->diastolik,
+                    'suhu' => $request->suhu,
+                    'nadi' => $request->nadi,
+                    'rr' => $request->rr_ttv,
+                    'spo2' => $request->spo2,
+                ]);
+                $ttvId = $ttv->id;
+            } else {
+                $ttvId = null;
+            }
+
+
                 Extubation::create([
                     'patient_id' => $request->patient_id,
                     'user_id' => $request->user_id,
+                    'ttv_id' => $ttvId,
                     'extubation_datetime' => $request->extubation_datetime,
                     'preparation_extubation_therapy' => $request->preparation_extubation_therapy,
                     'extubation' => $request->extubation,
-                    'nebu_adrenalin' => $request->nebu_adrenalin,
-                    'dexamethasone' => $request->dexamethasone,
+                    'nebulizer' => $request->nebulizer,
                     'patient_status' => $request->patient_status,
                 ]);
+
                 return redirect()->route('patients.show', ['patient' => $request->patient_id])
-                ->with('success', 'Data extubasi berhasil disimpan.');
-            } catch (\Exception $e) {
-                dd($e->getMessage());
-            }
+                ->with('success', 'Berhasil Menyimpan Data.');
+                }catch (\Exception $e) {
+                    return redirect()->route('patients.show', ['patient' => $request->patient_id])
+                        ->with('error', 'Gagal Menyimpan Data! Error: ' . $e->getMessage());
+                }
     }
 
     /**

@@ -22,7 +22,9 @@ class IcuRoom extends Model
         'blood_culture',
         'labresult_id',
         'ventilator_id',
+        'ttv_id',
         'agd_id',
+        'elektrolit_id',
     ];
 
     protected $keyType = 'string';
@@ -65,6 +67,21 @@ class IcuRoom extends Model
     public function agd()
     {
         return $this->belongsTo(AGD::class, 'agd_id', 'id');
+    }
+
+    public function ttv()
+    {
+        return $this->belongsTo(Ttv::class, 'ttv_id', 'id');
+    }
+
+    public function venti()
+    {
+        return $this->belongsTo(Ventilator::class, 'ventilator_id', 'id'); // Sesuaikan foreign key dan local key
+    }
+
+    public function elektrolit()
+    {
+        return $this->belongsTo(Elektrolit::class, 'elektrolit_id', 'id');
     }
     
 }

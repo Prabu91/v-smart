@@ -26,7 +26,8 @@ class IntubationController extends Controller
     public function create(Request $request)
     {
         $patient_id = $request->query('patient_id');
-        return view('observation.icu-room.intubation.create', compact('patient_id'));
+        $intubation = Intubation::with('ttv')->where('patient_id', $patient_id)->first();
+        return view('observation.icu-room.intubation.create', compact('patient_id', 'intubation'));
     }
 
     /**
@@ -34,95 +35,40 @@ class IntubationController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'intubation_datetime' => 'required',
-            'intubation_location' => 'required',
-            'dr_intubation_name' => 'nullable|string|max:255',
-            'dr_consultant_name' => 'nullable|string|max:255',
-            'therapy_type' => 'nullable|string|max:255',
-            'mode_venti' => 'nullable|string|max:255',
-            'diameter' => 'nullable|numeric',
-            'depth' => 'nullable|numeric',
-            'ipl' => 'nullable|numeric',
-            'peep' => 'nullable|numeric',
-            'fio2' => 'nullable|numeric',
-            'rr' => 'nullable|numeric',
-        
-            'sistolik' => 'nullable|numeric',
-            'diastolik' => 'nullable|numeric',
-            'suhu' => 'nullable|numeric',
-            'nadi' => 'nullable|numeric',
-            'rr_ttv' => 'nullable|numeric',
-            'spo2' => 'nullable|numeric',
-        ], [
-            'intubation_datetime.required' => 'Lokasi intubasi harus diisi.',
-            'change_mode_day' => 'Field harus diisi.',
-            'dr_intubation_name.string' => 'Nama dokter intubasi harus berupa teks.',
-            'dr_intubation_name.max' => 'Nama dokter intubasi tidak boleh lebih dari 255 karakter.',
-            'dr_consultant_name.string' => 'Nama dokter konsultan harus berupa teks.',
-            'dr_consultant_name.max' => 'Nama dokter konsultan tidak boleh lebih dari 255 karakter.',
-            'therapy_type.string' => 'Tipe terapi harus berupa teks.',
-            'therapy_type.max' => 'Tipe terapi tidak boleh lebih dari 255 karakter.',
-            'mode_venti.string' => 'Mode ventilasi harus berupa teks.',
-            'mode_venti.max' => 'Mode ventilasi tidak boleh lebih dari 255 karakter.',
-            'diameter.numeric' => 'Kedalaman ETT harus berupa angka.',
-            'depth.numeric' => 'Kedalaman ETT harus berupa angka.',
-            'ipl.numeric' => 'IPL harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
-            'peep.numeric' => 'PEEP harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
-            'fio2.numeric' => 'FIO2 harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
-            'rr.numeric' => 'RR harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
-            'sistolik.numeric' => 'Sistolik harus berupa angka.',
-            'diastolik.numeric' => 'Diastolik harus berupa angka.',
-            'suhu.numeric' => 'Suhu harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
-            'nadi.numeric' => 'Nadi harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
-            'rr_ttv.numeric' => 'RR TTV harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
-            'spo2.numeric' => 'SPO2 harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
-        ]);
-
         try {
             DB::transaction(function () use ($request) {
-                $ttv = Ttv::create([
-                    'patient_id' => $request->patient_id,
-                    'user_id' => $request->user_id,
-                    'sistolik' => $request->sistolik,
-                    'diastolik' => $request->diastolik,
-                    'suhu' => $request->suhu,
-                    'nadi' => $request->nadi,
-                    'rr' => $request->rr_ttv,
-                    'spo2' => $request->spo2,
-                ]);
-
-                
-                $intubation = Intubation::create([
-                    'patient_id' => $request->patient_id,
-                    'user_id' => $request->user_id,
-                    'intubation_datetime' => $request->intubation_datetime,
-                    'intubation_location' => $request->intubation_location,
-                    'dr_intubation' => $request->dr_intubation_name,
-                    'dr_consultant' => $request->dr_consultant_name,
-                ]);
-                
-                $ventilator = Ventilator::create([
-                    'patient_id' => $request->patient_id,
-                    'user_id' => $request->user_id,
-                    'ttv_id' => $ttv->id,
-                    'intubation_id' => $intubation->id,
-                    'venti_datetime' => $request->intubation_datetime,
-                    'therapy_type' => $request->therapy_type,
-                    'mode_venti' => $request->mode_venti,
-                    'diameter' => $request->diameter,
-                    'depth' => $request->depth,
-                    'ipl' => $request->ipl,
-                    'peep' => $request->peep,
-                    'fio2' => $request->fio2,
-                    'rr' => $request->rr,
-                ]);
+                    $ttv = Ttv::create([
+                        'patient_id' => $request->patient_id,
+                        'user_id' => $request->user_id,
+                        'sistolik' => $request->sistolik,
+                        'diastolik' => $request->diastolik,
+                        'suhu' => $request->suhu,
+                        'nadi' => $request->nadi,
+                        'rr' => $request->rr_ttv,
+                        'spo2' => $request->spo2,
+                    ]);
+                    
+                    $intubation = Intubation::create([
+                        'patient_id' => $request->patient_id,
+                        'user_id' => $request->user_id,
+                        'ttv_id' => $ttv->id,
+                        'intubation_datetime' => $request->intubation_datetime,
+                        'intubation_location' => $request->intubation_location,
+                        'dr_intubation' => $request->dr_intubation_name,
+                        'dr_consultant' => $request->dr_consultant_name,
+                        'pre_intubation' => $request->preintubation,
+                        'post_intubation' => $request->postintubation,
+                        'therapy_type' => $request->therapy_type,
+                        'diameter' => $request->diameter,
+                        'depth' => $request->depth,
+                    ]);
             });
 
-        return redirect()->route('icu-rooms.create', ['patient' => $request->patient_id])
-            ->with('success', 'Data intubasi dan data terkait berhasil disimpan.');
+        return redirect()->route('patients.show', ['patient' => $request->patient_id])
+            ->with('success', 'Berhasil Menyimpan Data.');
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            return redirect()->route('patients.show', ['patient' => $request->patient_id])
+                ->with('error', 'Gagal Menyimpan Data!'.$e->getMessage());
         }
     }
 

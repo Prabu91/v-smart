@@ -37,6 +37,16 @@ class Ttv extends Model
         });
     }
 
+    public function icu()
+    {
+        return $this->hasOne(IcuRoom::class, 'ttv_id', 'id');
+    }
+
+    public function extubation()
+    {
+        return $this->hasOne(Extubation::class, 'ttv_id', 'id');
+    }
+
     public function patient()
     {
         return $this->belongsTo(Patient::class, 'patient_id', 'id');

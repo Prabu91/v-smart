@@ -43,4 +43,7 @@ Route::middleware(['auth'])->group(function () {
         'extubations' => ExtubationController::class,
         'transfer-rooms' => TransferRoomController::class,
     ]);
+
+    Route::get('/patients/{patient}/export-pdf', [PatientController::class, 'exportPdf'])
+    ->name('patients.export-pdf');
 });

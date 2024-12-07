@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Intubation extends Model
 {
@@ -23,6 +24,20 @@ class Intubation extends Model
         'post_intubation',
     ];
 
+    protected $keyType = 'string';
+    public $incrementing = false;
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->id)) {
+                $model->id = (string) Str::uuid();
+            }
+        });
+    }
+
     public function patient()
     {
         return $this->belongsTo(Patient::class, 'patient_id', 'id');
@@ -33,11 +48,6 @@ class Intubation extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
     
-    public function ventilators()
-    {
-        return $this->hasMany(Ventilator::class, 'intubation_id', 'id');
-    }
-
     public function ttv()
     {
         return $this->belongsTo(TTV::class, 'ttv_id', 'id');

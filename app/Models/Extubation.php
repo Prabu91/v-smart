@@ -13,11 +13,11 @@ class Extubation extends Model
     protected $fillable = [
         'patient_id',
         'user_id',
+        'ttv_id',
         'extubation_datetime',
         'preparation_extubation_therapy',
         'extubation',
-        'nebu_adrenalin',
-        'dexamethasone',
+        'nebulizer',
         'patient_status',
     ];
 
@@ -43,5 +43,10 @@ class Extubation extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function ttv()
+    {
+        return $this->belongsTo(Ttv::class, 'ttv_id', 'id');
     }
 }

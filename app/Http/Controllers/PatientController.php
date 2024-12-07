@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePatientRequest;
 use App\Models\Extubation;
 use App\Models\IcuRoom;
 use App\Models\Intubation;
@@ -9,7 +10,12 @@ use App\Models\OriginRoom;
 use App\Models\Patient;
 use App\Models\TransferRoom;
 use App\Models\Ttv;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\DataTables;
 
 class PatientController extends Controller
 {
@@ -31,24 +37,23 @@ class PatientController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePatientRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'no_jkn' => 'required|string|size:13|unique:patients',
-            'no_rm' => 'required|string',
-        ], [
-            'name.required' => 'Nama harus diisi.',
-            'no_jkn.required' => 'Nomor JKN harus diisi.',
-            'no_jkn.size' => 'Nomor JKN harus terdiri dari tepat 13 angka.',
-            'no_jkn.unique' => 'Nomor JKN sudah terdaftar.',
-            'no_rm.required' => 'Nomor Rekam Medis harus diisi.',
-        ]);
+        try{
+            DB::transaction(function () use ($request, &$patient) {
+                $patient = Patient::create([
+                    'name' => $request->name,
+                    'no_jkn' => $request->no_jkn, 
+                    'no_rm' => $request->no_rm,
+                    'user_id' => $request->user_id
+                ]);
+            });
         
-
-        $patient = Patient::create($request->only('name', 'no_jkn', 'no_rm','user_id'));
-
-        return redirect()->route('patients.show', ['patient' => $patient->id])->with('success', 'Patient created successfully.');
+        return redirect()->route('patients.show', ['patient' => $patient->id])
+            ->with('success', 'Berhasil Menyimpan Data.');
+        } catch (\Exception $e) {
+            return redirect()->route('patients.show', ['patient' => $patient->id])->with('error', 'Gagal Menyimpan Data ! ' . $e->getMessage());
+        }
     }
 
 
@@ -56,19 +61,69 @@ class PatientController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $patient = Patient::findOrFail($id);
         $origin = OriginRoom::with('labResult', 'intubation', 'agd')->where('patient_id', $id)->first();
-        $icu = IcuRoom::with('labResult', 'intubation', 'agd')->where('patient_id', $id)->first();
-        $intubations = Intubation::where('patient_id', $id)
-            ->with(['ventilators.ttv'])
-            ->first();
-        // $intubations = Intubation::with('ttv')->where('patient_id', $id)->get();  // Mengambil semua data intubasi
+        $intubations = Intubation::where('patient_id', $id)->with(['ttv'])->first();
         $extubation = Extubation::where('patient_id', $id)->first();
         $transfer = TransferRoom::with('labResult', 'ttv')->where('patient_id', $id)->first();
+        $icu = IcuRoom::where('patient_id', $id)->exists();
+
+        if ($request->ajax()) {
+            $icuRecords = IcuRoom::with(['venti' => function ($query) {
+                $query->orderBy('venti_datetime', 'asc'); 
+            }])
+            ->where('patient_id', $id)
+            ->orderBy('icu_room_datetime', 'asc')
+            ->get();
+
+            $totalRecords = $icuRecords->count();
+            $recordsFiltered = $totalRecords;
+        
+            $records = [];
+            foreach ($icuRecords as $index => $icu) {
+                $currentDatetime = $icu->venti->venti_datetime ?? null;
+        
+                $usageTime = 'N/A';
+                $previousDatetime = null;
+        
+                if ($index > 0 && isset($icuRecords[$index - 1]->venti->venti_datetime)) {
+                    $previousDatetime = Carbon::parse($icuRecords[$index - 1]->venti->venti_datetime);
+                    $currentDatetime = Carbon::parse($currentDatetime); 
+
+                    $diffInHours = $previousDatetime->diffInHours($currentDatetime);
+                    $diffInMinutes = $previousDatetime->diffInMinutes($currentDatetime) % 60;
+
+                    $formattedHours = round($diffInHours + ($diffInMinutes / 60), 0);
+
+                    $usageTime = "{$formattedHours} Jam {$diffInMinutes} Menit";
+                }
+        
+                $records[] = [
+                    'id' => $icu->id,
+                    'icu_room_datetime' => $icu->icu_room_datetime,
+                    'mode_venti' => $icu->venti->mode_venti ?? 'N/A',
+                    'venti_usage' => $usageTime !== 'N/A' ? $usageTime : 'N/A',
+                    'action' => '<a href="' . route('icu-rooms.show', $icu->id) . '" style="background-color: #3490dc; color: white; padding: 6px 12px; border-radius: 5px; text-decoration: none; margin-right: 5px;">
+                            Detail
+                        </a>'
+                ];
+            }
+        
+            return response()->json([
+                'draw' => intval($request->input('draw')),
+                'recordsTotal' => $totalRecords,
+                'recordsFiltered' => $recordsFiltered,
+                'data' => $records
+            ]);
+        }
+        
+        
+
         return view('patients.detail', compact('patient', 'origin', 'icu', 'intubations', 'extubation', 'transfer'));
     }
+
 
 
     /**
@@ -93,5 +148,15 @@ class PatientController extends Controller
     public function destroy(Patient $patient)
     {
         //
+    }
+
+    public function exportPdf($patientId)
+    {
+        $patient = Patient::with('originRoom', 'icuRoom', 'intubation', 'extubation', 'transferRoom') 
+                        ->findOrFail($patientId);
+
+        $pdf = Pdf::loadView('patients.export', compact('patient'));
+
+        return $pdf->download('Detail_Patient_' . $patient->id . '.pdf');
     }
 }

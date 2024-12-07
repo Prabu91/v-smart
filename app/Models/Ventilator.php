@@ -34,7 +34,12 @@ class Ventilator extends Model
             }
         });
     }
-
+    
+    public function icu()
+    {
+        return $this->hasOne(IcuRoom::class, 'ventilator_id', 'id');
+    }
+    
     public function patient()
     {
         return $this->belongsTo(Patient::class, 'patient_id', 'id');
@@ -45,8 +50,4 @@ class Ventilator extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function icu()
-    {
-        return $this->belongsTo(IcuRoom::class, 'icu_id', 'id');
-    }
 }

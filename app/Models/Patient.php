@@ -35,22 +35,27 @@ class Patient extends Model
 
     public function originRoom()
     {
-        return $this->hasOne(OriginRoom::class);
+        return $this->hasOne(OriginRoom::class, 'patient_id', 'id');
     }
 
     public function icuRoom()
     {
-        return $this->hasOne(IcuRoom::class);
+        return $this->hasOne(IcuRoom::class, 'patient_id', 'id');
     }
 
     public function transferRoom()
     {
-        return $this->hasOne(TransferRoom::class);
+        return $this->hasOne(TransferRoom::class, 'patient_id', 'id');
+    }
+
+    public function intubation()
+    {
+        return $this->hasOne(Intubation::class, 'patient_id', 'id');
     }
 
     public function extubation()
     {
-        return $this->hasOne(Extubation::class);
+        return $this->hasOne(Extubation::class, 'patient_id', 'id');
     }
 
 }

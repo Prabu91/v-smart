@@ -11,23 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('agds', function (Blueprint $table) {
+        Schema::create('elektrolits', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('patient_id');
             $table->uuid('user_id');
 
-            $table->decimal('ph')->nullable();
-            $table->float('po2')->nullable();
-            $table->float('pco2')->nullable();
-            $table->float('spo2')->nullable();
-            $table->float('base_excees')->nullable();
-            $table->float('sbpt')->nullable();
-
-            $table->timestamps();
+            $table->float('natrium')->nullable();
+            $table->float('kalium')->nullable();
+            $table->float('calsium')->nullable();
+            $table->float('magnesium')->nullable();
+            $table->float('clorida')->nullable();            
             
+            $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
-
         });
     }
 
@@ -36,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('agds');
+        Schema::dropIfExists('elektrolits');
     }
 };

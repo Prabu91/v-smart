@@ -9,94 +9,50 @@
 		<div id="icu-fields">
 			<form id="icuForm" method="POST" action="{{ route('icu-rooms.store') }}">
 				@csrf
-				<input type="hidden" name="patient_id" value="{{ request('patient') }}">
+				<input type="hidden" name="patient_id"  value="{{ request()->get('patient_id') }}">
 				<input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
 
 				<div class="bg-white p-8 rounded-xl">
 					<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 						<div>
 							<label for="icu_room_datetime" class="block text-md font-medium text-gray-700">Tanggal dan Waktu Masuk</label>
-							<input type="datetime-local" name="icu_room_datetime" id="icu_room_datetime" class="mt-1 block w-full px-3 py-2 border @error('icu_room_datetime') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm">
-							@error('icu_room_datetime')
-								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-							@enderror
+							<input 
+								type="datetime-local" 
+								name="icu_room_datetime" 
+								id="icu_room_datetime" 
+								class="mt-1 block w-full px-3 py-2 border @error('icu_room_datetime') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm">
+							<x-input-error :messages="$errors->get('icu_room_datetime')" class="mt-2" />
 						</div>
 						
 						<div>
 							<label for="icu_room_name" class="block text-md font-medium text-gray-700">Ruangan</label>
-							<select name="icu_room_name" id="icu_room_name" class="mt-1 block w-full px-3 py-2 border @error('icu_room_name') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm">
+							<select 
+								name="icu_room_name" 
+								id="icu_room_name" 
+								class="mt-1 block w-full px-3 py-2 border @error('icu_room_name') border-red-500 @else {{ $icuData ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'border-gray-300' }} @enderror rounded-md shadow-sm"
+								@if($icuData) disabled @endif>
 								<option value="">Pilih Ruangan</option>
-								<option value="ICU">ICU</option>
-								<option value="PICU">PICU</option>
-								<option value="NICU">NICU</option>
-								<option value="IGD">IGD</option>
+								<option value="ICU" {{ old('icu_room_name', $icuData ? $icuData->icu_room_name : '') == 'ICU' ? 'selected' : '' }}>ICU</option>
+								<option value="PICU" {{ old('icu_room_name', $icuData ? $icuData->icu_room_name : '') == 'PICU' ? 'selected' : '' }}>PICU</option>
+								<option value="NICU" {{ old('icu_room_name', $icuData ? $icuData->icu_room_name : '') == 'NICU' ? 'selected' : '' }}>NICU</option>
+								<option value="IGD" {{ old('icu_room_name', $icuData ? $icuData->icu_room_name : '') == 'IGD' ? 'selected' : '' }}>IGD</option>
 							</select>
-							@error('icu_room_name')
-								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-							@enderror
+							<x-input-error :messages="$errors->get('icu_room_name')" class="mt-2" />
 						</div>
-
+						
 						<div>
 							<label for="icu_room_bednum" class="block text-md font-medium text-gray-700">Nomor Bed</label>
-							<input type="number" name="icu_room_bednum" id="icu_room_bednum" class="mt-1 block w-full px-3 py-2 border @error('icu_room_bednum') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="1">
-							@error('icu_room_bednum')
-								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-							@enderror
+							<input 
+								type="number" 
+								name="icu_room_bednum" 
+								id="icu_room_bednum" 
+								class="mt-1 block w-full px-3 py-2 border @error('icu_room_bednum') border-red-500 @else {{ $icuData ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'border-gray-300' }} @enderror rounded-md shadow-sm" 
+								placeholder="3"
+								value="{{ old('icu_room_bednum', $icuData ? $icuData->icu_room_bednum : '') }}"
+								@if($icuData) disabled @endif>
+							<x-input-error :messages="$errors->get('icu_room_bednum')" class="mt-2" />
 						</div>
-					</div>
-
-					{{-- albumin, laktat, sbpt, sbut, ureum --}}
-					<div class="grid grid-cols-1 md:grid-cols-5 gap-4 mt-6">
-						<div>
-							<label for="albumin" class="block text-md font-medium text-gray-700">Albumin</label>
-							<div class="relative">
-								<input type="number" name="albumin" id="albumin" value="{{ old('albumin') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('albumin') border-red-500 @else border-gray-300 @enderror" placeholder="4,0">
-								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">g/dL</span>
-							</div>
-							@error('albumin')
-								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-							@enderror
-						</div>
-						<div>
-							<label for="laktat" class="block text-md font-medium text-gray-700">Laktat</label>
-							<div class="relative">
-								<input type="number" name="laktat" id="laktat" value="{{ old('laktat') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('laktat') border-red-500 @else border-gray-300 @enderror" placeholder="0,8">
-								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmol/L</span>
-							</div>
-							@error('laktat')
-								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-							@enderror
-						</div>
-						<div>
-							<label for="sbpt" class="block text-md font-medium text-gray-700">SBPT</label>
-							<div class="relative">
-								<input type="number" name="sbpt" id="sbpt" value="{{ old('sbpt') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('sbpt') border-red-500 @else border-gray-300 @enderror" placeholder="24">
-								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmol/L</span>
-							</div>
-							@error('sbpt')
-								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-							@enderror
-						</div>
-						<div>
-							<label for="sbut" class="block text-md font-medium text-gray-700">SBUT</label>
-							<div class="relative">
-								<input type="number" name="sbut" id="sbut" value="{{ old('sbut') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('sbut') border-red-500 @else border-gray-300 @enderror" placeholder="0">
-								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmol/L</span>
-							</div>
-							@error('sbut')
-								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-							@enderror
-						</div>
-						<div>
-							<label for="ureum" class="block text-md font-medium text-gray-700">Ureum</label>
-							<div class="relative">
-								<input type="number" name="ureum" id="ureum" value="{{ old('ureum') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('ureum') border-red-500 @else border-gray-300 @enderror" placeholder="10">
-								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mg/dL</span>
-							</div>
-							@error('ureum')
-								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-							@enderror
-						</div>
+						
 					</div>
 
 					<h2 class="text-xl font-bold my-4">Elektrolit</h2>
@@ -107,9 +63,8 @@
 								<input type="number" name="natrium" id="natrium" value="{{ old('natrium') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('natrium') border-red-500 @else border-gray-300 @enderror" placeholder="135">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmol/L</span>
 							</div>
-							@error('natrium')
-								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-							@enderror
+							<x-input-error :messages="$errors->get('natrium')" class="mt-2" />
+
 						</div>
 						<div>
 							<label for="kalium" class="block text-md font-medium text-gray-700">K<sup>+</sup></label>
@@ -117,9 +72,8 @@
 								<input type="number" name="kalium" id="kalium" value="{{ old('kalium') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('kalium') border-red-500 @else border-gray-300 @enderror" placeholder="4,0">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmol/L</span>
 							</div>
-								@error('kalium')
-									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-								@enderror
+								<x-input-error :messages="$errors->get('kalium')" class="mt-2" />
+
 						</div>
 						<div>
 							<label for="calsium" class="block text-md font-medium text-gray-700">Ca<sup>2+</sup></label>
@@ -127,9 +81,8 @@
 								<input type="number" name="calsium" id="calsium" value="{{ old('calsium') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('calsium') border-red-500 @else border-gray-300 @enderror" placeholder="8,5">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mg/dL</span>
 							</div>
-								@error('calsium')
-									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-								@enderror
+								<x-input-error :messages="$errors->get('calsium')" class="mt-2" />
+
 						</div>
 						<div>
 							<label for="magnesium" class="block text-md font-medium text-gray-700">Mg<sup>2+</sup></label>
@@ -137,9 +90,8 @@
 								<input type="number" name="magnesium" id="magnesium" value="{{ old('magnesium') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('magnesium') border-red-500 @else border-gray-300 @enderror" placeholder="1,7">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mg/dL</span>
 							</div>
-							@error('magnesium')
-								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-							@enderror
+								<x-input-error :messages="$errors->get('magnesium')" class="mt-2" />
+
 						</div>
 						<div>
 							<label for="clorida" class="block text-md font-medium text-gray-700">Cl<sup>-</sup></label>
@@ -147,9 +99,8 @@
 								<input type="number" name="clorida" id="clorida" value="{{ old('clorida') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('clorida') border-red-500 @else border-gray-300 @enderror" placeholder="97">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmol/L</span>
 							</div>
-							@error('clorida')
-								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-							@enderror
+								<x-input-error :messages="$errors->get('clorida')" class="mt-2" />
+
 						</div>
 						
 					</div>
@@ -162,9 +113,8 @@
 								<input type="number" name="hb_icu" id="hb_icu" value="{{ old('hb_icu') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('hb_icu') border-red-500 @else border-gray-300 @enderror" placeholder="12,5">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">g/dL</span>
 							</div>
-							@error('hb_icu')
-								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-							@enderror
+							<x-input-error :messages="$errors->get('hb_icu')" class="mt-2" />
+
 						</div>
 						<div>
 							<label for="leukosit_icu" class="block text-md font-medium text-gray-700">Leukosit</label>
@@ -172,9 +122,8 @@
 								<input type="number" name="leukosit_icu" id="leukosit_icu" value="{{ old('leukosit_icu') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('leukosit_icu') border-red-500 @else border-gray-300 @enderror" placeholder="8000">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">/µL</span>
 							</div>
-							@error('leukosit_icu')
-								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-							@enderror
+							<x-input-error :messages="$errors->get('leukosit_icu')" class="mt-2" />
+
 						</div>
 						<div>
 							<label for="pcv_icu" class="block text-md font-medium text-gray-700">PCV</label>
@@ -182,9 +131,8 @@
 								<input type="number" name="pcv_icu" id="pcv_icu" value="{{ old('pcv_icu') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('pcv_icu') border-red-500 @else border-gray-300 @enderror" placeholder="38">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">%</span>
 							</div>
-							@error('pcv_icu')
-								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-							@enderror
+							<x-input-error :messages="$errors->get('pcv_icu')" class="mt-2" />
+
 						</div>
 						<div>
 							<label for="trombosit_icu" class="block text-md font-medium text-gray-700">Trombosit</label>
@@ -192,9 +140,8 @@
 								<input type="number" name="trombosit_icu" id="trombosit_icu" value="{{ old('trombosit_icu') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('trombosit_icu') border-red-500 @else border-gray-300 @enderror" placeholder="250000">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">/µL</span>
 							</div>
-							@error('trombosit_icu')
-								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-							@enderror
+							<x-input-error :messages="$errors->get('trombosit_icu')" class="mt-2" />
+
 						</div>
 						<div>
 							<label for="kreatinin_icu" class="block text-md font-medium text-gray-700">Kreatitin</label>
@@ -202,14 +149,53 @@
 								<input type="number" name="kreatinin_icu" id="kreatinin_icu" value="{{ old('kreatinin_icu') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('kreatinin_icu') border-red-500 @else border-gray-300 @enderror" placeholder="1,0">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mg/dL</span>
 							</div>
-							@error('kreatinin_icu')
-								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-							@enderror
+							<x-input-error :messages="$errors->get('kreatinin_icu')" class="mt-2" />
+
 						</div>
 					</div>
 
+					<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
+						<div>
+							<label for="albumin" class="block text-md font-medium text-gray-700">Albumin</label>
+							<div class="relative">
+								<input type="number" name="albumin" id="albumin" value="{{ old('albumin') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('albumin') border-red-500 @else border-gray-300 @enderror" placeholder="4,0">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">g/dL</span>
+							</div>
+							<x-input-error :messages="$errors->get('albumin')" class="mt-2" />
+
+						</div>
+						<div>
+							<label for="laktat" class="block text-md font-medium text-gray-700">Laktat</label>
+							<div class="relative">
+								<input type="number" name="laktat" id="laktat" value="{{ old('laktat') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('laktat') border-red-500 @else border-gray-300 @enderror" placeholder="0,8">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmol/L</span>
+							</div>
+							<x-input-error :messages="$errors->get('laktat')" class="mt-2" />
+
+						</div>
+						<div>
+							<label for="sbut" class="block text-md font-medium text-gray-700">SBUT</label>
+							<div class="relative">
+								<input type="number" name="sbut" id="sbut" value="{{ old('sbut') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('sbut') border-red-500 @else border-gray-300 @enderror" placeholder="0">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmol/L</span>
+							</div>
+							<x-input-error :messages="$errors->get('sbut')" class="mt-2" />
+
+						</div>
+						<div>
+							<label for="ureum" class="block text-md font-medium text-gray-700">Ureum</label>
+							<div class="relative">
+								<input type="number" name="ureum" id="ureum" value="{{ old('ureum') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('ureum') border-red-500 @else border-gray-300 @enderror" placeholder="10">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mg/dL</span>
+							</div>
+							<x-input-error :messages="$errors->get('ureum')" class="mt-2" />
+
+						</div>
+					</div>
+
+
 					<h2 class="text-xl font-bold my-4">AGD</h2>
-					<div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+					<div class="grid grid-cols-1 md:grid-cols-6 gap-4">
 						<div>
 							<label for="ph_icu" class="block text-md font-medium text-gray-700">pH</label>
 							<input type="number" name="ph_icu" id="ph_icu" value="{{ old('ph_icu') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('ph_icu') border-red-500 @else border-gray-300 @enderror" placeholder="7,35">
@@ -250,18 +236,27 @@
 						<div>
 							<label for="be_icu" class="block text-lg font-medium text-gray-700">Base Excees</label>
 							<div class="relative">
-								<input type="number" name="be_icu" id="be_icu" value="{{ old('be_icu') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('be_icu') border-red-500 @else border-gray-300 @enderror" placeholder="95">
+								<input type="number" name="be_icu" id="be_icu" value="{{ old('be_icu') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('be_icu') border-red-500 @else border-gray-300 @enderror" placeholder="1">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmol/L</span>
 							</div>
 							@error('be_icu')
 								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
 							@enderror
 						</div>
+						<div>
+							<label for="sbpt" class="block text-lg font-medium text-gray-700">SBPT</label>
+							<div class="relative">
+								<input type="number" name="sbpt" id="sbpt" value="{{ old('sbpt') }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('sbpt') border-red-500 @else border-gray-300 @enderror" placeholder="22">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmol/L</span>
+							</div>
+							@error('sbpt')
+								<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+							@enderror
+						</div>
 					</div>
-				</div>
 
-				<div class="my-10 bg-white p-8 rounded-xl">
-					<div class="my-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+					{{-- RO, Kultur Darah --}}
+					<div class="my-4 grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
 						<div class="mb-4">
 							<label for="ro" class="block text-sm font-medium text-gray-700">RO Sudah / Belum</label>
 							<select id="ro" name="ro" class="ro block w-full mt-1 px-3 py-2 border @error('ro') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300">
@@ -290,26 +285,34 @@
 					</div>
 				</div>
 
-				{{-- Intubation --}}
+				{{-- Venti --}}
 				<div class="my-10 bg-white p-8 rounded-xl">
-					<h2 class="text-xl font-bold mb-6 ">Ventilator</h2>
-					<div class="my-4">
-						<label for="mode_venti" class="block text-md font-medium text-gray-700">Mode Venti</label>
-						<input type="text" name="mode_venti" id="mode_venti" class="mt-1 block w-full px-3 py-2 border @error('mode_venti') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="Masukan Mode Venti">
-						@error('mode_venti')
-							<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-						@enderror
+					<h2 class="text-3xl font-bold mb-6 mt-2 ">Ventilator</h2>
+					<div class="my-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+						<div>
+							<label for="venti_datetime" class="block text-md font-medium text-gray-700">Tanggal dan Waktu</label>
+							<input 
+								type="datetime-local" 
+								name="venti_datetime" 
+								id="venti_datetime" 
+								class="mt-1 block w-full px-3 py-2 border @error('venti_datetime') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm">
+							<x-input-error :messages="$errors->get('venti_datetime')" class="mt-2" />
+						</div>
+						<div class="my-4">
+							<label for="mode_venti" class="block text-md font-medium text-gray-700">Mode Venti</label>
+							<input type="text" name="mode_venti" id="mode_venti" class="mt-1 block w-full px-3 py-2 border @error('mode_venti') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="Masukan Mode Venti">
+							<x-input-error :messages="$errors->get('mode_venti')" class="mt-2" />
+						</div>
 					</div>
-					{{-- Additional Ventilation Settings --}}
+					<!-- Additional Ventilation Settings -->
 					<div class="my-4 grid grid-cols-1 md:grid-cols-4 gap-4">
 						<div>
 							<label for="ipl" class="block text-md font-medium text-gray-700">IPL</label>
 							<div class="relative">
 								<input type="number" name="ipl" id="ipl" class="mt-1 block w-full px-3 py-2 border @error('ipl') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="15">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">cmH₂O</span>
-								@error('ipl')
-									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-								@enderror
+								<x-input-error :messages="$errors->get('ipl')" class="mt-2" />
+
 							</div>
 						</div>
 						<div>
@@ -317,9 +320,8 @@
 							<div class="relative">
 								<input type="number" name="peep" id="peep" class="mt-1 block w-full px-3 py-2 border @error('peep') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="5">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">cmH₂O</span>
-								@error('peep')
-									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-								@enderror
+								<x-input-error :messages="$errors->get('peep')" class="mt-2" />
+
 							</div>
 						</div>
 						<div>
@@ -327,9 +329,8 @@
 							<div class="relative">
 								<input type="number" name="fio2" id="fio2" class="mt-1 block w-full px-3 py-2 border @error('fio2') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="40">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">%</span>
-								@error('fio2')
-									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-								@enderror
+								<x-input-error :messages="$errors->get('fio2')" class="mt-2" />
+
 							</div>
 						</div>
 						<div>
@@ -337,9 +338,8 @@
 							<div class="relative">
 								<input type="number" name="rr" id="rr" class="mt-1 block w-full px-3 py-2 border @error('rr') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="20">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">kali per menit</span>
-								@error('rr')
-									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-								@enderror
+								<x-input-error :messages="$errors->get('rr')" class="mt-2" />
+
 							</div>
 						</div>
 					</div>
@@ -353,9 +353,8 @@
 								<input type="number" name="sistolik" id="sistolik" class="mt-1 block w-1/2 px-3 py-2 border @error('sistolik') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="110" min="0">
 								<span class="flex items-center text-lg">/</span>
 								<input type="number" name="diastolik" id="diastolik" class="mt-1 block w-1/2 px-3 py-2 border @error('diastolik') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="70" min="0">
-								@error('td')
-									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-								@enderror
+								<x-input-error :messages="$errors->get('sistolik' || 'diastolik')" class="mt-2" />
+
 							</div>
 						</div>
 						
@@ -364,9 +363,8 @@
 							<div class="relative">
 								<input type="number" name="suhu" id="suhu" class="mt-1 block w-full px-3 py-2 border @error('suhu') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="38.5">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">°C</span>
-								@error('suhu')
-									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-								@enderror
+								<x-input-error :messages="$errors->get('sistolik' || 'diastolik')" class="mt-2" />
+
 							</div> 
 						</div>
 						<div>
@@ -374,9 +372,8 @@
 							<div class="relative">
 								<input type="number" name="nadi" id="nadi" class="mt-1 block w-full px-3 py-2 border @error('nadi') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="80">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">bpm</span>
-								@error('nadi')
-									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-								@enderror
+								<x-input-error :messages="$errors->get('nadi')" class="mt-2" />
+
 							</div> 
 						</div>
 						<div>
@@ -384,9 +381,8 @@
 							<div class="relative">
 								<input type="number" name="rr_ttv" id="rr_ttv" class="mt-1 block w-full px-3 py-2 border @error('rr_ttv') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="18">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">kali per menit</span>
-								@error('rr_ttv')
-									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-								@enderror
+								<x-input-error :messages="$errors->get('rr_ttv')" class="mt-2" />
+
 							</div> 
 						</div>
 						<div>
@@ -394,9 +390,8 @@
 							<div class="relative">
 								<input type="number" name="spo2" id="spo2" class="mt-1 block w-full px-3 py-2 border @error('spo2') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="95">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">%</span>
-								@error('spo2')
-									<p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-								@enderror
+								<x-input-error :messages="$errors->get('spo2')" class="mt-2" />
+
 							</div> 
 						</div>
 					</div>
