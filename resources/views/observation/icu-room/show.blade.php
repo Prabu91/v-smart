@@ -226,56 +226,6 @@
 				</tr>
 			</table>
 		</div>
-	</div>
-
-	<div class="grid grid-cols-2 gap-4 bg-slate-400 shadow-xl rounded-lg p-6 my-4">
-		<div>
-			<h2 class="text-xl font-bold my-4">Ventilator</h2>
-			<table>
-				<tr>
-					<td>Tanggal dan Waktu</td>
-					<td class="px-4">:</td>
-					<td>
-						{{ Carbon::parse($icuRecords->venti->venti_datetime)->format('H:i d/m/Y') ?? 'Tidak ada data' }}
-					</td>
-				</tr>
-				<tr>
-					<td>Mode Venti</td>
-					<td class="px-4">:</td>
-					<td>
-						{{ $icuRecords->venti->mode_venti ?? 'Tidak ada data' }}
-					</td>
-				</tr>	
-				<tr>
-					<td>IPL</td>
-					<td class="px-4">:</td>
-					<td>
-						{{ $icuRecords->venti->ipl ?? '0' }} cmH<sub>2</sub>O
-					</td>
-				</tr>
-				<tr>
-					<td>PEEP</td>
-					<td class="px-4">:</td>
-					<td>
-						{{ $icuRecords->venti->peep ?? '0' }} cmH<sub>2</sub>O
-					</td>
-				</tr>
-				<tr>
-					<td>FiO<sub>2</sub></td>
-					<td class="px-4">:</td>
-					<td>
-						{{ $icuRecords->venti->fio2 ?? '0' }} %
-					</td>
-				</tr>
-				<tr>
-					<td>RR</td>
-					<td class="px-4">:</td>
-					<td>
-						{{ $icuRecords->venti->rr ?? '0' }} Kali per menit
-					</td>
-				</tr>
-			</table>
-		</div>
 
 		<div>
 			<h2 class="text-xl text-left font-bold my-4">TTV</h2>
@@ -317,6 +267,50 @@
 				</tr>
 			</table>
 		</div>
+	</div>
+
+	<div class="bg-slate-400 shadow-xl rounded-lg p-6 my-4">
+		<div>
+			<h2 class="text-xl font-bold my-4">Ventilator</h2>
+			<div>
+				@if ($ventilators->isNotEmpty())
+					<table class="w-full text-center">
+						<thead>
+							<tr>
+								<th class="px-4 py-2">No</th>
+								<th class="px-4 py-2">Tanggal dan Waktu</th>
+								<th class="px-4 py-2">Mode Venti</th>
+								<th class="px-4 py-2">IPL</th>
+								<th class="px-4 py-2">PEEP</th>
+								<th class="px-4 py-2">FiO<sub>2</sub></th>
+								<th class="px-4 py-2">RR</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach ($ventilators as $index => $venti)
+								<tr>
+									<td class="px-4 py-2">{{ $index + 1 }}</td>
+									<td class="px-4 py-2">
+										{{ \Carbon\Carbon::parse($venti->venti_datetime)->format('H:i d/m/Y') ?? 'Tidak ada data' }}
+									</td>
+									<td class="px-4 py-2">{{ $venti->mode_venti ?? 'Tidak ada data' }}</td>
+									<td class="px-4 py-2">{{ $venti->ipl ?? '0' }} cmH<sub>2</sub>O</td>
+									<td class="px-4 py-2">{{ $venti->peep ?? '0' }} cmH<sub>2</sub>O</td>
+									<td class="px-4 py-2">{{ $venti->fio2 ?? '0' }} %</td>
+									<td class="px-4 py-2">{{ $venti->rr ?? '0' }} Kali per menit</td>
+								</tr>
+							@endforeach
+						</tbody>
+					</table>
+				@else
+					<p class="text-gray-500">Tidak ada data ventilator</p>
+				@endif
+			</div>
+			
+		</div>
+
+
+		
 	</div>
 </div>
 

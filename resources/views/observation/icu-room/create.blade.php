@@ -30,7 +30,7 @@
 								name="icu_room_name" 
 								id="icu_room_name" 
 								class="mt-1 block w-full px-3 py-2 border @error('icu_room_name') border-red-500 @else {{ $icuData ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'border-gray-300' }} @enderror rounded-md shadow-sm"
-								@if($icuData) disabled @endif>
+								@if($icuData) readonly @endif>
 								<option value="">Pilih Ruangan</option>
 								<option value="ICU" {{ old('icu_room_name', $icuData ? $icuData->icu_room_name : '') == 'ICU' ? 'selected' : '' }}>ICU</option>
 								<option value="PICU" {{ old('icu_room_name', $icuData ? $icuData->icu_room_name : '') == 'PICU' ? 'selected' : '' }}>PICU</option>
@@ -49,7 +49,7 @@
 								class="mt-1 block w-full px-3 py-2 border @error('icu_room_bednum') border-red-500 @else {{ $icuData ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'border-gray-300' }} @enderror rounded-md shadow-sm" 
 								placeholder="3"
 								value="{{ old('icu_room_bednum', $icuData ? $icuData->icu_room_bednum : '') }}"
-								@if($icuData) disabled @endif>
+								@if($icuData) readonly @endif>
 							<x-input-error :messages="$errors->get('icu_room_bednum')" class="mt-2" />
 						</div>
 						
@@ -105,7 +105,8 @@
 						
 					</div>
 
-					<h2 class="text-xl font-bold my-4">Hasil Lab</h2>
+					{{-- Hematologi --}}
+					<h2 class="text-xl font-bold my-4">Hematologi</h2>
 					<div class="grid grid-cols-1 md:grid-cols-5 gap-4">
 						<div>
 							<label for="hb_icu" class="block text-md font-medium text-gray-700">Hb</label>
@@ -154,6 +155,8 @@
 						</div>
 					</div>
 
+					{{-- Metabolik --}}
+					<h2 class="text-xl font-bold my-4">Metabolik</h2>
 					<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
 						<div>
 							<label for="albumin" class="block text-md font-medium text-gray-700">Albumin</label>
@@ -192,7 +195,6 @@
 
 						</div>
 					</div>
-
 
 					<h2 class="text-xl font-bold my-4">AGD</h2>
 					<div class="grid grid-cols-1 md:grid-cols-6 gap-4">
@@ -283,66 +285,6 @@
 							@enderror
 						</div>
 					</div>
-				</div>
-
-				{{-- Venti --}}
-				<div class="my-10 bg-white p-8 rounded-xl">
-					<h2 class="text-3xl font-bold mb-6 mt-2 ">Ventilator</h2>
-					<div class="my-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-						<div>
-							<label for="venti_datetime" class="block text-md font-medium text-gray-700">Tanggal dan Waktu</label>
-							<input 
-								type="datetime-local" 
-								name="venti_datetime" 
-								id="venti_datetime" 
-								class="mt-1 block w-full px-3 py-2 border @error('venti_datetime') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm">
-							<x-input-error :messages="$errors->get('venti_datetime')" class="mt-2" />
-						</div>
-						<div class="my-4">
-							<label for="mode_venti" class="block text-md font-medium text-gray-700">Mode Venti</label>
-							<input type="text" name="mode_venti" id="mode_venti" class="mt-1 block w-full px-3 py-2 border @error('mode_venti') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="Masukan Mode Venti">
-							<x-input-error :messages="$errors->get('mode_venti')" class="mt-2" />
-						</div>
-					</div>
-					<!-- Additional Ventilation Settings -->
-					<div class="my-4 grid grid-cols-1 md:grid-cols-4 gap-4">
-						<div>
-							<label for="ipl" class="block text-md font-medium text-gray-700">IPL</label>
-							<div class="relative">
-								<input type="number" name="ipl" id="ipl" class="mt-1 block w-full px-3 py-2 border @error('ipl') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="15">
-								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">cmH₂O</span>
-								<x-input-error :messages="$errors->get('ipl')" class="mt-2" />
-
-							</div>
-						</div>
-						<div>
-							<label for="peep" class="block text-md font-medium text-gray-700">PEEP</label>
-							<div class="relative">
-								<input type="number" name="peep" id="peep" class="mt-1 block w-full px-3 py-2 border @error('peep') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="5">
-								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">cmH₂O</span>
-								<x-input-error :messages="$errors->get('peep')" class="mt-2" />
-
-							</div>
-						</div>
-						<div>
-							<label for="fio2" class="block text-md font-medium text-gray-700">FiO<sub>2</sub></label>
-							<div class="relative">
-								<input type="number" name="fio2" id="fio2" class="mt-1 block w-full px-3 py-2 border @error('fio2') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="40">
-								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">%</span>
-								<x-input-error :messages="$errors->get('fio2')" class="mt-2" />
-
-							</div>
-						</div>
-						<div>
-							<label for="rr" class="block text-md font-medium text-gray-700">RR</label>
-							<div class="relative">
-								<input type="number" name="rr" id="rr" class="mt-1 block w-full px-3 py-2 border @error('rr') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="20">
-								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">kali per menit</span>
-								<x-input-error :messages="$errors->get('rr')" class="mt-2" />
-
-							</div>
-						</div>
-					</div>
 
 					{{-- TTV --}}
 					<h2 class="text-xl font-bold mb-6 mt-10 ">TTV</h2>
@@ -393,6 +335,66 @@
 								<x-input-error :messages="$errors->get('spo2')" class="mt-2" />
 
 							</div> 
+						</div>
+					</div>
+				</div>
+
+				{{-- Venti --}}
+				<div class="my-10 bg-white p-8 rounded-xl">
+					<h2 class="text-3xl font-bold mb-6 mt-2 ">Ventilator</h2>
+					<div class="my-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+						<div>
+							<label for="venti_datetime" class="block text-md font-medium text-gray-700">Tanggal dan Waktu</label>
+							<input 
+								type="datetime-local" 
+								name="venti_datetime" 
+								id="venti_datetime" 
+								class="mt-1 block w-full px-3 py-2 border @error('venti_datetime') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm">
+							<x-input-error :messages="$errors->get('venti_datetime')" class="mt-2" />
+						</div>
+						<div>
+							<label for="mode_venti" class="block text-md font-medium text-gray-700">Mode Venti</label>
+							<input type="text" name="mode_venti" id="mode_venti" class="mt-1 block w-full px-3 py-2 border @error('mode_venti') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="Masukan Mode Venti">
+							<x-input-error :messages="$errors->get('mode_venti')" class="mt-2" />
+						</div>
+					</div>
+					<!-- Additional Ventilation Settings -->
+					<div class="my-4 grid grid-cols-1 md:grid-cols-4 gap-4">
+						<div>
+							<label for="ipl" class="block text-md font-medium text-gray-700">IPL</label>
+							<div class="relative">
+								<input type="number" name="ipl" id="ipl" class="mt-1 block w-full px-3 py-2 border @error('ipl') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="15">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">cmH₂O</span>
+								<x-input-error :messages="$errors->get('ipl')" class="mt-2" />
+
+							</div>
+						</div>
+						<div>
+							<label for="peep" class="block text-md font-medium text-gray-700">PEEP</label>
+							<div class="relative">
+								<input type="number" name="peep" id="peep" class="mt-1 block w-full px-3 py-2 border @error('peep') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="5">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">cmH₂O</span>
+								<x-input-error :messages="$errors->get('peep')" class="mt-2" />
+
+							</div>
+						</div>
+						<div>
+							<label for="fio2" class="block text-md font-medium text-gray-700">FiO<sub>2</sub></label>
+							<div class="relative">
+								<input type="number" name="fio2" id="fio2" class="mt-1 block w-full px-3 py-2 border @error('fio2') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="40">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">%</span>
+								<x-input-error :messages="$errors->get('fio2')" class="mt-2" />
+
+							</div>
+						</div>
+						<div>
+							<label for="rr" class="block text-md font-medium text-gray-700">RR</label>
+							<div class="relative">
+								<input type="number" name="rr" id="rr" class="mt-1 block w-full px-3 py-2 border @error('rr') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="20">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">kali per menit</span>
+								<x-input-error :messages="$errors->get('rr')" class="mt-2" />
+
+							</div>
 						</div>
 					</div>
 				</div>

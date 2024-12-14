@@ -41,4 +41,9 @@ class Elektrolit extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function icu()
+    {
+        return $this->belongsTo(IcuRoom::class, 'elektrolit_id', 'id');
+    }
 }

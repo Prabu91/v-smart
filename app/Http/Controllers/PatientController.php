@@ -10,6 +10,7 @@ use App\Models\OriginRoom;
 use App\Models\Patient;
 use App\Models\TransferRoom;
 use App\Models\Ttv;
+use App\Models\Ventilator;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -69,47 +70,118 @@ class PatientController extends Controller
         $extubation = Extubation::where('patient_id', $id)->first();
         $transfer = TransferRoom::with('labResult', 'ttv')->where('patient_id', $id)->first();
         $icu = IcuRoom::where('patient_id', $id)->exists();
+        // $ventilators = Ventilator::where('patient_id', $id)
+        //     ->orderBy('venti_datetime', 'asc')
+        //     ->first();
 
+        //     dd($ventilators->venti_datetime);
+        
         if ($request->ajax()) {
-            $icuRecords = IcuRoom::with(['venti' => function ($query) {
-                $query->orderBy('venti_datetime', 'asc'); 
-            }])
+            $icuRecords = IcuRoom::with(['elektrolit', 'labResult', 'agd', 'ttv'])
             ->where('patient_id', $id)
             ->orderBy('icu_room_datetime', 'asc')
             ->get();
 
             $totalRecords = $icuRecords->count();
             $recordsFiltered = $totalRecords;
+
+            if ($request->query('type') === 'venti') {
+                $ventilators = Ventilator::where('patient_id', $id)
+                    ->orderBy('venti_datetime', 'asc')
+                    ->get();
+
+                    $ventilatorRecords = [];
+                    $previousDatetime = null;
+
+                    foreach ($ventilators as $index => $venti) {
+                        $currentDatetime = Carbon::parse($venti->venti_datetime) ?? null;
+
+                        $usageTime = 'N/A';
+
+                        if (!empty($venti->venti_usagetime)) {
+                            $ventiUsageTime = Carbon::parse($venti->venti_usagetime);
+                            
+                            $diffInDays = round($currentDatetime->diffInDays($ventiUsageTime));
+                            $diffInHours = $currentDatetime->diffInHours($ventiUsageTime) % 24;
+                            $diffInMinutes = $currentDatetime->diffInMinutes($ventiUsageTime) % 60; 
+
+                            $formattedDays = $diffInDays > 0 ? "{$diffInDays} Hari " : '';
+                            $formattedHours = $diffInHours > 0 ? "{$diffInHours} Jam " : '';
+                            $formattedMinutes = "{$diffInMinutes} Menit";
+
+                            $usageTime = "{$formattedDays}{$formattedHours}{$formattedMinutes}";
+                        } elseif ($previousDatetime) {
+                            $diffInDays = $previousDatetime->diffInDays($currentDatetime);
+                            $diffInHours = $previousDatetime->diffInHours($currentDatetime) % 24;
+                            $diffInMinutes = $previousDatetime->diffInMinutes($currentDatetime) % 60;
+
+                            $formattedDays = $diffInDays > 0 ? "{$diffInDays} Hari " : '';
+                            $formattedHours = $diffInHours > 0 ? "{$diffInHours} Jam " : '';
+                            $formattedMinutes = "{$diffInMinutes} Menit";
+
+                            $usageTime = "{$formattedDays}{$formattedHours}{$formattedMinutes}";
+                        }
+
+                        $parameters = $venti->fio2 . "%, " . $venti->peep;
+
+                        // Action Button
+                        $actionButton = $venti->venti_usagetime === null
+                        ? '<a href="javascript:void(0);" class="release-venti" data-id="' . $venti->id . '" style="background-color: red; color: white; padding: 6px 12px; border-radius: 5px; text-decoration: none;">
+                            Lepas Venti
+                        </a>'
+                        : '';
+
+
+                        $ventilatorRecords[] = [
+                            'id' => $venti->id,
+                            'venti_datetime' => Carbon::parse($venti->venti_datetime)->format('H:i d/m/Y'),
+                            'mode_venti' => $venti->mode_venti,
+                            'venti_duration' => $usageTime,
+                            'parameters' => $parameters,
+                            'action' => $actionButton,
+                        ];
+                        
+                        $previousDatetime = $currentDatetime;
+                    }
+        
+                return response()->json([
+                    'draw' => intval($request->input('draw')),
+                    'recordsTotal' => $ventilators->count(),
+                    'recordsFiltered' => $ventilators->count(),
+                    'data' => $ventilatorRecords
+                ]);
+            }
+                
         
             $records = [];
             foreach ($icuRecords as $index => $icu) {
-                $currentDatetime = $icu->venti->venti_datetime ?? null;
-        
-                $usageTime = 'N/A';
-                $previousDatetime = null;
-        
-                if ($index > 0 && isset($icuRecords[$index - 1]->venti->venti_datetime)) {
-                    $previousDatetime = Carbon::parse($icuRecords[$index - 1]->venti->venti_datetime);
-                    $currentDatetime = Carbon::parse($currentDatetime); 
-
-                    $diffInHours = $previousDatetime->diffInHours($currentDatetime);
-                    $diffInMinutes = $previousDatetime->diffInMinutes($currentDatetime) % 60;
-
-                    $formattedHours = round($diffInHours + ($diffInMinutes / 60), 0);
-
-                    $usageTime = "{$formattedHours} Jam {$diffInMinutes} Menit";
+                $icuRoomNameBed = $icu->icu_room_name;
+                if ($icu->icu_room_bednum) {
+                    $icuRoomNameBed .= " - Bed {$icu->icu_room_bednum}";
                 }
-        
+
+                $elektrolit = "Na: " . $icu->elektrolit->natrium . " K: " . $icu->elektrolit->kalium;
+                $lb1 = "Hb: " . $icu->labResult->hb . " L: " . $icu->labResult->leukosit;
+                $lb2 = "Alb: " . $icu->labResult->albumin . " L: " . $icu->labResult->laktat;
+                $agd = $icu->agd->ph . " / " . $icu->agd->pco2;
+                $ttv = $icu->ttv->sistolik . " / " . $icu->ttv->diastolik . ", " . $icu->ttv->nadi;
+                
                 $records[] = [
                     'id' => $icu->id,
-                    'icu_room_datetime' => $icu->icu_room_datetime,
-                    'mode_venti' => $icu->venti->mode_venti ?? 'N/A',
-                    'venti_usage' => $usageTime !== 'N/A' ? $usageTime : 'N/A',
+                    'icu_room_datetime' => Carbon::parse($icu->icu_room_datetime)->format('H:i d/m/Y'),
+                    'icu_room_name' => $icuRoomNameBed,
+                    'elektrolit' => $elektrolit,
+                    'lb1' => $lb1,
+                    'lb2' => $lb2,
+                    'agd' => $agd,
+                    'ttv' => $ttv,
                     'action' => '<a href="' . route('icu-rooms.show', $icu->id) . '" style="background-color: #3490dc; color: white; padding: 6px 12px; border-radius: 5px; text-decoration: none; margin-right: 5px;">
                             Detail
                         </a>'
                 ];
             }
+
+            
         
             return response()->json([
                 'draw' => intval($request->input('draw')),

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Intubation;
 use App\Models\Ttv;
 use App\Models\Ventilator;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -73,38 +74,35 @@ class VentilatorController extends Controller
             DB::transaction(function () use ($request) {
                 $intubation = Intubation::where('patient_id', $request->patient_id)->first();
 
-                $ttv = Ttv::create([
-                    'patient_id' => $request->patient_id,
-                    'user_id' => $request->user_id,
-                    'sistolik' => $request->sistolik,
-                    'diastolik' => $request->diastolik,
-                    'suhu' => $request->suhu,
-                    'nadi' => $request->nadi,
-                    'rr' => $request->rr_ttv,
-                    'spo2' => $request->spo2,
-                ]);
                 
-                $ventilator = Ventilator::create([
-                    'patient_id' => $request->patient_id,
-                    'user_id' => $request->user_id,
-                    'ttv_id' => $ttv->id,
-                    'intubation_id' => $intubation->id,
-                    'venti_datetime' => $request->venti_datetime,
-                    'therapy_type' => $request->therapy_type,
-                    'mode_venti' => $request->mode_venti,
-                    'diameter' => $request->diameter,
-                    'depth' => $request->depth,
-                    'ipl' => $request->ipl,
-                    'peep' => $request->peep,
-                    'fio2' => $request->fio2,
-                    'rr' => $request->rr,
-                ]);
+                
             });
 
         return redirect()->route('patients.show', ['patient' => $request->patient_id])
             ->with('success', 'Data intubasi dan data terkait berhasil disimpan.');
         } catch (\Exception $e) {
             dd($e->getMessage());
+        }
+    }
+
+    public function release($id, Request $request)
+    {
+        try {
+            // Cari record Ventilator berdasarkan ID
+            $ventilator = Ventilator::findOrFail($id);
+
+            // Periksa apakah venti_usagetime sudah terisi
+            if ($ventilator->venti_usagetime) {
+                return response()->json(['message' => 'Venti sudah dilepas sebelumnya.'], 400);
+            }
+
+            // Simpan timestamp saat ini ke venti_usagetime
+            $ventilator->venti_usagetime = Carbon::now();
+            $ventilator->save();
+
+            return response()->json(['message' => 'Venti berhasil dilepas.']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Terjadi kesalahan saat melepaskan venti.'], 500);
         }
     }
 

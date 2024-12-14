@@ -14,6 +14,7 @@ class Ventilator extends Model
         'user_id',
         'icu_id',
         'venti_datetime',
+        'venti_usagetime',
         'mode_venti',
         'ipl',
         'peep',
@@ -35,10 +36,12 @@ class Ventilator extends Model
         });
     }
     
-    public function icu()
+    // Model Ventilator.php
+    public function icuRooms()
     {
-        return $this->hasOne(IcuRoom::class, 'ventilator_id', 'id');
+        return $this->hasMany(IcuRoom::class, 'ventilator_id', 'id');
     }
+
     
     public function patient()
     {

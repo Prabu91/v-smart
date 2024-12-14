@@ -231,7 +231,7 @@
 					@elseif(!$extubation)
 					<a href="{{ route('icu-rooms.create') }}?patient_id={{ $patient->id }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
 						Data Ruang Intensif
-					</a>	
+					</a>
 					@endif
 				@endif
 
@@ -340,7 +340,7 @@
 							</tr>
 						</table>
 				</div>
-				</div>
+			</div>
 
 
 
@@ -362,8 +362,26 @@
 					<tr>
 						<th>No</th>
 						<th>Tanggal dan Waktu Periksa</th>
-						<th>Mode Venti</th>
-						<th>Waktu Pemakaian Venti</th>	
+						<th>Ruangan/Bed</th>
+						<th>Elektrolit</th>
+						<th>Hb/Leukosit</th>
+						<th>Albumin/Laktat</th>
+						<th>AGD<br>(ph/pCO2)</th>
+						<th>TTV<br>(TD, Nadi)</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+			</table> 
+
+			<h2 class="text-2xl font-bold my-10">Data Ventilator</h2>
+			<table id="venti-table" class="table-auto w-full text-left">
+				<thead>
+					<tr>
+						<th>No</th>
+						<th>Tanggal dan Waktu Mulai</th>
+						<th>Mode Ventilator</th>
+						<th>Parameter<br>FiO<sub>2</sub> , PEEP</th>
+						<th>Durasi Penggunaan Venti</th>
 						<th>Action</th>
 					</tr>
 				</thead>
@@ -381,74 +399,121 @@
 		@if ($extubation)
 		<div class="bg-slate-200 shadow-md rounded-lg p-6 my-4">
 			<h2 class="text-2xl text-left font-bold mb-6">Extubasi Pasien</h2>
-			<table class="my-4">
-				<tr>
-					<td>Tanggal dan Waktu Extubasi</td>
-					<td class="px-4">:</td>
-					<td>
-						@if($extubation && $extubation->extubation_datetime)
-							{{ Carbon::parse($extubation->extubation_datetime)->format('H:i d/m/Y') }}
-						@else
-							Tidak ada data
-						@endif
-					</td>
-				</tr>
-				<tr>
-					<td>Therapi Persiapan Ekstubasi</td>
-					<td class="px-4">:</td>
-					<td>
-						@if($extubation && $extubation->preparation_extubation_therapy)
-							{{ $extubation->preparation_extubation_therapy }}
-						@else
-							Tidak ada data
-						@endif
-					</td>
-				</tr>
-				<tr>
-					<td>Tindakan Ekstubasi</td>
-					<td class="px-4">:</td>
-					<td>
-						@if($extubation && $extubation->extubation)
-							{{ $extubation->extubation }}
-						@else
-							Tidak ada data
-						@endif
-					</td>
-				</tr>
-				<tr>
-					<td>Nebu Adrenalin</td>
-					<td class="px-4">:</td>
-					<td>
-						@if($extubation && $extubation->nebu_adrenalin)
-							{{ $extubation->nebu_adrenalin }} mL
-						@else
-							Tidak ada data
-						@endif
-					</td>
-				</tr>
-				<tr>
-					<td>Dexamethasone</td>
-					<td class="px-4">:</td>
-					<td>
-						@if($extubation && $extubation->dexamethasone)
-							{{ $extubation->dexamethasone }} mg
-						@else
-							Tidak ada data
-						@endif
-					</td>
-				</tr>
-				<tr>
-					<td>Kondisi Pasien</td>
-					<td class="px-4">:</td>
-					<td>
-						@if($extubation && $extubation->patient_status)
-							{{ $extubation->patient_status }}
-						@else
-							Tidak ada data
-						@endif
-					</td>
-				</tr>
-			</table>
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<div>
+					<table class="my-4">
+						<tr>
+							<td>Tanggal dan Waktu Extubasi</td>
+							<td class="px-4">:</td>
+							<td>
+								@if($extubation && $extubation->extubation_datetime)
+									{{ Carbon::parse($extubation->extubation_datetime)->format('H:i d/m/Y') }}
+								@else
+									Tidak ada data
+								@endif
+							</td>
+						</tr>
+						<tr>
+							<td>Therapi Persiapan Ekstubasi</td>
+							<td class="px-4">:</td>
+							<td>
+								@if($extubation && $extubation->preparation_extubation_therapy)
+									{{ $extubation->preparation_extubation_therapy }}
+								@else
+									Tidak ada data
+								@endif
+							</td>
+						</tr>
+						<tr>
+							<td>Tindakan Ekstubasi</td>
+							<td class="px-4">:</td>
+							<td>
+								@if($extubation && $extubation->extubation)
+									{{ $extubation->extubation }}
+								@else
+									Tidak ada data
+								@endif
+							</td>
+						</tr>
+						<tr>
+							<td>Nebulizer</td>
+							<td class="px-4">:</td>
+							<td>
+								@if($extubation && $extubation->nebulizer)
+									{{ $extubation->nebulizer }}
+								@else
+									Tidak ada data
+								@endif
+							</td>
+						</tr>
+						<tr>
+							<td>Therapy Extubation</td>
+							<td class="px-4">:</td>
+							<td>
+								@if($extubation && $extubation->preparation_extubation_therapy)
+									{{ $extubation->preparation_extubation_therapy }}
+								@else
+									Tidak ada data
+								@endif
+							</td>
+						</tr>
+						<tr>
+							<td>Kondisi Pasien</td>
+							<td class="px-4">:</td>
+							<td>
+								@if($extubation && $extubation->patient_status)
+									{{ $extubation->patient_status }}
+								@else
+									Tidak ada data
+								@endif
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				@if($extubation->ttv)
+				<div>
+					<h2 class="text-xl text-left font-bold mb-4">TTV</h2>
+						<table>
+							<tr>
+								<td>TD</td>
+								<td class="px-2">:</td>
+								<td>
+									{{ $extubation && $extubation->ttv->sistolik && $extubation->ttv->diastolik ? $extubation->ttv->sistolik . ' / ' . $extubation->ttv->diastolik : '0' }}
+								</td>
+							</tr>
+							<tr>
+								<td>Suhu</td>
+								<td class="px-2">:</td>
+								<td>
+									{{ $extubation->ttv->suhu ?? '0'}} °C
+								</td>
+							</tr>
+							<tr>
+								<td>Nadi</td>
+								<td class="px-2">:</td>
+								<td>
+									{{ $extubation->ttv->nadi ?? '0'}} bpm
+								</td>
+							</tr>
+							<tr>
+								<td>RR</td>
+								<td class="px-2">:</td>
+								<td>
+									{{ $extubation->ttv->rr ?? '0' }} kali per menit
+								</td>
+							</tr>
+							<tr>
+								<td>SpO<sub>2</sub></td>
+								<td class="px-2">:</td>
+								<td>
+									{{ $extubation->ttv->spo2 ?? '0'}} %
+								</td>
+							</tr>
+						</table>
+				</div>
+				@endif
+			</div>
 			
 		</div>
 		@endif
@@ -644,6 +709,18 @@
 		<p>Tidak Ada Data</p>
 		@endif
 	</div>
+
+	<!-- Modal -->
+	<div id="confirmationModal" class="fixed inset-0 z-50 hidden bg-gray-800 bg-opacity-75 flex items-center justify-center">
+		<div class="bg-white rounded-lg shadow-lg p-6">
+			<h3 class="text-lg font-semibold mb-4">Konfirmasi</h3>	
+			<p>Apakah Anda yakin ingin menyimpan data <span class="font-bold">Lepas Venti?</span></p>
+			<div class="flex justify-end mt-4">
+				<button id="cancelButton" class="mr-2 px-4 py-2 bg-gray-300 text-gray-700 rounded-md">Batal</button>
+				<button id="confirmButton" class="px-4 py-2 bg-blue-600 text-white rounded-md">Ya, Simpan</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 {{-- SWAL --}}
@@ -682,22 +759,86 @@
 		$('#icu-table').DataTable({
 			processing: true,
 			serverSide: true,
-			ajax: '{{ route('patients.show', ['patient' => $patient->id]) }}',
+			ajax: {
+					url: '{{ route('patients.show', ['patient' => $patient->id]) }}',
+					data: { type: 'icu' }
+				},
 			columns: [
 				{ data: 'id', name: 'id', className: 'text-center', render: function (data, type, row, meta) {
 					return meta.row + 1;
 				}},
 				{ data: 'icu_room_datetime', name: 'icu_room_datetime', className: 'text-center'},
-				{ data: 'mode_venti', name: 'mode_venti', defaultContent: 'Tidak ada data', className: 'text-center' },
-				{ data: 'venti_usage', name: 'venti_usage', className: 'text-center' },
+				{ data: 'icu_room_name', name: 'icu_room_name', defaultContent: 'Tidak ada data', className: 'text-center' },
+				{ data: 'elektrolit', name: 'elektrolit', defaultContent: 'Tidak ada data', className: 'text-center' },
+				{ data: 'lb1', name: 'lb1', defaultContent: 'Tidak ada data', className: 'text-center' },
+				{ data: 'lb2', name: 'lb2', defaultContent: 'Tidak ada data', className: 'text-center' },
+				{ data: 'agd', name: 'agd', defaultContent: 'Tidak ada data', className: 'text-center' },
+				{ data: 'ttv', name: 'ttv', defaultContent: 'Tidak ada data', className: 'text-center' },
 				{ data: 'action', name: 'action', orderable: false, searchable: false}
 			],
 			language: {
 				emptyTable: "Belum Ada Data",
 			},
 		});
-	});
 
+		$('#venti-table').DataTable({
+			processing: true,
+			serverSide: true,
+			ajax: {
+						url: '{{ route('patients.show', ['patient' => $patient->id]) }}',
+						data: { type: 'venti' }
+					},
+			columns: [
+				{ data: 'id', name: 'id', className: 'text-center', render: function (data, type, row, meta) {
+					return meta.row + 1;
+				}},
+				{ data: 'venti_datetime', name: 'venti_datetime', className: 'text-center'},
+				{ data: 'mode_venti', name: 'icu_room_name', defaultContent: 'Tidak ada data', className: 'text-center' },
+				{ data: 'parameters', name: 'parameters', defaultContent: 'Tidak ada data', className: 'text-center' },
+				{ data: 'venti_duration', name: 'venti_duration', defaultContent: 'Tidak ada data', className: 'text-center' },
+				{ data: 'action', name: 'action', orderable: false, searchable: false}
+			],
+			language: {
+				emptyTable: "Belum Ada Data",
+			},
+		});
+
+		// Event Listener for "Lepas Venti" Button
+        $(document).ready(function() {
+			$(document).on('click', '.release-venti', function (e) {
+				e.preventDefault(); // Mencegah reload halaman
+
+				const ventiId = $(this).data('id'); // Ambil ID dari atribut data-id
+				$('#confirmationModal').fadeIn(); // Tampilkan modal
+
+				// Konfirmasi aksi
+				$('#confirmButton').off('click').on('click', function () {
+					$.ajax({
+						url: `/ventilators/${ventiId}/release`, // Endpoint backend
+						type: 'POST',
+						data: {
+							_token: '{{ csrf_token() }}', // Sertakan CSRF token
+						},
+						success: function (response) {
+							alert(response.message); // Tampilkan pesan sukses
+							location.reload(); // Reload halaman untuk update data
+						},
+						error: function (xhr) {
+							alert(xhr.responseJSON.message || 'Terjadi kesalahan.');
+						}
+					});
+
+					$('#confirmationModal').fadeOut(); // Sembunyikan modal setelah konfirmasi
+				});
+
+				// Batalkan aksi
+				$('#cancelButton').off('click').on('click', function () {
+					$('#confirmationModal').fadeOut(); // Sembunyikan modal
+				});
+			});
+
+		});
+    });
 </script>
 @endpush
 

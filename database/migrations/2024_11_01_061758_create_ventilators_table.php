@@ -17,6 +17,7 @@ return new class extends Migration
             $table->uuid('user_id');
 
             $table->timestamp('venti_datetime')->nullable();
+            $table->timestamp('venti_usagetime')->nullable();
             $table->string('mode_venti')->nullable();
             $table->decimal('ipl')->nullable();
             $table->decimal('peep')->nullable();
