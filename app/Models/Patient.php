@@ -40,7 +40,7 @@ class Patient extends Model
 
     public function icuRoom()
     {
-        return $this->hasOne(IcuRoom::class, 'patient_id', 'id');
+        return $this->hasMany(IcuRoom::class, 'patient_id', 'id');
     }
 
     public function transferRoom()
@@ -51,6 +51,11 @@ class Patient extends Model
     public function intubation()
     {
         return $this->hasOne(Intubation::class, 'patient_id', 'id');
+    }
+
+    public function venti()
+    {
+        return $this->hasMany(Ventilator::class, 'patient_id', 'id');
     }
 
     public function extubation()

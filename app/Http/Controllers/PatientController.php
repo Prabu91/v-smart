@@ -179,9 +179,7 @@ class PatientController extends Controller
                             Detail
                         </a>'
                 ];
-            }
-
-            
+            }          
         
             return response()->json([
                 'draw' => intval($request->input('draw')),
@@ -222,13 +220,50 @@ class PatientController extends Controller
         //
     }
 
+    // public function exportPdf($patientId)
+    // {
+    //     $patient = Patient::with('originRoom', 'icuRoom', 'intubation', 'extubation', 'transferRoom') 
+    //                     ->findOrFail($patientId);
+
+    //     $icuRoomsByDate = $patient->icuRoom->groupBy(function ($room) {
+    //         return Carbon::parse($room->icu_room_datetime)->toDateString();
+    //     });
+
+
+    //     $pdf = Pdf::loadView('patients.export', [
+    //                 'patient' => $patient,
+    //                 'icuRoomsByDate' => $icuRoomsByDate
+    //             ]);
+
+    //     return $pdf->download('Detail_Patient_' . $patient->id . '.pdf');
+    // }
+
     public function exportPdf($patientId)
     {
-        $patient = Patient::with('originRoom', 'icuRoom', 'intubation', 'extubation', 'transferRoom') 
-                        ->findOrFail($patientId);
+        $patient = Patient::with([
+            'originRoom',
+            'icuRoom',
+            'intubation',
+            'extubation',
+            'venti',
+            'transferRoom'
+        ])->findOrFail($patientId);
 
-        $pdf = Pdf::loadView('patients.export', compact('patient'));
+        $icuRoomsByDate = $patient->icuRoom
+        ->sortBy(function ($room) {
+            return Carbon::parse($room->icu_room_datetime)->toDateString();
+        })
+        ->groupBy(function ($room) {
+            return Carbon::parse($room->icu_room_datetime)->toDateString();
+        });
+
+            
+        $pdf = Pdf::loadView('patients.export', [
+            'patient' => $patient,
+            'icuRoomsByDate' => $icuRoomsByDate
+        ]);
 
         return $pdf->download('Detail_Patient_' . $patient->id . '.pdf');
     }
+
 }

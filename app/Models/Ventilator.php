@@ -36,12 +36,10 @@ class Ventilator extends Model
         });
     }
     
-    // Model Ventilator.php
-    public function icuRooms()
+    public function icu()
     {
         return $this->hasMany(IcuRoom::class, 'ventilator_id', 'id');
     }
-
     
     public function patient()
     {

@@ -519,196 +519,198 @@
 		@endif
 	</div>
 
-	<div class="bg-white shadow-md rounded-lg p-6 my-4">
-		<div class="flex items-center justify-between mb-6">
-			<h2 class="text-2xl text-left font-bold mb-6">Pindah Ruangan Pasien</h2>
-			@if($extubation && $extubation->patient_status === 'Tidak Meninggal' && !$transfer)
-				<a href="{{ route('transfer-rooms.create') }}?patient_id={{ $patient->id }}" class="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded float-right mx-4">
-					Tambah Data Pindah Ruangan
-				</a>
+	@if ($transfer)	
+		<div class="bg-white shadow-md rounded-lg p-6 my-4">
+			<div class="flex items-center justify-between mb-6">
+				<h2 class="text-2xl text-left font-bold mb-6">Pindah Ruangan Pasien</h2>
+				@if($extubation && $extubation->patient_status === 'Tidak Meninggal' && !$transfer)
+					<a href="{{ route('transfer-rooms.create') }}?patient_id={{ $patient->id }}" class="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded float-right mx-4">
+						Tambah Data Pindah Ruangan
+					</a>
+				@endif
+			</div>
+
+			@if ($transfer)
+			<table>
+				<tr>
+					<td>Waktu dan Tanggal Pindah Ruangan</td>
+					<td class="px-4">:</td>
+					<td>
+						@if($transfer && $transfer->transfer_room_datetime)
+							{{ Carbon::parse($transfer->transfer_room_datetime)->format('H:i d/m/Y') }}
+						@else
+							Tidak ada data
+						@endif
+					</td>			
+				</tr>
+				<tr>
+					<td>Nama Ruangan</td>
+					<td class="px-4">:</td>
+					<td>
+						@if($transfer && $transfer->transfer_room_name)
+						{{ $transfer->transfer_room_name }}
+						@else
+						Tidak ada data
+						@endif
+					</td>
+				</tr>
+				<tr>
+					<td>Diagnosa Utama</td>
+					<td class="px-4">:</td>
+					<td>
+						@if($transfer && $transfer->main_diagnose)
+						{{ $transfer->main_diagnose }}
+						@else
+						Tidak ada data
+						@endif
+					</td>
+				</tr>
+				<tr>
+					<td>Diagnosa Sekunder</td>
+					<td class="px-4">:</td>
+					<td>
+						@if($transfer && $transfer->secondary_diagnose)
+						{{ $transfer->secondary_diagnose }}
+						@else
+						Tidak ada data
+						@endif
+					</td>
+				</tr>
+				<tr>
+					<td>Hasil Lab Kultur</td>
+					<td class="px-4">:</td>
+					<td>
+						@if($transfer && $transfer->lab_culture_data)
+						{{ $transfer->lab_culture_data }}
+						@else
+						Tidak ada data
+						@endif
+					</td>
+				</tr>
+			</table>
+
+			<h2 class="text-xl font-bold my-4">Hasil Lab</h2>
+			<table>
+				<tr>
+					<td>Hb</td>
+					<td class="px-4">:</td>
+					<td>
+						@if($transfer && $transfer->labResult->hb)
+						{{ $transfer->labResult->hb }} g/dL
+						@else
+						Tidak ada data
+						@endif
+					</td>
+				</tr>
+				<tr>
+					<td>Leukosit</td>
+					<td class="px-4">:</td>
+					<td>
+						@if($transfer && $transfer->labResult->leukosit)
+						{{ $transfer->labResult->leukosit }} /µL
+						@else
+						Tidak ada data
+						@endif
+					</td>
+				</tr>
+				<tr>
+					<td>PCV</td>
+					<td class="px-4">:</td>
+					<td>
+						@if($transfer && $transfer->labResult->pcv)
+						{{ $transfer->labResult->pcv }} %
+						@else
+						Tidak ada data
+						@endif
+					</td>
+				</tr>
+				<tr>
+					<td>Trombosit</td>
+					<td class="px-4">:</td>
+					<td>
+						@if($transfer && $transfer->labResult->trombosit)
+						{{ $transfer->labResult->trombosit }} /µL
+						@else
+						Tidak ada data
+						@endif
+					</td>
+				</tr>
+				<tr>
+					<td>Kreatinin</td>
+					<td class="px-4">:</td>
+					<td>
+						@if($transfer && $transfer->labResult->kreatinin)
+						{{ $transfer->labResult->kreatinin }} mg/dL
+						@else
+						Tidak ada data
+						@endif
+					</td>
+				</tr>
+			</table>
+
+			<h2 class="text-xl text-left font-bold mt-6">TTV</h2>
+						<table>
+							<tr>
+								<td>TD</td>
+								<td class="px-2">:</td>
+								<td>
+									@if($transfer && $transfer->ttv->sistolik && $transfer->ttv->diastolik)
+									{{ $transfer->ttv->sistolik }} / {{ $transfer->ttv->diastolik }}
+									@else
+									Tidak ada data
+									@endif
+								</td>
+							</tr>
+							<tr>
+								<td>Suhu</td>
+								<td class="px-2">:</td>
+								<td>
+									@if($transfer && $transfer->ttv->suhu)
+									{{ $transfer->ttv->suhu }} °C
+									@else
+									Tidak ada data
+									@endif
+								</td>
+							</tr>
+							<tr>
+								<td>Nadi</td>
+								<td class="px-2">:</td>
+								<td>
+									@if($transfer && $transfer->ttv->nadi)
+									{{ $transfer->ttv->nadi }} bpm
+									@else
+									Tidak ada data
+									@endif
+								</td>
+							</tr>
+							<tr>
+								<td>RR</td>
+								<td class="px-2">:</td>
+								<td>
+									@if($transfer && $transfer->ttv->rr)
+									{{ $transfer->ttv->rr }} kali per menit
+									@else
+									Tidak ada data
+									@endif
+								</td>
+							</tr>
+							<tr>
+								<td>SpO<sub>2</sub></td>
+								<td class="px-2">:</td>
+								<td>
+									@if($transfer && $transfer->ttv->spo2)
+									{{ $transfer->ttv->spo2 }} %
+									@else
+									Tidak ada data
+									@endif
+								</td>
+							</tr>
+						</table>
+			@else
+			<p>Tidak Ada Data</p>
 			@endif
 		</div>
-
-		@if ($transfer)
-		<table>
-			<tr>
-				<td>Waktu dan Tanggal Pindah Ruangan</td>
-				<td class="px-4">:</td>
-				<td>
-					@if($transfer && $transfer->transfer_room_datetime)
-						{{ Carbon::parse($transfer->transfer_room_datetime)->format('H:i d/m/Y') }}
-					@else
-						Tidak ada data
-					@endif
-				</td>			
-			</tr>
-			<tr>
-				<td>Nama Ruangan</td>
-				<td class="px-4">:</td>
-				<td>
-					@if($transfer && $transfer->transfer_room_name)
-					{{ $transfer->transfer_room_name }}
-					@else
-					Tidak ada data
-					@endif
-				</td>
-			</tr>
-			<tr>
-				<td>Diagnosa Utama</td>
-				<td class="px-4">:</td>
-				<td>
-					@if($transfer && $transfer->main_diagnose)
-					{{ $transfer->main_diagnose }}
-					@else
-					Tidak ada data
-					@endif
-				</td>
-			</tr>
-			<tr>
-				<td>Diagnosa Sekunder</td>
-				<td class="px-4">:</td>
-				<td>
-					@if($transfer && $transfer->secondary_diagnose)
-					{{ $transfer->secondary_diagnose }}
-					@else
-					Tidak ada data
-					@endif
-				</td>
-			</tr>
-			<tr>
-				<td>Hasil Lab Kultur</td>
-				<td class="px-4">:</td>
-				<td>
-					@if($transfer && $transfer->lab_culture_data)
-					{{ $transfer->lab_culture_data }}
-					@else
-					Tidak ada data
-					@endif
-				</td>
-			</tr>
-		</table>
-
-		<h2 class="text-xl font-bold my-4">Hasil Lab</h2>
-		<table>
-			<tr>
-				<td>Hb</td>
-				<td class="px-4">:</td>
-				<td>
-					@if($transfer && $transfer->labResult->hb)
-					{{ $transfer->labResult->hb }} g/dL
-					@else
-					Tidak ada data
-					@endif
-				</td>
-			</tr>
-			<tr>
-				<td>Leukosit</td>
-				<td class="px-4">:</td>
-				<td>
-					@if($transfer && $transfer->labResult->leukosit)
-					{{ $transfer->labResult->leukosit }} /µL
-					@else
-					Tidak ada data
-					@endif
-				</td>
-			</tr>
-			<tr>
-				<td>PCV</td>
-				<td class="px-4">:</td>
-				<td>
-					@if($transfer && $transfer->labResult->pcv)
-					{{ $transfer->labResult->pcv }} %
-					@else
-					Tidak ada data
-					@endif
-				</td>
-			</tr>
-			<tr>
-				<td>Trombosit</td>
-				<td class="px-4">:</td>
-				<td>
-					@if($transfer && $transfer->labResult->trombosit)
-					{{ $transfer->labResult->trombosit }} /µL
-					@else
-					Tidak ada data
-					@endif
-				</td>
-			</tr>
-			<tr>
-				<td>Kreatinin</td>
-				<td class="px-4">:</td>
-				<td>
-					@if($transfer && $transfer->labResult->kreatinin)
-					{{ $transfer->labResult->kreatinin }} mg/dL
-					@else
-					Tidak ada data
-					@endif
-				</td>
-			</tr>
-		</table>
-
-		<h2 class="text-xl text-left font-bold mt-6">TTV</h2>
-					<table>
-						<tr>
-							<td>TD</td>
-							<td class="px-2">:</td>
-							<td>
-								@if($transfer && $transfer->ttv->sistolik && $transfer->ttv->diastolik)
-								{{ $transfer->ttv->sistolik }} / {{ $transfer->ttv->diastolik }}
-								@else
-								Tidak ada data
-								@endif
-							</td>
-						</tr>
-						<tr>
-							<td>Suhu</td>
-							<td class="px-2">:</td>
-							<td>
-								@if($transfer && $transfer->ttv->suhu)
-								{{ $transfer->ttv->suhu }} °C
-								@else
-								Tidak ada data
-								@endif
-							</td>
-						</tr>
-						<tr>
-							<td>Nadi</td>
-							<td class="px-2">:</td>
-							<td>
-								@if($transfer && $transfer->ttv->nadi)
-								{{ $transfer->ttv->nadi }} bpm
-								@else
-								Tidak ada data
-								@endif
-							</td>
-						</tr>
-						<tr>
-							<td>RR</td>
-							<td class="px-2">:</td>
-							<td>
-								@if($transfer && $transfer->ttv->rr)
-								{{ $transfer->ttv->rr }} kali per menit
-								@else
-								Tidak ada data
-								@endif
-							</td>
-						</tr>
-						<tr>
-							<td>SpO<sub>2</sub></td>
-							<td class="px-2">:</td>
-							<td>
-								@if($transfer && $transfer->ttv->spo2)
-								{{ $transfer->ttv->spo2 }} %
-								@else
-								Tidak ada data
-								@endif
-							</td>
-						</tr>
-					</table>
-		@else
-		<p>Tidak Ada Data</p>
-		@endif
-	</div>
+	@endif
 
 	<!-- Modal -->
 	<div id="confirmationModal" class="fixed inset-0 z-50 hidden bg-gray-800 bg-opacity-75 flex items-center justify-center">

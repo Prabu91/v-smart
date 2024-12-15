@@ -74,14 +74,14 @@ class IcuRoom extends Model
         return $this->belongsTo(Ttv::class, 'ttv_id', 'id');
     }
 
-    public function venti()
-    {
-        return $this->belongsTo(Ventilator::class, 'ventilator_id', 'id'); // Sesuaikan foreign key dan local key
-    }
-
     public function elektrolit()
     {
         return $this->belongsTo(Elektrolit::class, 'elektrolit_id', 'id');
+    }
+
+    public function venti()
+    {
+        return $this->belongsTo(Ventilator::class, 'ventilator_id', 'id');
     }
     
 }
