@@ -23,12 +23,12 @@ class DashboardController extends Controller
             ->count();
 
         if ($user->role === 'user') {
-            $patients = Patient::with(['icuRoom', 'intubation', 'extubation', 'originRoom', 'transferRoom'])
+            $patients = Patient::with(['icuDash', 'intubation', 'extubation', 'originRoom', 'transferRoom'])
                 ->where('user_id', $user->id) 
                 ->select(['id', 'name', 'no_jkn', 'updated_at'])
                 ->get();
         } else {
-            $patients = Patient::with(['icuRoom', 'extubation', 'originRoom', 'transferRoom', 'user.user_detail']) 
+            $patients = Patient::with(['icuDash', 'extubation', 'originRoom', 'transferRoom', 'user.user_detail']) 
                 ->select(['id', 'name', 'no_jkn', 'user_id', 'updated_at'])
                 ->get()
                 ->map(function ($patients) {
@@ -53,12 +53,12 @@ class DashboardController extends Controller
                 })
                 ->addColumn('room', function ($patient) {
                     return $patient->originRoom->origin_room_name ??
-                        $patient->icuRoom->icu_room_name ??
+                        $patient->icuDash->icu_room_name ??
                         $patient->transferRoom->transfer_room_name ?? '-';
                 })
                 ->addColumn('room_date', function ($patient) {
                     return $patient->originRoom->origin_room_datetime ??
-                        $patient->icuRoom->icu_room_datetime ??
+                        $patient->icuDash->icu_room_datetime ??
                         $patient->transferRoom->transfer_room_datetime ?? '-';
                 })
                 ->addColumn('updated_time', function ($patient) {

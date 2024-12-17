@@ -33,7 +33,7 @@
 						<div class="relative">
 							<select name="lab_culture_data" id="lab_culture_data" 
 									class="mt-1 block w-full px-3 py-2 border @error('lab_culture_data') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm">
-								<option value="" disabled selected>Pilih Kondisi Pasien</option>
+								<option value="" disabled selected>Hasil Lab Kultur</option>
 								<option value="Ada">Ada</option>
 								<option value="Tidak Ada">Tidak Ada</option>
 							</select>

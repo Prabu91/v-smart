@@ -38,6 +38,11 @@ class Patient extends Model
         return $this->hasOne(OriginRoom::class, 'patient_id', 'id');
     }
 
+    public function icuDash()
+    {
+        return $this->hasOne(IcuRoom::class, 'patient_id', 'id');
+    }
+
     public function icuRoom()
     {
         return $this->hasMany(IcuRoom::class, 'patient_id', 'id');

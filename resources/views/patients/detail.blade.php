@@ -8,31 +8,37 @@
 <div class="container mx-auto p-6">
     <h1 class="text-3xl text-center font-bold mb-10">Detail Data Pasien ICU</h1>
 	{{-- Data Pasien --}}
-	<div class="bg-white shadow-md rounded-lg p-6 my-4">
-		{{-- <h2 class="text-2xl text-left font-bold mb-6">Pasi</h2> --}}
-		<a href="{{ route('patients.export-pdf', $patient->id) }}" 
-			class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">
-			Download PDF
-		</a>
-		
+	<div class="bg-white shadow-md rounded-lg p-6 my-4 relative">
+		<!-- Button Section -->
+		@if (($extubation && $extubation->patient_status === 'meninggal') || ($extubation && $extubation->patient_status !== 'meninggal' && $transfer))
+			<div class="flex justify-end mb-4">
+				<a href="{{ route('patients.export-pdf', $patient->id) }}" 
+					class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">
+					Download PDF
+				</a>
+			</div>
+		@endif
+	
+		<!-- Table Section -->
 		<table>
 			<tr>
-				<td>Nama Pasien</td>
+				<td class="font-semibold">Nama Pasien</td>
 				<td class="px-4">:</td>
 				<td>{{ $patient->name }}</td>
 			</tr>
 			<tr>
-				<td>No Kartu JKN</td>
+				<td class="font-semibold">No Kartu JKN</td>
 				<td class="px-4">:</td>
 				<td>{{ $patient->no_jkn }}</td>
 			</tr>
 			<tr>
-				<td>No Rekam Medis</td>
+				<td class="font-semibold">No Rekam Medis</td>
 				<td class="px-4">:</td>
 				<td>{{ $patient->no_rm }}</td>
 			</tr>
 		</table>
 	</div>
+	
 	
 	{{-- OriginRoom --}}
 	<div class="bg-white shadow-md rounded-lg p-6 my-4">
@@ -218,308 +224,304 @@
 		@endif
 
 	</div>
-	<div class="bg-white shadow-xl rounded-lg p-6 my-4">
-		<div class="flex items-center justify-between mb-6">
-			<h2 class="text-2xl font-bold mb-6">Data Ruang Intensif</h2>
-			{{-- Container for Buttons --}}
-			<div class="flex space-x-4 ml-auto">
-				@if ($origin)
-					@if(!$icu && !$intubations)
-					<a href="{{ route('intubations.create') }}?patient_id={{ $patient->id }}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
-						Tambah Data Intubasi
-					</a>	
-					@elseif(!$extubation)
-					<a href="{{ route('icu-rooms.create') }}?patient_id={{ $patient->id }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
-						Data Ruang Intensif
-					</a>
+
+	@if ($origin)
+		<div class="bg-white shadow-xl rounded-lg p-6 my-4">
+			<div class="flex items-center justify-between mb-6">
+				<h2 class="text-3xl font-bold mb-6">Data Ruang Intensif</h2>
+				{{-- Container for Buttons --}}
+				<div class="flex space-x-4 ml-auto">
+					@if ($origin)
+						@if(!$icu && !$intubations)
+						<a href="{{ route('intubations.create') }}?patient_id={{ $patient->id }}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
+							Tambah Data Intubasi
+						</a>	
+						@elseif(!$extubation)
+						<a href="{{ route('icu-rooms.create') }}?patient_id={{ $patient->id }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+							Data Ruang Intensif
+						</a>
+						@endif
 					@endif
-				@endif
 
-				@if ($icu && !$extubation)
-					<a href="{{ route('extubations.create') }}?patient_id={{ $patient->id }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
-						Tambah Data Extubasi
-					</a>
-				@endif
+					@if ($icu && !$extubation)
+						<a href="{{ route('extubations.create') }}?patient_id={{ $patient->id }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+							Tambah Data Extubasi
+						</a>
+					@endif
+				</div>
 			</div>
-		</div>
 
-		{{-- INTUBATION --}}
-		@if ($intubations)
-		<div class="bg-slate-100 shadow-md rounded-lg p-6 my-4">
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-				<div>
-					<h2 class="text-2xl font-bold mb-4">
-						Intubasi | Ruangan : {{ $intubations->intubation_location }}
-					</h2>
-					<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-						<div>
-							<table>
-								<tr>
-									<td>Waktu Intubasi</td>
-									<td class="px-2">:</td>
-									<td>{{ Carbon::parse($intubations->intubation_datetime)->format('H:i d/m/Y') }}</td>
-								</tr>
-								<tr>
-									<td>Dokter Intubasi</td>
-									<td class="px-2">:</td>
-									<td>{{ $intubations->dr_intubation ?? 'Tidak ada data' }}</td>
-								</tr>
-								<tr>
-									<td>Dokter Konsulan</td>
-									<td class="px-2">:</td>
-									<td>{{ $intubations->dr_consultant ?? 'Tidak ada data' }}</td>
-								</tr>
-							</table>
+			{{-- INTUBATION --}}
+			@if ($intubations)
+			<div class="bg-slate-100 shadow-md rounded-lg p-6 my-4">
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<div>
+						<h2 class="text-2xl font-bold mb-4">
+							Intubasi | Ruangan : {{ $intubations->intubation_location }}
+						</h2>
+						<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+							<div>
+								<table>
+									<tr>
+										<td>Waktu Intubasi</td>
+										<td class="px-2">:</td>
+										<td>{{ Carbon::parse($intubations->intubation_datetime)->format('H:i d/m/Y') }}</td>
+									</tr>
+									<tr>
+										<td>Dokter Intubasi</td>
+										<td class="px-2">:</td>
+										<td>{{ $intubations->dr_intubation ?? 'Tidak ada data' }}</td>
+									</tr>
+									<tr>
+										<td>Dokter Konsulan</td>
+										<td class="px-2">:</td>
+										<td>{{ $intubations->dr_consultant ?? 'Tidak ada data' }}</td>
+									</tr>
+								</table>
+							</div>
+							<div>
+								<table>
+									<tr>
+										<td>Pre Intubasi</td>
+										<td class="px-2">:</td>
+										<td>{{ $intubations->pre_intubation ?? 'Tidak ada data' }}</td>
+									</tr>
+									<tr>
+										<td>Post Intubasi</td>
+										<td class="px-2">:</td>
+										<td>{{ $intubations->post_intubation ?? 'Tidak ada data' }}</td>
+									</tr>
+									<tr>
+										<td>Therapy</td>
+										<td class="px-2">:</td>
+										<td>{{ $intubations->therapy_type ?? 'Tidak ada data' }}</td>
+									</tr>
+									<tr>
+										<td>ETT / Kedalaman</td>
+										<td class="px-2">:</td>
+										<td>
+											{{ $intubations && $intubations->diameter && $intubations->depth ? $intubations->diameter . ' mm / ' . $intubations->depth . ' cm' : '0 mm / 0 cm' }}
+										</td>
+									</tr>
+								</table>
+							</div>
 						</div>
-						<div>
+					</div>
+
+					<div>
+						<h2 class="text-xl text-left font-bold mb-4">TTV</h2>
 							<table>
 								<tr>
-									<td>Pre Intubasi</td>
-									<td class="px-2">:</td>
-									<td>{{ $intubations->pre_intubation ?? 'Tidak ada data' }}</td>
-								</tr>
-								<tr>
-									<td>Post Intubasi</td>
-									<td class="px-2">:</td>
-									<td>{{ $intubations->post_intubation ?? 'Tidak ada data' }}</td>
-								</tr>
-								<tr>
-									<td>Therapy</td>
-									<td class="px-2">:</td>
-									<td>{{ $intubations->therapy_type ?? 'Tidak ada data' }}</td>
-								</tr>
-								<tr>
-									<td>ETT / Kedalaman</td>
+									<td>TD</td>
 									<td class="px-2">:</td>
 									<td>
-										{{ $intubations && $intubations->diameter && $intubations->depth ? $intubations->diameter . ' mm / ' . $intubations->depth . ' cm' : '0 mm / 0 cm' }}
+										{{ $intubations && $intubations->ttv->sistolik && $intubations->ttv->diastolik ? $intubations->ttv->sistolik . ' / ' . $intubations->ttv->diastolik : '0' }}
+									</td>
+								</tr>
+								<tr>
+									<td>Suhu</td>
+									<td class="px-2">:</td>
+									<td>
+										{{ $intubations->ttv->suhu ?? '0'}} °C
+									</td>
+								</tr>
+								<tr>
+									<td>Nadi</td>
+									<td class="px-2">:</td>
+									<td>
+										{{ $intubations->ttv->nadi ?? '0'}} bpm
+									</td>
+								</tr>
+								<tr>
+									<td>RR</td>
+									<td class="px-2">:</td>
+									<td>
+										{{ $intubations->ttv->rr ?? '0' }} kali per menit
+									</td>
+								</tr>
+								<tr>
+									<td>SpO<sub>2</sub></td>
+									<td class="px-2">:</td>
+									<td>
+										{{ $intubations->ttv->spo2 ?? '0'}} %
 									</td>
 								</tr>
 							</table>
-						</div>
 					</div>
 				</div>
 
-				<div>
-					<h2 class="text-xl text-left font-bold mb-4">TTV</h2>
-						<table>
-							<tr>
-								<td>TD</td>
-								<td class="px-2">:</td>
-								<td>
-									{{ $intubations && $intubations->ttv->sistolik && $intubations->ttv->diastolik ? $intubations->ttv->sistolik . ' / ' . $intubations->ttv->diastolik : '0' }}
-								</td>
-							</tr>
-							<tr>
-								<td>Suhu</td>
-								<td class="px-2">:</td>
-								<td>
-									{{ $intubations->ttv->suhu ?? '0'}} °C
-								</td>
-							</tr>
-							<tr>
-								<td>Nadi</td>
-								<td class="px-2">:</td>
-								<td>
-									{{ $intubations->ttv->nadi ?? '0'}} bpm
-								</td>
-							</tr>
-							<tr>
-								<td>RR</td>
-								<td class="px-2">:</td>
-								<td>
-									{{ $intubations->ttv->rr ?? '0' }} kali per menit
-								</td>
-							</tr>
-							<tr>
-								<td>SpO<sub>2</sub></td>
-								<td class="px-2">:</td>
-								<td>
-									{{ $intubations->ttv->spo2 ?? '0'}} %
-								</td>
-							</tr>
-						</table>
-				</div>
-			</div>
-
-
-
-			{{-- Cek Extubation --}}
-			@if ($intubations->extubation)
-				<p>Waktu Extubasi: 
-					{{ Carbon::parse($intubations->intubation_datetime)->diffForHumans(Carbon::parse($intubations->extubation->extubation_datetime), true) }}
-				</p>
-			@endif
-
-		</div>
-		@endif
-		
-		{{-- Data Intensif --}}
-		@if ($icu)
-		<div class="bg-slate-100 shadow-md rounded-lg p-6 my-4">
-			<table id="icu-table" class="table-auto w-full text-left">
-				<thead>
-					<tr>
-						<th>No</th>
-						<th>Tanggal dan Waktu Periksa</th>
-						<th>Ruangan/Bed</th>
-						<th>Elektrolit</th>
-						<th>Hb/Leukosit</th>
-						<th>Albumin/Laktat</th>
-						<th>AGD<br>(ph/pCO2)</th>
-						<th>TTV<br>(TD, Nadi)</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-			</table> 
-
-			<h2 class="text-2xl font-bold my-10">Data Ventilator</h2>
-			<table id="venti-table" class="table-auto w-full text-left">
-				<thead>
-					<tr>
-						<th>No</th>
-						<th>Tanggal dan Waktu Mulai</th>
-						<th>Mode Ventilator</th>
-						<th>Parameter<br>FiO<sub>2</sub> , PEEP</th>
-						<th>Durasi Penggunaan Venti</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-			</table> 
-		</div>
-		@else
-			<p>Tidak Ada Data</p>
-		@endif
-		{{-- End Data Intensif --}}
-
-		
-
-
-		{{-- EXTUBATION --}}
-		@if ($extubation)
-		<div class="bg-slate-200 shadow-md rounded-lg p-6 my-4">
-			<h2 class="text-2xl text-left font-bold mb-6">Extubasi Pasien</h2>
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-				<div>
-					<table class="my-4">
-						<tr>
-							<td>Tanggal dan Waktu Extubasi</td>
-							<td class="px-4">:</td>
-							<td>
-								@if($extubation && $extubation->extubation_datetime)
-									{{ Carbon::parse($extubation->extubation_datetime)->format('H:i d/m/Y') }}
-								@else
-									Tidak ada data
-								@endif
-							</td>
-						</tr>
-						<tr>
-							<td>Therapi Persiapan Ekstubasi</td>
-							<td class="px-4">:</td>
-							<td>
-								@if($extubation && $extubation->preparation_extubation_therapy)
-									{{ $extubation->preparation_extubation_therapy }}
-								@else
-									Tidak ada data
-								@endif
-							</td>
-						</tr>
-						<tr>
-							<td>Tindakan Ekstubasi</td>
-							<td class="px-4">:</td>
-							<td>
-								@if($extubation && $extubation->extubation)
-									{{ $extubation->extubation }}
-								@else
-									Tidak ada data
-								@endif
-							</td>
-						</tr>
-						<tr>
-							<td>Nebulizer</td>
-							<td class="px-4">:</td>
-							<td>
-								@if($extubation && $extubation->nebulizer)
-									{{ $extubation->nebulizer }}
-								@else
-									Tidak ada data
-								@endif
-							</td>
-						</tr>
-						<tr>
-							<td>Therapy Extubation</td>
-							<td class="px-4">:</td>
-							<td>
-								@if($extubation && $extubation->preparation_extubation_therapy)
-									{{ $extubation->preparation_extubation_therapy }}
-								@else
-									Tidak ada data
-								@endif
-							</td>
-						</tr>
-						<tr>
-							<td>Kondisi Pasien</td>
-							<td class="px-4">:</td>
-							<td>
-								@if($extubation && $extubation->patient_status)
-									{{ $extubation->patient_status }}
-								@else
-									Tidak ada data
-								@endif
-							</td>
-						</tr>
-					</table>
-				</div>
-
-				@if($extubation->ttv)
-				<div>
-					<h2 class="text-xl text-left font-bold mb-4">TTV</h2>
-						<table>
-							<tr>
-								<td>TD</td>
-								<td class="px-2">:</td>
-								<td>
-									{{ $extubation && $extubation->ttv->sistolik && $extubation->ttv->diastolik ? $extubation->ttv->sistolik . ' / ' . $extubation->ttv->diastolik : '0' }}
-								</td>
-							</tr>
-							<tr>
-								<td>Suhu</td>
-								<td class="px-2">:</td>
-								<td>
-									{{ $extubation->ttv->suhu ?? '0'}} °C
-								</td>
-							</tr>
-							<tr>
-								<td>Nadi</td>
-								<td class="px-2">:</td>
-								<td>
-									{{ $extubation->ttv->nadi ?? '0'}} bpm
-								</td>
-							</tr>
-							<tr>
-								<td>RR</td>
-								<td class="px-2">:</td>
-								<td>
-									{{ $extubation->ttv->rr ?? '0' }} kali per menit
-								</td>
-							</tr>
-							<tr>
-								<td>SpO<sub>2</sub></td>
-								<td class="px-2">:</td>
-								<td>
-									{{ $extubation->ttv->spo2 ?? '0'}} %
-								</td>
-							</tr>
-						</table>
-				</div>
+				{{-- Cek Extubation --}}
+				@if ($intubations->extubation)
+					<p>Waktu Extubasi: 
+						{{ Carbon::parse($intubations->intubation_datetime)->diffForHumans(Carbon::parse($intubations->extubation->extubation_datetime), true) }}
+					</p>
 				@endif
-			</div>
-			
-		</div>
-		@endif
-	</div>
 
-	@if ($transfer)	
+			</div>
+			@endif
+			
+			{{-- Data Intensif --}}
+			@if ($icu)
+			<div class="bg-slate-100 shadow-md rounded-lg p-6 my-4">
+				<table id="icu-table" class="table-auto w-full text-left">
+					<thead>
+						<tr>
+							<th>No</th>
+							<th>Tanggal dan Waktu Periksa</th>
+							<th>Ruangan/Bed</th>
+							<th>Elektrolit</th>
+							<th>Hb/Leukosit</th>
+							<th>Albumin/Laktat</th>
+							<th>AGD<br>(ph/pCO2)</th>
+							<th>TTV<br>(TD, Nadi)</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+				</table> 
+
+				<h2 class="text-2xl font-bold my-10">Data Ventilator</h2>
+				<table id="venti-table" class="table-auto w-full text-left">
+					<thead>
+						<tr>
+							<th>No</th>
+							<th>Tanggal dan Waktu Mulai</th>
+							<th>Mode Ventilator</th>
+							<th>Parameter<br>FiO<sub>2</sub> , PEEP</th>
+							<th>Durasi Penggunaan Venti</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+				</table> 
+			</div>
+			@endif
+			{{-- End Data Intensif --}}
+
+			{{-- EXTUBATION --}}
+			@if ($extubation)
+			<div class="bg-slate-200 shadow-md rounded-lg p-6 my-4">
+				<h2 class="text-2xl text-left font-bold mb-6">Extubasi Pasien</h2>
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<div>
+						<table class="my-4">
+							<tr>
+								<td>Tanggal dan Waktu Extubasi</td>
+								<td class="px-4">:</td>
+								<td>
+									@if($extubation && $extubation->extubation_datetime)
+										{{ Carbon::parse($extubation->extubation_datetime)->format('H:i d/m/Y') }}
+									@else
+										Tidak ada data
+									@endif
+								</td>
+							</tr>
+							<tr>
+								<td>Therapi Persiapan Ekstubasi</td>
+								<td class="px-4">:</td>
+								<td>
+									@if($extubation && $extubation->preparation_extubation_therapy)
+										{{ $extubation->preparation_extubation_therapy }}
+									@else
+										Tidak ada data
+									@endif
+								</td>
+							</tr>
+							<tr>
+								<td>Tindakan Ekstubasi</td>
+								<td class="px-4">:</td>
+								<td>
+									@if($extubation && $extubation->extubation)
+										{{ $extubation->extubation }}
+									@else
+										Tidak ada data
+									@endif
+								</td>
+							</tr>
+							<tr>
+								<td>Nebulizer</td>
+								<td class="px-4">:</td>
+								<td>
+									@if($extubation && $extubation->nebulizer)
+										{{ $extubation->nebulizer }}
+									@else
+										Tidak ada data
+									@endif
+								</td>
+							</tr>
+							<tr>
+								<td>Therapy Extubation</td>
+								<td class="px-4">:</td>
+								<td>
+									@if($extubation && $extubation->preparation_extubation_therapy)
+										{{ $extubation->preparation_extubation_therapy }}
+									@else
+										Tidak ada data
+									@endif
+								</td>
+							</tr>
+							<tr>
+								<td>Kondisi Pasien</td>
+								<td class="px-4">:</td>
+								<td>
+									@if($extubation && $extubation->patient_status)
+										{{ $extubation->patient_status }}
+									@else
+										Tidak ada data
+									@endif
+								</td>
+							</tr>
+						</table>
+					</div>
+
+					@if($extubation->ttv)
+					<div>
+						<h2 class="text-xl text-left font-bold mb-4">TTV</h2>
+							<table>
+								<tr>
+									<td>TD</td>
+									<td class="px-2">:</td>
+									<td>
+										{{ $extubation && $extubation->ttv->sistolik && $extubation->ttv->diastolik ? $extubation->ttv->sistolik . ' / ' . $extubation->ttv->diastolik : '0' }}
+									</td>
+								</tr>
+								<tr>
+									<td>Suhu</td>
+									<td class="px-2">:</td>
+									<td>
+										{{ $extubation->ttv->suhu ?? '0'}} °C
+									</td>
+								</tr>
+								<tr>
+									<td>Nadi</td>
+									<td class="px-2">:</td>
+									<td>
+										{{ $extubation->ttv->nadi ?? '0'}} bpm
+									</td>
+								</tr>
+								<tr>
+									<td>RR</td>
+									<td class="px-2">:</td>
+									<td>
+										{{ $extubation->ttv->rr ?? '0' }} kali per menit
+									</td>
+								</tr>
+								<tr>
+									<td>SpO<sub>2</sub></td>
+									<td class="px-2">:</td>
+									<td>
+										{{ $extubation->ttv->spo2 ?? '0'}} %
+									</td>
+								</tr>
+							</table>
+					</div>
+					@endif
+				</div>
+				
+			</div>
+			@endif
+		</div>
+	@endif
+
+	@if ($extubation)	
 		<div class="bg-white shadow-md rounded-lg p-6 my-4">
 			<div class="flex items-center justify-between mb-6">
 				<h2 class="text-2xl text-left font-bold mb-6">Pindah Ruangan Pasien</h2>
@@ -531,184 +533,100 @@
 			</div>
 
 			@if ($transfer)
-			<table>
-				<tr>
-					<td>Waktu dan Tanggal Pindah Ruangan</td>
-					<td class="px-4">:</td>
-					<td>
-						@if($transfer && $transfer->transfer_room_datetime)
-							{{ Carbon::parse($transfer->transfer_room_datetime)->format('H:i d/m/Y') }}
-						@else
-							Tidak ada data
-						@endif
-					</td>			
-				</tr>
-				<tr>
-					<td>Nama Ruangan</td>
-					<td class="px-4">:</td>
-					<td>
-						@if($transfer && $transfer->transfer_room_name)
-						{{ $transfer->transfer_room_name }}
-						@else
-						Tidak ada data
-						@endif
-					</td>
-				</tr>
-				<tr>
-					<td>Diagnosa Utama</td>
-					<td class="px-4">:</td>
-					<td>
-						@if($transfer && $transfer->main_diagnose)
-						{{ $transfer->main_diagnose }}
-						@else
-						Tidak ada data
-						@endif
-					</td>
-				</tr>
-				<tr>
-					<td>Diagnosa Sekunder</td>
-					<td class="px-4">:</td>
-					<td>
-						@if($transfer && $transfer->secondary_diagnose)
-						{{ $transfer->secondary_diagnose }}
-						@else
-						Tidak ada data
-						@endif
-					</td>
-				</tr>
-				<tr>
-					<td>Hasil Lab Kultur</td>
-					<td class="px-4">:</td>
-					<td>
-						@if($transfer && $transfer->lab_culture_data)
-						{{ $transfer->lab_culture_data }}
-						@else
-						Tidak ada data
-						@endif
-					</td>
-				</tr>
-			</table>
+				<table>
+					<tr>
+						<td>Waktu dan Tanggal Pindah Ruangan</td>
+						<td class="px-4">:</td>
+						<td>{{ $transfer->transfer_room_datetime ? Carbon::parse($transfer->transfer_room_datetime)->format('H:i d/m/Y') : 'Tidak ada data' }}</td>
+					</tr>
+					<tr>
+						<td>Nama Ruangan</td>
+						<td class="px-4">:</td>
+						<td>{{ $transfer->transfer_room_name ?? 'Tidak ada data' }}</td>
+					</tr>
+					<tr>
+						<td>Diagnosa Utama</td>
+						<td class="px-4">:</td>
+						<td>{{ $transfer->main_diagnose ?? 'Tidak ada data' }}</td>
+					</tr>
+					<tr>
+						<td>Diagnosa Sekunder</td>
+						<td class="px-4">:</td>
+						<td>{{ $transfer->secondary_diagnose ?? 'Tidak ada data' }}</td>
+					</tr>
+					<tr>
+						<td>Hasil Lab Kultur</td>
+						<td class="px-4">:</td>
+						<td>{{ $transfer->lab_culture_data ?? 'Tidak ada data' }}</td>
+					</tr>
+				</table>
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<div>
+						<h2 class="text-xl font-bold my-4">Hasil Lab</h2>
+						<table>
+							<tr>
+								<td>Hb</td>
+								<td class="px-4">:</td>
+								<td>{{ $transfer->labResult->hb ?? 'Tidak ada data' }} g/dL</td>
+							</tr>
+							<tr>
+								<td>Leukosit</td>
+								<td class="px-4">:</td>
+								<td>{{ $transfer->labResult->leukosit ?? 'Tidak ada data' }} /µL</td>
+							</tr>
+							<tr>
+								<td>PCV</td>
+								<td class="px-4">:</td>
+								<td>{{ $transfer->labResult->pcv ?? 'Tidak ada data' }} %</td>
+							</tr>
+							<tr>
+								<td>Trombosit</td>
+								<td class="px-4">:</td>
+								<td>{{ $transfer->labResult->trombosit ?? 'Tidak ada data' }} /µL</td>
+							</tr>
+							<tr>
+								<td>Kreatinin</td>
+								<td class="px-4">:</td>
+								<td>{{ $transfer->labResult->kreatinin ?? 'Tidak ada data' }} mg/dL</td>
+							</tr>
+						</table>
+					</div>
 
-			<h2 class="text-xl font-bold my-4">Hasil Lab</h2>
-			<table>
-				<tr>
-					<td>Hb</td>
-					<td class="px-4">:</td>
-					<td>
-						@if($transfer && $transfer->labResult->hb)
-						{{ $transfer->labResult->hb }} g/dL
-						@else
-						Tidak ada data
-						@endif
-					</td>
-				</tr>
-				<tr>
-					<td>Leukosit</td>
-					<td class="px-4">:</td>
-					<td>
-						@if($transfer && $transfer->labResult->leukosit)
-						{{ $transfer->labResult->leukosit }} /µL
-						@else
-						Tidak ada data
-						@endif
-					</td>
-				</tr>
-				<tr>
-					<td>PCV</td>
-					<td class="px-4">:</td>
-					<td>
-						@if($transfer && $transfer->labResult->pcv)
-						{{ $transfer->labResult->pcv }} %
-						@else
-						Tidak ada data
-						@endif
-					</td>
-				</tr>
-				<tr>
-					<td>Trombosit</td>
-					<td class="px-4">:</td>
-					<td>
-						@if($transfer && $transfer->labResult->trombosit)
-						{{ $transfer->labResult->trombosit }} /µL
-						@else
-						Tidak ada data
-						@endif
-					</td>
-				</tr>
-				<tr>
-					<td>Kreatinin</td>
-					<td class="px-4">:</td>
-					<td>
-						@if($transfer && $transfer->labResult->kreatinin)
-						{{ $transfer->labResult->kreatinin }} mg/dL
-						@else
-						Tidak ada data
-						@endif
-					</td>
-				</tr>
-			</table>
-
-			<h2 class="text-xl text-left font-bold mt-6">TTV</h2>
+					<div>
+						<h2 class="text-xl text-left font-bold mt-6">TTV</h2>
 						<table>
 							<tr>
 								<td>TD</td>
 								<td class="px-2">:</td>
-								<td>
-									@if($transfer && $transfer->ttv->sistolik && $transfer->ttv->diastolik)
-									{{ $transfer->ttv->sistolik }} / {{ $transfer->ttv->diastolik }}
-									@else
-									Tidak ada data
-									@endif
-								</td>
+								<td>{{ ($transfer->ttv->sistolik ?? '-') }} / {{ ($transfer->ttv->diastolik ?? '-') }}</td>
 							</tr>
 							<tr>
 								<td>Suhu</td>
 								<td class="px-2">:</td>
-								<td>
-									@if($transfer && $transfer->ttv->suhu)
-									{{ $transfer->ttv->suhu }} °C
-									@else
-									Tidak ada data
-									@endif
-								</td>
+								<td>{{ $transfer->ttv->suhu ?? 'Tidak ada data' }} °C</td>
 							</tr>
 							<tr>
 								<td>Nadi</td>
 								<td class="px-2">:</td>
-								<td>
-									@if($transfer && $transfer->ttv->nadi)
-									{{ $transfer->ttv->nadi }} bpm
-									@else
-									Tidak ada data
-									@endif
-								</td>
+								<td>{{ $transfer->ttv->nadi ?? 'Tidak ada data' }} bpm</td>
 							</tr>
 							<tr>
 								<td>RR</td>
 								<td class="px-2">:</td>
-								<td>
-									@if($transfer && $transfer->ttv->rr)
-									{{ $transfer->ttv->rr }} kali per menit
-									@else
-									Tidak ada data
-									@endif
-								</td>
+								<td>{{ $transfer->ttv->rr ?? 'Tidak ada data' }} kali per menit</td>
 							</tr>
 							<tr>
 								<td>SpO<sub>2</sub></td>
 								<td class="px-2">:</td>
-								<td>
-									@if($transfer && $transfer->ttv->spo2)
-									{{ $transfer->ttv->spo2 }} %
-									@else
-									Tidak ada data
-									@endif
-								</td>
+								<td>{{ $transfer->ttv->spo2 ?? 'Tidak ada data' }} %</td>
 							</tr>
 						</table>
+					</div>
+				</div>
 			@else
-			<p>Tidak Ada Data</p>
+				<p>Tidak Ada Data</p>
 			@endif
+
 		</div>
 	@endif
 
