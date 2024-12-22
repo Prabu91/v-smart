@@ -13,7 +13,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
+            margin-bottom: 20px;    
         }
         table, th, td {
             border: 1px solid #ddd;
@@ -37,11 +37,10 @@
 </head>
 <body>
     <div class="header">
-        <img src="{{ asset('images/logo.png') }}" alt="Logo">
-        <h1>Detail Patient</h1>
+        {{-- <img src="public\images\vsmart.png" alt="V-SMART"> --}}
     </div>
 
-    <h2>Data Pasien</h2>
+    <h2 class="header">Data Pasien</h2>
     <table>
         <tr>
             <th>Nama</th>
@@ -55,11 +54,15 @@
             <th>No Rekam Medis</th>
             <td>{{ $patient->no_rm }}</td>
         </tr>
+        <tr>
+            <th>Rumah Sakit</th>
+            <td>{{ $patient->user->userDetails->hospital }}</td>
+        </tr>
     </table>
 
-    <h2>Data Awal Pasien</h2>
-    <p>Nama Ruangan Asal : {{ $patient->originRoom->origin_room_name }}</p>
-    <h3>Data Hasil Lab Awal</h3>
+    <h2 class="header">Data Awal Pasien</h2>
+    <p><b>Nama Ruangan Asal : </b>{{ $patient->originRoom->origin_room_name }}</p>
+    <h3 class="header">Data Hasil Lab Awal</h3>
     <table>
         <tr>
             <th>Pemeriksaan Fisik</th>
@@ -119,7 +122,7 @@
         </tr>
     </table>
 
-    <h3>Analisis Gas Darah</h3>
+    <h3 class="header">Analisis Gas Darah</h3>
     <table>
         <tr>
             <th>pH</th>
@@ -143,7 +146,7 @@
         </tr>
     </table>
 
-    <h2>Data Intubasi</h2>
+    <h2 class="header">Data Intubasi</h2>
     <table>
         <tr>
             <th>Ruangan Intubasi</th>
@@ -178,270 +181,6 @@
             <td>{{ $patient->intubation->diameter }} / {{ $patient->intubation->depth }}</td>
         </tr>
     </table>
-
-    <h2>Detail Data Intensif</h2>
-
-    @foreach ($icuRoomsByDate as $date => $icuRooms)
-    <h3>{{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}</h3>
-
-        @foreach ($icuRooms as $icuRoom)
-            <p><strong>Ruang:</strong> {{ $icuRoom->icu_room_name ?? '-' }}</p>
-
-            <h3>Hasil Lab</h3>
-            <table>
-                <tr>
-                    <th>Hb</th>
-                    <td>{{ $icuRoom->labResult->hb ?? '-' }} g/dL</td>
-                </tr>
-                <tr>
-                    <th>Leukosit</th>
-                    <td>{{ $icuRoom->labResult->leukosit ?? '-' }} /µL</td>
-                </tr>
-                <tr>
-                    <th>PCV</th>
-                    <td>{{ $icuRoom->labResult->pcv ?? '-' }} %</td>
-                </tr>
-                <tr>
-                    <th>Trombosit</th>
-                    <td>{{ $icuRoom->labResult->trombosit ?? '-' }} /µL</td>
-                </tr>
-                <tr>
-                    <th>Kreatinin</th>
-                    <td>{{ $icuRoom->labResult->kreatinin ?? '-' }} mg/dL</td>
-                </tr>
-                <tr>
-                    <th>Albumin</th>
-                    <td>{{ $icuRoom->labResult->albumin ?? '-' }} g/dL</td>
-                </tr>
-                <tr>
-                    <th>Laktat</th>
-                    <td>{{ $icuRoom->labResult->laktat ?? '-' }} mmol/L</td>
-                </tr>
-                <tr>
-                    <th>SBUT</th>
-                    <td>{{ $icuRoom->labResult->sbut ?? '-' }} mmol/L</td>
-                </tr>
-                <tr>
-                    <th>Ureum</th>
-                    <td>{{ $icuRoom->labResult->ureum ?? '-' }} mg/dL</td>
-                </tr>
-            </table>
-
-            <h3>Elektrolit</h3>
-            <table>
-                <tr>
-                    <th>Na+</th>
-                    <td>{{ $icuRoom->elektrolit->natrium ?? '-' }} mmol/L</td>
-                </tr>
-                <tr>
-                    <th>K+</th>
-                    <td>{{ $icuRoom->elektrolit->kalium ?? '-' }} mmol/L</td>
-                </tr>
-                <tr>
-                    <th>Ca2+</th>
-                    <td>{{ $icuRoom->elektrolit->calsium ?? '-' }} mg/dL</td>
-                </tr>
-                <tr>
-                    <th>Mg2+</th>
-                    <td>{{ $icuRoom->elektrolit->magnesium ?? '-' }} mg/dL</td>
-                </tr>
-                <tr>
-                    <th>Cl</th>
-                    <td>{{ $icuRoom->elektrolit->clorida ?? '-' }} mmol/L</td>
-                </tr>
-            </table>
-
-            <h3>Analisis Gas Darah</h3>
-            <table>
-                <tr>
-                    <th>pH</th>
-                    <td>{{ $icuRoom->agd->ph ?? '-' }}</td>
-                </tr>
-                <tr>
-                    <th>pCO2</th>
-                    <td>{{ $icuRoom->agd->pco2 ?? '-' }} mmHg</td>
-                </tr>
-                <tr>
-                    <th>pO2</th>
-                    <td>{{ $icuRoom->agd->po2 ?? '-' }} mmHg</td>
-                </tr>
-                <tr>
-                    <th>SpO2</th>
-                    <td>{{ $icuRoom->agd->spo2 ?? '-' }} %</td>
-                </tr>
-                <tr>
-                    <th>Base Excees</th>
-                    <td>{{ $icuRoom->agd->base_excees ?? '-' }} mmol/L</td>
-                </tr>
-                <tr>
-                    <th>SBPT</th>
-                    <td>{{ $icuRoom->agd->sbpt ?? '-' }} mmol/L</td>
-                </tr>
-                <tr>
-                    <th>RO</th>
-                    <td>{{ $icuRoom->ro ?? '-' }}</td>
-                </tr>
-                <tr>
-                    <th>RO Thorax</th>
-                    <td>{{ $icuRoom->ro_post_intubation ?? '-' }}</td>
-                </tr>
-                <tr>
-                    <th>Kultur Darah</th>
-                    <td>{{ $icuRoom->blood_culture ?? '-' }}</td>
-                </tr>
-            </table>
-
-            <h3>TTV</h3>
-            <table>
-                <tr>
-                    <th>TD</th>
-                    <td>{{ $icuRoom->ttv->sistolik ?? '-' }} / {{ $icuRoom->ttv->diastolik ?? '-' }}</td>
-                </tr>
-                <tr>
-                    <th>Suhu</th>
-                    <td>{{ $icuRoom->ttv->suhu ?? '-' }} °C</td>
-                </tr>
-                <tr>
-                    <th>Nadi</th>
-                    <td>{{ $icuRoom->ttv->nadi ?? '-' }} bpm</td>
-                </tr>
-                <tr>
-                    <th>RR</th>
-                    <td>{{ $icuRoom->ttv->rr ?? '-' }} kali per menit</td>
-                </tr>
-                <tr>
-                    <th>SpO2</th>
-                    <td>{{ $icuRoom->ttv->spo2 ?? '-' }} %</td>
-                </tr>
-            </table>
-            <hr>
-        @endforeach
-    @endforeach
-            
-        <h2>Ventilator:</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Tanggal dan Waktu</th>
-                    <th>Mode Venti</th>
-                    <th>IPL</th>
-                    <th>PEEP</th>
-                    <th>FiO2</th>
-                    <th>RR</th>
-                    <th>Waktu Pemakaian</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($patient->venti as $index => $venti)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>  <!-- Nomor urut -->
-                        <td>{{ \Carbon\Carbon::parse($venti->venti_datetime)->format('H:i d/m/Y') ?? '-' }}</td>
-                        <td>{{ $venti->mode_venti ?? '-' }}</td>
-                        <td>{{ $venti->ipl ?? '-' }} cmH2O</td>
-                        <td>{{ $venti->peep ?? '-' }} cmH2O</td>
-                        <td>{{ $venti->fio2 ?? '-' }} %</td>
-                        <td>{{ $venti->rr ?? '-' }} kali per menit</td>
-                        <td>{{ $venti->usage_time ?? '-' }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    
-    <h2>Data Extubation</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Tanggal</th>
-                <th>Tindakan</th>
-                <th>Therapy</th>
-                <th>Nebulizer</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{ $patient->extubation->extubation_datetime }}</td>
-                <td>{{ $patient->extubation->extubation }}</td>
-                <td>{{ $patient->extubation->preparation_extubation_therapy }}</td>
-                <td>{{ $patient->extubation->nebulizer }}</td>
-                <td>{{ $patient->extubation->patient_status }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    @if ($patient->transferRoom)
-        <h2>Data Pindah Ruangan</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Tanggal Pindah</th>
-                    <th>Nama Ruangan</th>
-                    <th>Diagnosa Utama</th>
-                    <th>Diagnosa Sekunder</th>
-                    <th>Hasil Lab Kultur</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ $patient->transferRoom->transfer_room_datetime }}</td>
-                    <td>{{ $patient->transferRoom->transfer_room_name }}</td>
-                    <td>{{ $patient->transferRoom->main_diagnose }}</td>
-                    <td>{{ $patient->transferRoom->secondary_diagnose }}</td>
-                    <td>{{ $patient->transferRoom->lab_culture_data }}</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h3 class="my-4">Hasil Lab Akhir</h3>
-        <table class="mt-4">
-            <tr>
-                <th>Hb</th>
-                <td>{{ $patient->transferRoom->labResult->hb ?? '-' }}</td>
-            </tr>
-            <tr>
-                <th>Leukosit</th>
-                <td>{{ $patient->transferRoom->labResult->leukosit ?? '-' }}</td>
-            </tr>
-            <tr>
-                <th>PCV</th>
-                <td>{{ $patient->transferRoom->labResult->pcv ?? '-' }}</td>
-            </tr>
-            <tr>
-                <th>Trombosit</th>
-                <td>{{ $patient->transferRoom->labResult->trombosit ?? '-' }}</td>
-            </tr>
-            <tr>
-                <th>Kreatinin</th>
-                <td>{{ $patient->transferRoom->labResult->kreatinin ?? '-' }}</td>
-            </tr>
-        </table>
-
-        <h3>TTV</h3>
-        <table>
-            <tr>
-                <th>TD</th>
-                <td>{{ $patient->transferRoom->ttv->sistolik ?? '-' }} / {{ $patient->transferRoom->ttv->diastolik ?? '-' }}</td>
-            </tr>
-            <tr>
-                <th>Suhu</th>
-                <td>{{ $patient->transferRoom->ttv->suhu ?? '-' }} °C</td>
-            </tr>
-            <tr>
-                <th>Nadi</th>
-                <td>{{ $patient->transferRoom->ttv->nadi ?? '-' }} bpm</td>
-            </tr>
-            <tr>
-                <th>RR</th>
-                <td>{{ $patient->transferRoom->ttv->rr ?? '-' }} kali per menit</td>
-            </tr>
-            <tr>
-                <th>SpO2</th>
-                <td>{{ $patient->transferRoom->ttv->spo2 ?? '-' }} %</td>
-            </tr>
-        </table>
-    @endif
-
 
 </body>
 </html>

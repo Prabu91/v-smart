@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Clegginabox\PDFMerger\PDFMerger;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -215,33 +216,16 @@ class PatientController extends Controller
         //
     }
 
-    // public function exportPdf($patientId)
-    // {
-    //     $patient = Patient::with('originRoom', 'icuRoom', 'intubation', 'extubation', 'transferRoom') 
-    //                     ->findOrFail($patientId);
-
-    //     $icuRoomsByDate = $patient->icuRoom->groupBy(function ($room) {
-    //         return Carbon::parse($room->icu_room_datetime)->toDateString();
-    //     });
-
-
-    //     $pdf = Pdf::loadView('patients.export', [
-    //                 'patient' => $patient,
-    //                 'icuRoomsByDate' => $icuRoomsByDate
-    //             ]);
-
-    //     return $pdf->download('Detail_Patient_' . $patient->id . '.pdf');
-    // }
-
     public function exportPdf($patientId)
     {
         $patient = Patient::with([
             'originRoom',
             'icuRoom',
+            'venti',
             'intubation',
             'extubation',
-            'venti',
-            'transferRoom'
+            'transferRoom',
+            'user'
         ])->findOrFail($patientId);
 
         $icuRoomsByDate = $patient->icuRoom
@@ -252,13 +236,82 @@ class PatientController extends Controller
             return Carbon::parse($room->icu_room_datetime)->toDateString();
         });
 
-            
-        $pdf = Pdf::loadView('patients.export', [
-            'patient' => $patient,
-            'icuRoomsByDate' => $icuRoomsByDate
-        ]);
+        // Loop untuk menghitung waktu pemakaian untuk setiap ventilator
+        $ventiUsageTimes = [];
+        foreach ($patient->venti as $venti) {
+            $ventiUsageTime = 'N/A'; // Default nilai
 
-        return $pdf->download('Detail_Patient_' . $patient->id . '.pdf');
+            $currentDatetime = Carbon::parse($venti->venti_datetime) ?? null;
+            $previousDatetime = null; // Atur sesuai logika sebelumnya jika ada
+
+            if (!empty($venti->venti_usagetime)) {
+                $ventiUsageTime = Carbon::parse($venti->venti_usagetime);
+
+                // Hitung total menit
+                $totalMinutes = $currentDatetime->diffInMinutes($ventiUsageTime);
+
+                // Konversi ke jam dan menit
+                $totalHours = intdiv($totalMinutes, 60);
+                $remainingMinutes = $totalMinutes % 60;
+
+                // Format hasil
+                $ventiUsageTime = "{$totalHours} Jam {$remainingMinutes} Menit";
+            } elseif ($previousDatetime) {
+                $totalMinutes = $previousDatetime->diffInMinutes($currentDatetime);
+
+                // Konversi ke jam dan menit
+                $totalHours = intdiv($totalMinutes, 60);
+                $remainingMinutes = $totalMinutes % 60;
+
+                $ventiUsageTime = "{$totalHours} Jam {$remainingMinutes} Menit";
+            }
+
+            // Simpan hasil perhitungan
+            $ventiUsageTimes[] = $ventiUsageTime;
+        }
+
+        // Buat PDF potret
+        $portraitPdf = Pdf::loadView('patients.export', [
+            'patient' => $patient,
+            ])->setPaper('A4', 'portrait')->output();
+            
+        // Buat PDF lanskap
+        $landscapePdf = Pdf::loadView('patients.export-icu', [
+            'patient' => $patient,
+            'icuRoomsByDate' => $icuRoomsByDate,
+            'ventiUsageTimes' => $ventiUsageTimes,
+            ])->setPaper('A4', 'landscape')->output();
+                
+        $portraitPdf2 = Pdf::loadView('patients.export-venti', [
+            'patient' => $patient,
+            ])->setPaper('A4', 'portrait')->output();
+
+        // Simpan PDF sementara
+        $portraitPath = storage_path('app/temp_portrait.pdf');
+        $landscapePath = storage_path('app/temp_landscape.pdf');
+        $portraitPath2 = storage_path('app/temp_portrait2.pdf');
+        file_put_contents($portraitPath, $portraitPdf);
+        file_put_contents($landscapePath, $landscapePdf);
+        file_put_contents($portraitPath2, $portraitPdf2);
+
+        // Gabungkan PDF
+        $pdfMerger = new PDFMerger;
+        $pdfMerger->addPDF($portraitPath, 'all');
+        $pdfMerger->addPDF($landscapePath, 'all');
+        $pdfMerger->addPDF($portraitPath2, 'all');
+
+        // Simpan file gabungan
+        $outputPath = storage_path('app/Detail_Patient_' . $patient->id . '.pdf');
+        $pdfMerger->merge('file', $outputPath);
+
+        // Hapus file sementara
+        unlink($portraitPath);
+        unlink($landscapePath);
+        unlink($portraitPath2);
+
+        return response()->download($outputPath)->deleteFileAfterSend();
+        // return $pdf->download('Detail_Patient_' . $patient->id . '.pdf');
+
     }
 
 }

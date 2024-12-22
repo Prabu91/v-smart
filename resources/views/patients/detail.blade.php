@@ -29,7 +29,7 @@
 <div class="container mx-auto p-6">
     <h1 class="text-3xl text-center font-bold mb-10">Detail Data Pasien ICU</h1>
 	{{-- Data Pasien --}}
-	<div class="bg-white shadow-md rounded-lg p-6 my-4 relative">
+	<div class="bg-white shadow-md rounded-lg p-6 my-4">
 		<!-- Button Section -->
 		@if (($extubation && $extubation->patient_status === 'Meninggal') || ($extubation && $extubation->patient_status !== 'Meninggal' && $transfer))
 			<div class="flex justify-end mb-4">
