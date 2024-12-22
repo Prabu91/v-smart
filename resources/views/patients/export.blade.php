@@ -57,7 +57,7 @@
         </tr>
     </table>
 
-    <h1>Data Awal Pasien</h1>
+    <h2>Data Awal Pasien</h2>
     <p>Nama Ruangan Asal : {{ $patient->originRoom->origin_room_name }}</p>
     <h3>Data Hasil Lab Awal</h3>
     <table>
@@ -143,7 +143,7 @@
         </tr>
     </table>
 
-    <h1>Data Intubasi</h1>
+    <h2>Data Intubasi</h2>
     <table>
         <tr>
             <th>Ruangan Intubasi</th>
@@ -179,15 +179,15 @@
         </tr>
     </table>
 
-    <h3>Detail Data Intensif</h3>
+    <h2>Detail Data Intensif</h2>
 
     @foreach ($icuRoomsByDate as $date => $icuRooms)
-    <h4>{{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}</h4>
+    <h3>{{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}</h3>
 
         @foreach ($icuRooms as $icuRoom)
             <p><strong>Ruang:</strong> {{ $icuRoom->icu_room_name ?? '-' }}</p>
 
-            <h5>Hasil Lab</h5>
+            <h3>Hasil Lab</h3>
             <table>
                 <tr>
                     <th>Hb</th>
@@ -227,7 +227,7 @@
                 </tr>
             </table>
 
-            <h5>Elektrolit</h5>
+            <h3>Elektrolit</h3>
             <table>
                 <tr>
                     <th>Na+</th>
@@ -251,7 +251,7 @@
                 </tr>
             </table>
 
-            <h5>Analisis Gas Darah</h5>
+            <h3>Analisis Gas Darah</h3>
             <table>
                 <tr>
                     <th>pH</th>
@@ -291,7 +291,7 @@
                 </tr>
             </table>
 
-            <h5>TTV</h5>
+            <h3>TTV</h3>
             <table>
                 <tr>
                     <th>TD</th>
@@ -318,7 +318,7 @@
         @endforeach
     @endforeach
             
-        <h4>Ventilator:</h4>
+        <h2>Ventilator:</h2>
         <table>
             <thead>
                 <tr>
@@ -369,76 +369,77 @@
             </tr>
         </tbody>
     </table>
+
     @if ($patient->transferRoom)
-    <h2>Data Pindah Ruangan</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Tanggal Pindah</th>
-                <th>Nama Ruangan</th>
-                <th>Diagnosa Utama</th>
-                <th>Diagnosa Sekunder</th>
-                <th>Hasil Lab Kultur</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{ $patient->transferRoom->transfer_room_datetime }}</td>
-                <td>{{ $patient->transferRoom->transfer_room_name }}</td>
-                <td>{{ $patient->transferRoom->main_diagnose }}</td>
-                <td>{{ $patient->transferRoom->secondary_diagnose }}</td>
-                <td>{{ $patient->transferRoom->lab_culture_data }}</td>
-            </tr>
-        </tbody>
-    </table>
+        <h2>Data Pindah Ruangan</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tanggal Pindah</th>
+                    <th>Nama Ruangan</th>
+                    <th>Diagnosa Utama</th>
+                    <th>Diagnosa Sekunder</th>
+                    <th>Hasil Lab Kultur</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ $patient->transferRoom->transfer_room_datetime }}</td>
+                    <td>{{ $patient->transferRoom->transfer_room_name }}</td>
+                    <td>{{ $patient->transferRoom->main_diagnose }}</td>
+                    <td>{{ $patient->transferRoom->secondary_diagnose }}</td>
+                    <td>{{ $patient->transferRoom->lab_culture_data }}</td>
+                </tr>
+            </tbody>
+        </table>
 
-    <h2 class="my-4">Hasil Lab Akhir</h2>
-    <table class="mt-4">
-        <tr>
-            <th>Hb</th>
-            <td>{{ $patient->transferRoom->labResult->hb ?? '-' }}</td>
-        </tr>
-        <tr>
-            <th>Leukosit</th>
-            <td>{{ $patient->transferRoom->labResult->leukosit ?? '-' }}</td>
-        </tr>
-        <tr>
-            <th>PCV</th>
-            <td>{{ $patient->transferRoom->labResult->pcv ?? '-' }}</td>
-        </tr>
-        <tr>
-            <th>Trombosit</th>
-            <td>{{ $patient->transferRoom->labResult->trombosit ?? '-' }}</td>
-        </tr>
-        <tr>
-            <th>Kreatinin</th>
-            <td>{{ $patient->transferRoom->labResult->kreatinin ?? '-' }}</td>
-        </tr>
-    </table>
+        <h3 class="my-4">Hasil Lab Akhir</h3>
+        <table class="mt-4">
+            <tr>
+                <th>Hb</th>
+                <td>{{ $patient->transferRoom->labResult->hb ?? '-' }}</td>
+            </tr>
+            <tr>
+                <th>Leukosit</th>
+                <td>{{ $patient->transferRoom->labResult->leukosit ?? '-' }}</td>
+            </tr>
+            <tr>
+                <th>PCV</th>
+                <td>{{ $patient->transferRoom->labResult->pcv ?? '-' }}</td>
+            </tr>
+            <tr>
+                <th>Trombosit</th>
+                <td>{{ $patient->transferRoom->labResult->trombosit ?? '-' }}</td>
+            </tr>
+            <tr>
+                <th>Kreatinin</th>
+                <td>{{ $patient->transferRoom->labResult->kreatinin ?? '-' }}</td>
+            </tr>
+        </table>
 
-    <h5>TTV</h5>
-    <table>
-        <tr>
-            <th>TD</th>
-            <td>{{ $patient->transferRoom->ttv->sistolik ?? '-' }} / {{ $patient->transferRoom->ttv->diastolik ?? '-' }}</td>
-        </tr>
-        <tr>
-            <th>Suhu</th>
-            <td>{{ $patient->transferRoom->ttv->suhu ?? '-' }} °C</td>
-        </tr>
-        <tr>
-            <th>Nadi</th>
-            <td>{{ $patient->transferRoom->ttv->nadi ?? '-' }} bpm</td>
-        </tr>
-        <tr>
-            <th>RR</th>
-            <td>{{ $patient->transferRoom->ttv->rr ?? '-' }} kali per menit</td>
-        </tr>
-        <tr>
-            <th>SpO2</th>
-            <td>{{ $patient->transferRoom->ttv->spo2 ?? '-' }} %</td>
-        </tr>
-    </table>
+        <h3>TTV</h3>
+        <table>
+            <tr>
+                <th>TD</th>
+                <td>{{ $patient->transferRoom->ttv->sistolik ?? '-' }} / {{ $patient->transferRoom->ttv->diastolik ?? '-' }}</td>
+            </tr>
+            <tr>
+                <th>Suhu</th>
+                <td>{{ $patient->transferRoom->ttv->suhu ?? '-' }} °C</td>
+            </tr>
+            <tr>
+                <th>Nadi</th>
+                <td>{{ $patient->transferRoom->ttv->nadi ?? '-' }} bpm</td>
+            </tr>
+            <tr>
+                <th>RR</th>
+                <td>{{ $patient->transferRoom->ttv->rr ?? '-' }} kali per menit</td>
+            </tr>
+            <tr>
+                <th>SpO2</th>
+                <td>{{ $patient->transferRoom->ttv->spo2 ?? '-' }} %</td>
+            </tr>
+        </table>
     @endif
 
 

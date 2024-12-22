@@ -5,12 +5,33 @@
 	use Carbon\Carbon;
 @endphp
 
+<nav class="flex" aria-label="Breadcrumb">
+	<ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+		<li class="inline-flex items-center">
+		<a href="/dashboard" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-grey-900 dark:text-gray-400 dark:hover:text-slate-900">
+			<svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+			<path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+			</svg>
+			Home
+		</a>
+		</li>
+		<li aria-current="page">
+		<div class="flex items-center">
+			<svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+			<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+			</svg>
+			<span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-grey-900">Detail Data Pasien</span>
+		</div>
+		</li>
+	</ol>
+</nav>
+
 <div class="container mx-auto p-6">
     <h1 class="text-3xl text-center font-bold mb-10">Detail Data Pasien ICU</h1>
 	{{-- Data Pasien --}}
 	<div class="bg-white shadow-md rounded-lg p-6 my-4 relative">
 		<!-- Button Section -->
-		@if (($extubation && $extubation->patient_status === 'meninggal') || ($extubation && $extubation->patient_status !== 'meninggal' && $transfer))
+		@if (($extubation && $extubation->patient_status === 'Meninggal') || ($extubation && $extubation->patient_status !== 'Meninggal' && $transfer))
 			<div class="flex justify-end mb-4">
 				<a href="{{ route('patients.export-pdf', $patient->id) }}" 
 					class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">
@@ -448,17 +469,6 @@
 								</td>
 							</tr>
 							<tr>
-								<td>Therapy Extubation</td>
-								<td class="px-4">:</td>
-								<td>
-									@if($extubation && $extubation->preparation_extubation_therapy)
-										{{ $extubation->preparation_extubation_therapy }}
-									@else
-										Tidak ada data
-									@endif
-								</td>
-							</tr>
-							<tr>
 								<td>Kondisi Pasien</td>
 								<td class="px-4">:</td>
 								<td>
@@ -521,7 +531,7 @@
 		</div>
 	@endif
 
-	@if ($extubation)	
+	@if ($extubation )	
 		<div class="bg-white shadow-md rounded-lg p-6 my-4">
 			<div class="flex items-center justify-between mb-6">
 				<h2 class="text-2xl text-left font-bold mb-6">Pindah Ruangan Pasien</h2>
@@ -629,6 +639,14 @@
 
 		</div>
 	@endif
+
+	{{-- back utton --}}
+	<div class="flex justify-between items-center mt-12 ml-4">
+		<a href="{{ url()->previous() }}" class="inline-flex items-center px-4 py-2 bg-gray-600 text-white font-semibold rounded-md shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+			Kembali
+		</a>
+	</div>
+
 
 	<!-- Modal -->
 	<div id="confirmationModal" class="fixed inset-0 z-50 hidden bg-gray-800 bg-opacity-75 flex items-center justify-center">

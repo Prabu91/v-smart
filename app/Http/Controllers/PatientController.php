@@ -70,11 +70,6 @@ class PatientController extends Controller
         $extubation = Extubation::where('patient_id', $id)->first();
         $transfer = TransferRoom::with('labResult', 'ttv')->where('patient_id', $id)->first();
         $icu = IcuRoom::where('patient_id', $id)->exists();
-        // $ventilators = Ventilator::where('patient_id', $id)
-        //     ->orderBy('venti_datetime', 'asc')
-        //     ->first();
-
-        //     dd($ventilators->venti_datetime);
         
         if ($request->ajax()) {
             $icuRecords = IcuRoom::with(['elektrolit', 'labResult', 'agd', 'ttv'])
@@ -101,25 +96,25 @@ class PatientController extends Controller
                         if (!empty($venti->venti_usagetime)) {
                             $ventiUsageTime = Carbon::parse($venti->venti_usagetime);
                             
-                            $diffInDays = round($currentDatetime->diffInDays($ventiUsageTime));
-                            $diffInHours = $currentDatetime->diffInHours($ventiUsageTime) % 24;
-                            $diffInMinutes = $currentDatetime->diffInMinutes($ventiUsageTime) % 60; 
+                            // Hitung total menit
+                            $totalMinutes = $currentDatetime->diffInMinutes($ventiUsageTime);
 
-                            $formattedDays = $diffInDays > 0 ? "{$diffInDays} Hari " : '';
-                            $formattedHours = $diffInHours > 0 ? "{$diffInHours} Jam " : '';
-                            $formattedMinutes = "{$diffInMinutes} Menit";
+                            // Konversi ke jam dan menit
+                            $totalHours = intdiv($totalMinutes, 60);
+                            $remainingMinutes = $totalMinutes % 60;
 
-                            $usageTime = "{$formattedDays}{$formattedHours}{$formattedMinutes}";
+                            // Format hasil
+                            $usageTime = "{$totalHours} Jam {$remainingMinutes} Menit";
                         } elseif ($previousDatetime) {
-                            $diffInDays = $previousDatetime->diffInDays($currentDatetime);
-                            $diffInHours = $previousDatetime->diffInHours($currentDatetime) % 24;
-                            $diffInMinutes = $previousDatetime->diffInMinutes($currentDatetime) % 60;
-
-                            $formattedDays = $diffInDays > 0 ? "{$diffInDays} Hari " : '';
-                            $formattedHours = $diffInHours > 0 ? "{$diffInHours} Jam " : '';
-                            $formattedMinutes = "{$diffInMinutes} Menit";
-
-                            $usageTime = "{$formattedDays}{$formattedHours}{$formattedMinutes}";
+                            // Jika venti_usagetime tidak ada, gunakan previousDatetime
+                            $totalMinutes = $previousDatetime->diffInMinutes($currentDatetime);
+                    
+                            // Konversi ke jam dan menit
+                            $totalHours = intdiv($totalMinutes, 60);
+                            $remainingMinutes = $totalMinutes % 60;
+                    
+                            // Format hasil
+                            $usageTime = "{$totalHours} Jam {$remainingMinutes} Menit";
                         }
 
                         $parameters = $venti->fio2 . "%, " . $venti->peep;
