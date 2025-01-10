@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\CheckIntubationStatus;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExtubationController;
@@ -20,7 +21,7 @@ Route::get('/login', [AuthController::class, 'showLoginForm']);
 Route::post('login', [AuthController::class, 'login'])->name('login.process');
 
 // Protected routes
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', CheckIntubationStatus::class])->group(function () {
     // Logout
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 

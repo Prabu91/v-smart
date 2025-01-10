@@ -35,10 +35,9 @@ class Extubation extends Model
         });
     }
 
-    // Relasi ke tabel Patient
     public function patient()
     {
-        return $this->belongsTo(Patient::class);
+        return $this->belongsTo(Patient::class, 'patient_id', 'id');
     }
     public function user()
     {

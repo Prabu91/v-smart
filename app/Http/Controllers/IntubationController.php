@@ -37,31 +37,47 @@ class IntubationController extends Controller
     {
         try {
             DB::transaction(function () use ($request) {
-                    $ttv = Ttv::create([
-                        'patient_id' => $request->patient_id,
-                        'user_id' => $request->user_id,
-                        'sistolik' => $request->sistolik,
-                        'diastolik' => $request->diastolik,
-                        'suhu' => $request->suhu,
-                        'nadi' => $request->nadi,
-                        'rr' => $request->rr_ttv,
-                        'spo2' => $request->spo2,
-                    ]);
-                    
-                    $intubation = Intubation::create([
-                        'patient_id' => $request->patient_id,
-                        'user_id' => $request->user_id,
-                        'ttv_id' => $ttv->id,
-                        'intubation_datetime' => $request->intubation_datetime,
-                        'intubation_location' => $request->intubation_location,
-                        'dr_intubation' => $request->dr_intubation_name,
-                        'dr_consultant' => $request->dr_consultant_name,
-                        'pre_intubation' => $request->preintubation,
-                        'post_intubation' => $request->postintubation,
-                        'therapy_type' => $request->therapy_type,
-                        'diameter' => $request->diameter,
-                        'depth' => $request->depth,
-                    ]);
+                $ttv = Ttv::create([
+                    'patient_id' => $request->patient_id,
+                    'user_id' => $request->user_id,
+                    'sistolik' => $request->sistolik,
+                    'diastolik' => $request->diastolik,
+                    'suhu' => $request->suhu,
+                    'nadi' => $request->nadi,
+                    'rr' => $request->rr_ttv,
+                    'spo2' => $request->spo2,
+                ]);
+                
+                $ventilator = Ventilator::create([
+                    'patient_id' => $request->patient_id,
+                    'user_id' => $request->user_id,
+                    'ttv_id' => $ttv->id,
+                    'venti_datetime' => $request->intubation_datetime,
+                    'therapy_type' => $request->therapy_type,
+                    'mode_venti' => $request->mode_venti,
+                    'diameter' => $request->diameter,
+                    'depth' => $request->depth,
+                    'ipl' => $request->ipl,
+                    'peep' => $request->peep,
+                    'fio2' => $request->fio2,
+                    'rr' => $request->rr,
+                ]);
+                
+                $intubation = Intubation::create([
+                    'patient_id' => $request->patient_id,
+                    'user_id' => $request->user_id,
+                    'ttv_id' => $ttv->id,
+                    'ventilator_id' => $ventilator->id,
+                    'intubation_datetime' => $request->intubation_datetime,
+                    'intubation_location' => $request->intubation_location,
+                    'dr_intubation' => $request->dr_intubation_name,
+                    'dr_consultant' => $request->dr_consultant_name,
+                    'pre_intubation' => $request->preintubation,
+                    'post_intubation' => $request->postintubation,
+                    'therapy_type' => $request->therapy_type,
+                    'diameter' => $request->diameter,
+                    'depth' => $request->depth,
+                ]);
             });
 
         return redirect()->route('patients.show', ['patient' => $request->patient_id])

@@ -24,13 +24,24 @@
                         <span>Beranda</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ route('patients.index') }}" class="flex items-center text-gray-600 hover:text-gray-900 {{ request()->is('user') ? 'font-semibold text-blue-600' : '' }}">
+                <div class="relative group">
+                    <a href="{{ route('patients.index') }}" 
+                        class="flex items-center text-gray-600 hover:text-gray-900 
+                                {{ request()->is('user') ? 'font-semibold text-blue-600' : '' }} 
+                                {{ $isDisabled ? 'pointer-events-none text-red-500' : '' }}"
+                        @if($isDisabled) data-tooltip="Kapasitas Penggunaan Alat Ventilator Penuh" @endif>
                         <i class="fas fa-clipboard mr-2"></i>
-                        
                         <span>Observasi</span>
                     </a>
-                </li>
+                
+                    <!-- Tooltip -->
+                    @if($isDisabled)
+                    <div class="absolute hidden group-hover:block bg-red-500 text-white text-sm py-1 px-2 rounded shadow-md z-50">
+                        Kapasitas Penggunaan Alat Ventilator Penuh
+                    </div>
+                    @endif
+                </div>
+                
             </ul>
             <!-- END Header Navigation -->
         </div>
@@ -51,7 +62,7 @@
                         </h5>
                     </div>
                     <div class="py-2">
-						<a class="block px-4 py-2 text-gray-600 hover:bg-gray-100"
+						{{-- <a class="block px-4 py-2 text-gray-600 hover:bg-gray-100"
 							href="">
 							<span>Profil</span>
 							<i class="fa fa-fw fa-user opacity-25 ml-2"></i>
@@ -60,7 +71,7 @@
 							href="">
 							<span>Ubah Password</span>
 							<i class="fa fa-fw fa-envelope-open opacity-25 ml-2"></i>
-						</a>
+						</a> --}}
 						<div class="border-t border-gray-100 my-2"></div>
 						<form method="POST" action="{{ route('logout') }}">
 							@csrf

@@ -25,11 +25,11 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>No JKN</th>
+                    <th>No RM</th>
                     <th>Nama Pasien</th>
                     <th>Status</th>
                     <th>Ruangan</th>
-                    <th>Tanggal Masuk Ruangan</th>
+                    <th>Tanggal Masuk Ruangan ICU</th>
                     <th>Terakhir Update Data</th>
                     <th>Action</th>
                 </tr>
@@ -45,9 +45,10 @@
             processing: true,
             serverSide: true,
             ajax: '{{ route('dashboard') }}',
+            pageLength: 10,
             columns: [
                 { data: 'id', name: 'id'},
-                { data: 'no_jkn', name: 'no_jkn' },
+                { data: 'no_rm', name: 'no_rm' },
                 { data: 'name', name: 'name' },
                 { data: 'status', name: 'status' },
                 { data: 'room', name: 'room' },

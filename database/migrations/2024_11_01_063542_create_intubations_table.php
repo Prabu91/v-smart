@@ -16,6 +16,8 @@ return new class extends Migration
             $table->uuid('patient_id');
             $table->uuid('user_id');
             $table->uuid('ttv_id');
+            $table->uuid('ventilator_id')->nullable();
+
             
             $table->timestamp('intubation_datetime')->nullable();
             $table->string('intubation_location')->nullable();
@@ -32,6 +34,8 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('ttv_id')->references('id')->on('ttv')->onDelete('cascade');
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
+            $table->foreign('ventilator_id')->references('id')->on('ventilators')->onDelete('cascade');
+
         });
     }
 

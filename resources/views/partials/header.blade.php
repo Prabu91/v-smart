@@ -55,7 +55,7 @@
                         </h5>
                     </div>
                     <div class="py-2">
-						<a class="block px-4 py-2 text-gray-600 hover:bg-gray-100"
+						{{-- <a class="block px-4 py-2 text-gray-600 hover:bg-gray-100"
 							href="">
 							<span>Profil</span>
 							<i class="fa fa-fw fa-user opacity-25 ml-2"></i>
@@ -64,7 +64,7 @@
 							href="">
 							<span>Ubah Password</span>
 							<i class="fa fa-fw fa-envelope-open opacity-25 ml-2"></i>
-						</a>
+						</a> --}}
 						<div class="border-t border-gray-100 my-2"></div>
 						<form method="POST" action="{{ route('logout') }}">
 							@csrf

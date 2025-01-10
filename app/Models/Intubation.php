@@ -13,6 +13,7 @@ class Intubation extends Model
         'patient_id',
         'user_id',
         'ttv_id',
+        'ventilator_id',
         'intubation_datetime',
         'intubation_location',
         'dr_intubation',
@@ -42,12 +43,17 @@ class Intubation extends Model
     {
         return $this->belongsTo(Patient::class, 'patient_id', 'id');
     }
-    
+
+    public function venti()
+    {
+        return $this->belongsTo(Ventilator::class, 'ventilator_id', 'id');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
-    
+
     public function ttv()
     {
         return $this->belongsTo(TTV::class, 'ttv_id', 'id');

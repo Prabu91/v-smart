@@ -83,7 +83,7 @@ class PatientController extends Controller
 
             if ($request->query('type') === 'venti') {
                 $ventilators = Ventilator::where('patient_id', $id)
-                    ->orderBy('venti_datetime', 'asc')
+                    ->orderBy('venti_datetime', 'desc')
                     ->get();
 
                     $ventilatorRecords = [];
@@ -185,8 +185,6 @@ class PatientController extends Controller
             ]);
         }
         
-        
-
         return view('patients.detail', compact('patient', 'origin', 'icu', 'intubations', 'extubation', 'transfer'));
     }
 

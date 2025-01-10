@@ -172,7 +172,7 @@ class IcuRoomController extends Controller
                 ->with('success', 'Berhasil Menyimpan Data.');
         } catch (\Exception $e) {
             return redirect()->route('patients.show', ['patient' => $request->patient_id])
-                   ->with('error', 'Gagal Menyimpan Data!');
+                ->with('error', 'Gagal Menyimpan Data!');
         }
     }
 

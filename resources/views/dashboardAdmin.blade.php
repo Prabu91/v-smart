@@ -13,7 +13,7 @@
             <div class="card-header">
                 <h2 class="text-xl font-bold">
                     <a href="{{ route('hospital.details', $hospital['id']) }}">
-                        {{ $hospital->name }}
+                        {{ $hospital->hospital }}
                     </a>
                 </h2>
             </div>
@@ -32,7 +32,7 @@
                 <tr>
                     <th>No</th>
                     <th>Rumah Sakit</th>
-                    <th>No JKN</th>
+                    <th>No RM</th>
                     <th>Nama Pasien</th>
                     <th>Status</th>
                     <th>Ruangan</th>

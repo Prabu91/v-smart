@@ -382,7 +382,7 @@
 			@endif
 			
 			{{-- Data Intensif --}}
-			@if ($icu)
+			{{-- @if ($icu) --}}
 			<div class="bg-slate-100 shadow-md rounded-lg p-6 my-4">
 				<table id="icu-table" class="table-auto w-full text-left">
 					<thead>
@@ -414,7 +414,7 @@
 					</thead>
 				</table> 
 			</div>
-			@endif
+			{{-- @endif --}}
 			{{-- End Data Intensif --}}
 
 			{{-- EXTUBATION --}}

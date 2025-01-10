@@ -40,6 +40,11 @@ class Ventilator extends Model
     {
         return $this->hasMany(IcuRoom::class, 'ventilator_id', 'id');
     }
+
+    public function intubation()
+    {
+        return $this->hasOne(Intubation::class, 'ventilator_id', 'id');
+    }
     
     public function patient()
     {
