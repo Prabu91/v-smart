@@ -264,7 +264,7 @@
 						@endif
 					@endif
 
-					@if ($icu && !$extubation)
+					@if ($icu && !$extubation && $ventiReleaseButton === false)
 						<a href="{{ route('extubations.create') }}?patient_id={{ $patient->id }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
 							Tambah Data Extubasi
 						</a>
@@ -742,12 +742,12 @@
 		});
 
 		// Event Listener for "Lepas Venti" Button
-        $(document).ready(function() {
+        $(document).ready(function () {
 			$(document).on('click', '.release-venti', function (e) {
 				e.preventDefault(); // Mencegah reload halaman
 
 				const ventiId = $(this).data('id'); // Ambil ID dari atribut data-id
-				$('#confirmationModal').fadeIn(); // Tampilkan modal
+				$('#confirmationModal').removeClass('hidden').addClass('flex'); // Tampilkan modal
 
 				// Konfirmasi aksi
 				$('#confirmButton').off('click').on('click', function () {
@@ -766,16 +766,16 @@
 						}
 					});
 
-					$('#confirmationModal').fadeOut(); // Sembunyikan modal setelah konfirmasi
+					$('#confirmationModal').removeClass('flex').addClass('hidden'); // Sembunyikan modal setelah konfirmasi
 				});
 
 				// Batalkan aksi
 				$('#cancelButton').off('click').on('click', function () {
-					$('#confirmationModal').fadeOut(); // Sembunyikan modal
+					$('#confirmationModal').removeClass('flex').addClass('hidden'); // Sembunyikan modal
 				});
 			});
-
 		});
+
     });
 </script>
 @endpush

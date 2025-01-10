@@ -185,7 +185,12 @@ class PatientController extends Controller
             ]);
         }
         
-        return view('patients.detail', compact('patient', 'origin', 'icu', 'intubations', 'extubation', 'transfer'));
+        $ventilators = Ventilator::where('patient_id', $id)
+                    ->orderBy('venti_datetime', 'desc')
+                    ->first();
+        $ventiReleaseButton = $ventilators->venti_usagetime === null;
+        
+        return view('patients.detail', compact('patient', 'origin', 'icu', 'intubations', 'extubation', 'transfer', 'ventiReleaseButton'));
     }
 
 

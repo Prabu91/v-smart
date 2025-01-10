@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreIntubationRequest;
 use App\Models\Agd;
 use App\Models\IcuRoom;
 use App\Models\Intubation;
@@ -33,7 +34,7 @@ class IntubationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreIntubationRequest $request)
     {
         try {
             DB::transaction(function () use ($request) {
@@ -52,7 +53,7 @@ class IntubationController extends Controller
                     'patient_id' => $request->patient_id,
                     'user_id' => $request->user_id,
                     'ttv_id' => $ttv->id,
-                    'venti_datetime' => $request->intubation_datetime,
+                    'venti_datetime' => $request->venti_datetime,
                     'therapy_type' => $request->therapy_type,
                     'mode_venti' => $request->mode_venti,
                     'diameter' => $request->diameter,

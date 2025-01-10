@@ -11,7 +11,7 @@ class StoreIntubationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     public function rules(): array
@@ -21,7 +21,7 @@ class StoreIntubationRequest extends FormRequest
             'patient_id' => 'required|uuid|exists:patients,id',
 
             'intubation_location' => 'required|string',
-            'intubation_datetime' => 'nullable|date',
+            'intubation_datetime' => 'required|date',
             'dr_intubation_name' => 'nullable|string|max:255',
             'dr_consultant_name' => 'nullable|string|max:255',
             'preintubation' => 'nullable|string|max:255',
@@ -29,7 +29,7 @@ class StoreIntubationRequest extends FormRequest
             'diameter_origin' => 'nullable|numeric',
             'depth_origin' => 'nullable|numeric',
             'postintubation' => 'nullable|string|max:255',
-            
+
             'sistolik' => 'nullable|numeric',
             'diastolik' => 'nullable|numeric',
             'suhu' => 'nullable|numeric',
@@ -37,6 +37,7 @@ class StoreIntubationRequest extends FormRequest
             'rr_ttv' => 'nullable|numeric',
             'spo2' => 'nullable|numeric',
             
+            'venti_datetime' => 'required|date|after_or_equal:intubation_datetime',
             'mode_venti' => 'nullable|string|max:255',
             'ipl' => 'nullable|numeric',
             'peep' => 'nullable|numeric',
@@ -48,6 +49,7 @@ class StoreIntubationRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'venti_datetime.after_or_equal' => 'Waktu pemasangan ventilator tidak boleh lebih awal dari waktu intubasi.',
             'origin_room_name.required' => 'Nama ruangan asal wajib diisi.',
             'origin_room_name.string' => 'Nama ruangan asal harus berupa teks.',
             'origin_room_name.max' => 'Nama ruangan asal tidak boleh lebih dari 255 karakter.',
