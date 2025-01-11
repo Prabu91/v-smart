@@ -20,7 +20,10 @@ class UserController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $users = User::with('userDetails')->take(100)->select(['id', 'name', 'email', 'role', 'user_detail_id' ]);
+            $users = User::with('userDetails')
+            ->where('role', '!=', 'admin')
+            ->take(100)
+            ->select(['id', 'name', 'email', 'role', 'user_detail_id' ]);
 
             return DataTables::of($users)
             ->addColumn('hospital', function ($user) {

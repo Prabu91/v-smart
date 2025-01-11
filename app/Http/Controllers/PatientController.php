@@ -188,7 +188,7 @@ class PatientController extends Controller
         $ventilators = Ventilator::where('patient_id', $id)
                     ->orderBy('venti_datetime', 'desc')
                     ->first();
-        $ventiReleaseButton = $ventilators->venti_usagetime === null;
+        $ventiReleaseButton = !isset($ventilators->venti_usagetime);
         
         return view('patients.detail', compact('patient', 'origin', 'icu', 'intubations', 'extubation', 'transfer', 'ventiReleaseButton'));
     }

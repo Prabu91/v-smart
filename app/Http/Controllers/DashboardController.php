@@ -7,6 +7,7 @@ use App\Models\Intubation;
 use App\Models\User;
 use App\Models\UserDetail;
 use App\Models\Ventilator;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Auth;
@@ -71,12 +72,10 @@ class DashboardController extends Controller
                     $patient->transferRoom->transfer_room_name ?? '-';
                 })
                 ->addColumn('room_date', function ($patient) {
-                    return $patient->originRoom->origin_room_datetime ??
-                    $patient->icuDash->icu_room_datetime ??
-                    $patient->transferRoom->transfer_room_datetime ?? '-';
+                    return $patient->icuDash && $patient->icuDash->icu_room_datetime ? Carbon::parse($patient->icuDash->icu_room_datetime)->format('H:i d/m/Y') : '-';
                 })
                 ->addColumn('updated_time', function ($patient) {
-                    return $patient->updated_at ? $patient->updated_at->format('Y-m-d H:i:s') : '-';
+                    return $patient->updated_at ? $patient->updated_at->format('H:i d/m/Y') : '-';
                 })
                 ->addColumn('action', function ($patient) {
                     return '
@@ -89,7 +88,7 @@ class DashboardController extends Controller
         }
         
         
-            $hospitals = UserDetail::where('id', '!=', 1)->get();
+            $hospitals = UserDetail::where('hospital', '!=', 'KC Soreang')->get();
 
             $hospitalData = $hospitals->map(function ($hospital) {
                 // Get the users associated with this hospital

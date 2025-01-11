@@ -193,7 +193,7 @@ class IcuRoomController extends Controller
 
         // Ambil data ventilator sesuai kondisi
         $ventilators = Ventilator::where('patient_id', $patientId)
-            ->whereDate('venti_datetime', $icuDate)
+            ->whereDate('venti_datetime', $icuDate)->orderBy('venti_datetime', 'desc')
             ->get();
 
         return view('observation.icu-room.show', compact('icuRecords', 'ventilators'));
