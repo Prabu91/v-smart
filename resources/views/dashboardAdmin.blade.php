@@ -65,7 +65,7 @@
             ],
             columnDefs: [
                 { targets: 0, render: function (data, type, row, meta) {
-                    return meta.row + 1; // Numbering rows starting from 1
+                    return meta.row + 1 + meta.settings._iDisplayStart; // Numbering rows starting from 1
                 }}
             ],
             language: {
