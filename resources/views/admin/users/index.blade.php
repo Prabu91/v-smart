@@ -3,28 +3,36 @@
 @section('title', 'Pengguna')
 
 @section('content')
-<div class="container mx-auto flex flex-col md:flex-row md:space-x-8">
-    <div class="md:w-full bg-white shadow-md rounded-lg p-8 mb-6">
-        <div class="flex items-center justify-between mb-4">
-            <h2 class="text-2xl font-bold text-center flex-1">DAFTAR PENGGUNA</h2>
-            <a href="{{ route('admin.users.create') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+<div class="container mx-auto flex flex-col md:flex-row md:space-x-8 px-4">
+    <div class="bg-white shadow-md rounded-lg p-8 mb-6 md:w-full">
+        <div class="flex items-center justify-between mb-4 flex-col md:flex-row">
+            <h2 class="text-2xl font-bold text-center mb-4 md:mb-0 md:text-left flex-grow">DAFTAR PENGGUNA</h2>
+            <a href="{{ route('admin.users.create') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-2 md:mt-0">
                 Tambah Data
             </a>
         </div>
-        <table id="users-table" class="min-w-full bg-white border border-gray-300">
-            <thead>
-                <tr>
-                    <th class="px-4 py-2 border-b">No</th>
-                    <th class="px-4 py-2 border-b">Name</th>
-                    <th class="px-4 py-2 border-b">Email</th>
-                    <th class="px-4 py-2 border-b">Hospital</th>
-                    <th class="px-4 py-2 border-b">Ventilator</th>
-                    <th class="px-4 py-2 border-b">Bed</th>
-                    <th class="px-4 py-2 border-b">Role</th>
-                    <th class="px-4 py-2 border-b">Actions</th>
-                </tr>
-            </thead>
-        </table>
+        
+        <!-- Table with overflow-x-auto for mobile responsiveness -->
+        <div class="overflow-x-auto">
+            <table id="users-table" class="min-w-full bg-white border border-gray-300">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="px-4 py-2 border-b">No</th>
+                        <th class="px-4 py-2 border-b">Name</th>
+                        <th class="px-4 py-2 border-b">Email</th>
+                        <th class="px-4 py-2 border-b">Hospital</th>
+                        <th class="px-4 py-2 border-b">Ventilator</th>
+                        <th class="px-4 py-2 border-b">Bed</th>
+                        <th class="px-4 py-2 border-b">Role</th>
+                        <th class="px-4 py-2 border-b">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data rows will go here -->
+                </tbody>
+            </table>
+        </div>
+        
         <!-- Modal -->
         <div id="confirmationModal" class="fixed inset-0 z-50 hidden bg-gray-800 bg-opacity-75 flex items-center justify-center">
             <div class="bg-white rounded-lg shadow-lg p-6">
@@ -37,8 +45,9 @@
             </div>
         </div>
     </div>
-
 </div>
+
+
 
     {{-- SWAL --}}
     @if (session('success'))

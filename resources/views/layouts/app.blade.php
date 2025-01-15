@@ -23,20 +23,20 @@
     @stack('styles')
 
 </head>
-<body class="bg-[#EBF5F6]">
+<body class="bg-bgcl">
 
     <header>
         @include('partials.header')
     </header>
 
-    <main class="flex flex-col md:flex-row min-h-screen">
+    <main class="flex flex-col md:flex-row min-h-screen overflow-hidden">
         <section class="w-full mx-auto p-6">
             @yield('content') 
         </section>
     </main>
 
-    <footer class="bg-white p-4 text-center">
-        © {{ date('Y') }} BPJS Kesehatan Cabang Soreang.
+    <footer class="bg-bgftcl p-4 text-center text-white">
+        © 2024 BPJS Kesehatan Cabang Soreang.
     </footer>
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

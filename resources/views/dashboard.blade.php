@@ -4,39 +4,45 @@
 
 @section('content')
     
-<div class="container mx-auto p-6">
-    <h1 class="text-2xl font-bold mb-6">Dashboard Penggunaan Ventilator {{ $user->userDetails->name }}</h1>
-    <!-- Statistik Utama -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div class="bg-cardcl shadow-md rounded-lg p-6">
-            <h2 class="text-xl font-bold">Pasien Terpasang Ventilator</h2>
-            <p class="text-3xl mt-2">{{ $intubatedCount }}</p>
+<div class="container mx-auto px-4 py-6">
+    <h1 class="text-2xl font-bold text-center md:text-left mb-6">
+        Dashboard Penggunaan Ventilator {{ $user->userDetails->name }}
+    </h1>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+        <div class="bg-white shadow-md rounded-lg p-6 text-center sm:text-left">
+            <h2 class="text-xl font-bold text-gray-700">Pasien Terpasang Ventilator</h2>
+            <p class="text-3xl font-semibold text-grey-600 mt-2">{{ $intubatedCount }}</p>
         </div>
-        <div class="bg-cardcl shadow-md rounded-lg p-6">
-            <h2 class="text-xl font-bold">Jumlah Ventilator</h2>
-            <p class="text-3xl mt-2">{{ $user->userDetails->venti }}</p>
+        <div class="bg-white shadow-md rounded-lg p-6 text-center sm:text-left">
+            <h2 class="text-xl font-bold text-gray-700">Jumlah Ventilator</h2>
+            <p class="text-3xl font-semibold text-grey-600 mt-2">{{ $user->userDetails->venti }}</p>
         </div>
     </div>
 
-    <!-- Tabel Daftar Pasien -->
-    <div class="bg-cardcl shadow-md rounded-lg p-6">
-        <h2 class="text-xl font-bold mb-4">Data Pasien</h2>
-        <table id="patients-table" class="table-auto w-full text-left">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>No RM</th>
-                    <th>Nama Pasien</th>
-                    <th>Status</th>
-                    <th>Ruangan</th>
-                    <th>Tanggal Masuk Ruangan ICU</th>
-                    <th>Terakhir Update Data</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-        </table> 
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <h2 class="text-xl font-bold text-gray-700 mb-4">Data Pasien</h2>
+        <div class="overflow-x-auto">
+            <table id="patients-table" class="table-auto w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-700">
+                        <th class="px-4 py-2 text-sm font-semibold border">No</th>
+                        <th class="px-4 py-2 text-sm font-semibold border">No RM</th>
+                        <th class="px-4 py-2 text-sm font-semibold border">Nama Pasien</th>
+                        <th class="px-4 py-2 text-sm font-semibold border">Status</th>
+                        <th class="px-4 py-2 text-sm font-semibold border">Ruangan</th>
+                        <th class="px-4 py-2 text-sm font-semibold border">Tanggal Masuk Ruangan ICU</th>
+                        <th class="px-4 py-2 text-sm font-semibold border">Terakhir Update Data</th>
+                        <th class="px-4 py-2 text-sm font-semibold border">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
+
 
 @push('scripts')
 <script>
