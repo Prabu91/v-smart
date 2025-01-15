@@ -22,7 +22,6 @@
         </div>
 
 
-        <h2>Daftar Pasien</h2>
         <div class="bg-white shadow-md rounded-lg p-6">
             <h2 class="text-xl font-bold mb-4">Data Pasien</h2>
             <table id="patients-table" class="table-auto w-full text-left">
@@ -61,7 +60,7 @@
                 ],
                 columnDefs: [
                     { targets: 0, render: function (data, type, row, meta) {
-                        return meta.row + 1;
+                        return meta.row + 1 + meta.settings._iDisplayStart;
                     }}
                 ],
                 language: {

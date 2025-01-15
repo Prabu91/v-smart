@@ -58,7 +58,7 @@
             ],
             columnDefs: [
                 { targets: 0, render: function (data, type, row, meta) {
-                    return meta.row + 1;
+                    return meta.row + 1 + meta.settings._iDisplayStart;
                 }}
             ],
             language: {

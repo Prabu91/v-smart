@@ -127,7 +127,6 @@ class DashboardController extends Controller
     {
         $hospital = UserDetail::findOrFail($id);
         $users = User::where('user_detail_id', $id)->where('role', 'user')->first();
-        // dd($users->id);  
 
         $intubatedCount = Intubation::where('user_id', $users->id)
             ->whereNotIn('patient_id', function ($query) {
@@ -139,17 +138,11 @@ class DashboardController extends Controller
             ->whereMonth('created_at', now()->month)
             ->count();
 
-        // $patients = Patient::with(['icuDash', 'extubation', 'originRoom', 'transferRoom'])
-        //     ->where('user_id', $users) 
-        //     ->get();
-
         $patients = Patient::with(['icuDash', 'intubation', 'extubation', 'originRoom', 'transferRoom'])
             ->where('user_id', $users->id) 
             ->select(['id', 'name', 'no_jkn', 'updated_at'])
             ->get();
             
-            // dd($patients);
-
             if ($request->ajax()) {
                 return DataTables::of($patients)
                     ->addColumn('status', function ($patient) {

@@ -39,13 +39,13 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            $request->session()->regenerate(); // Regenerate session to prevent fixation attacks
+            $request->session()->regenerate();
             return redirect()->intended('dashboard')->with('success', 'Login berhasil.');
         }
-
+        
         return back()->withErrors([
             'email' => 'Email atau password tidak terdaftar.',
-        ])->onlyInput('email'); // Keep the email input but clear password
+        ])->onlyInput('email'); 
     }
 
     /**

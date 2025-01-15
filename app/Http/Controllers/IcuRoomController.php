@@ -74,7 +74,7 @@ class IcuRoomController extends Controller
                     $ventilatorId = $ventilator->id;
 
                     // Jika ada ventilator sebelumnya, simpan venti_datetime baru ke kolom venti_usagetime
-                    if ($previousVentilator) {
+                    if ($previousVentilator->venti_usagetime === null) {
                         $previousVentilator->update([
                             'venti_usagetime' => $request->venti_datetime
                         ]);
