@@ -43,7 +43,6 @@ class UserController extends Controller
                 <a href="javascript:void(0)" class="delete" data-id="'.$user->id.'" style="background-color: #e3342f; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none;">
                     Hapus
                 </a>';
-
             })
             ->rawColumns(['action'])
             ->make(true);

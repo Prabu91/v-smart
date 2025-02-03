@@ -22,6 +22,7 @@
 			z-index: 2;
 		}
 	</style>
+
 	
 	<div class="login-background min-h-screen bg-gray-100 flex items-center justify-center">
 		<div class="login-overlay absolute inset-0 bg-black bg-opacity-50"></div>
@@ -49,8 +50,13 @@
 							Password <span class="text-red-500">*</span>
 						</label>
 						<input type="password" id="val-password" name="password" placeholder="Masukan password"
-							class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 focus:border-blue-500 focus:ring-blue-500 {{ $errors->has('password') ? 'border-red-500' : '' }}">
+							class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 focus:border-blue-500 focus:ring-blue-500 {{ $errors->has('password') ? 'border-red-500' : '' }}" oncopy="return false" oncut="return false">
 						<x-input-error :messages="$errors->get('password')" class="mt-1 text-red-500 text-sm" />
+					</div>
+					<!-- reCAPTCHA -->
+					<div class="mt-4">
+						<div class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}"></div>
+						<x-input-error :messages="$errors->get('g-recaptcha-response')" class="mt-1 text-red-500 text-sm" />
 					</div>
 					<div class="flex justify-center">
 						<button type="submit"

@@ -18,7 +18,6 @@ Route::middleware('guest')->group(function () {
     Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     
-    // Route untuk memproses login
     Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 });
 

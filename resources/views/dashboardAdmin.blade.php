@@ -15,9 +15,9 @@
                     <a href="{{ route('hospital.details', $hospital['id']) }}" class="text-grey-500 hover:underline">
                         {{ $hospital->hospital }}
                     </a>
-                </h2>
+                </h2> 
             </div>
-            <div class="card-body">
+            <div class="card-body"> 
                 <p class="text-3xl mt-2 font-semibold">
                     {{ $hospital->intubated_count }} / {{ $hospital->ventilators_count }}
                 </p>

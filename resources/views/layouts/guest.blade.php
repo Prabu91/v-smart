@@ -13,6 +13,8 @@
         <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/icon/apple-touch-icon.png') }}">
         <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/icon/favicon-32x32.png') }}">
         <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/icon/favicon-16x16.png') }}">
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
         <!-- Scripts -->
         @vite('resources/css/app.css')
     </head>

@@ -12,7 +12,6 @@ use App\Models\Ventilator;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
 class IcuRoomController extends Controller
 {
     /**
@@ -36,7 +35,6 @@ class IcuRoomController extends Controller
         return view('observation.icu-room.create', compact('patient_id', 'icuData'));
     }
     
-
 
     /**
      * Store a newly created resource in storage.

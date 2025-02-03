@@ -41,6 +41,7 @@ class PatientController extends Controller
      */
     public function store(StorePatientRequest $request)
     {
+        dd($request);
         try{
             DB::transaction(function () use ($request, &$patient) {
                 $patient = Patient::create([
@@ -51,7 +52,7 @@ class PatientController extends Controller
                 ]);
             });
         
-        return redirect()->route('patients.show', ['patient' => $patient->id])
+            return redirect()->route('patients.show', ['patient' => $patient->id])
             ->with('success', 'Berhasil Menyimpan Data.');
         } catch (\Exception $e) {
             return redirect()->route('patients.show', ['patient' => $patient->id])->with('error', 'Gagal Menyimpan Data ! ' . $e->getMessage());
