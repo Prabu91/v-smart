@@ -22,46 +22,53 @@ class StoreIcuRoomRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|uuid|exists:users,id',
             'patient_id' => 'required|uuid|exists:patients,id',
 
-            'icu_room_datetime' => 'required|date',
-            'icu_room_name' => 'required|string|max:255',
-            'icu_room_bednum' => 'required|numeric',
-            'ro' => 'nullable|string',
-            'ro_post_incubation' => 'nullable|string',
-            'blood_culture' => 'nullable|string',
-            
-            'hb_icu' => 'nullable|numeric',
-            'leukosit_icu' => 'nullable|numeric',
-            'pcv_icu' => 'nullable|numeric',
-            'trombosit_icu' => 'nullable|numeric',
-            'kreatinin_icu' => 'nullable|numeric',
-            'albumin' => 'nullable|numeric',
-            'laktat' => 'nullable|numeric',
-            'sbut' => 'nullable|numeric',
-            'ureum' => 'nullable|numeric',
-            
-            'ph_icu' => 'nullable|numeric',
-            'pco2_icu' => 'nullable|numeric',
-            'po2_icu' => 'nullable|numeric',
-            'spo2_icu' => 'nullable|numeric',
-            'be_icu' => 'nullable|numeric',
-            'sbpt' => 'nullable|numeric',
-            
-            'venti_datetime' => 'required|date',
-            'mode_venti' => 'nullable|string',
-            'ipl' => 'nullable|numeric',
-            'peep' => 'nullable|numeric',
-            'fio2' => 'nullable|numeric',
-            'rr' => 'nullable|numeric',
+            'icu_room_datetime' => 'required|date|after:today', 
+            'icu_room_name' => 'required|string|in:ICU,PICU,NICU,IGD', 
+            'icu_room_bednum' => 'required|integer|min:1', 
 
-            'sistolik' => 'nullable|numeric',
-            'diastolik' => 'nullable|numeric',
-            'suhu' => 'nullable|numeric',
-            'nadi' => 'nullable|numeric',
-            'rr_ttv' => 'nullable|numeric',
-            'spo2' => 'nullable|numeric',
+            'natrium' => 'nullable|numeric|between:120,160', 
+            'kalium' => 'nullable|numeric|between:3.0,5.0', 
+            'calsium' => 'nullable|numeric|between:7.5,12.0', 
+            'magnesium' => 'nullable|numeric|between:1.5,2.5', 
+            'clorida' => 'nullable|numeric|between:90,115', 
+
+            'hb_icu' => 'nullable|numeric|between:10,18', 
+            'leukosit_icu' => 'nullable|numeric|between:4000,12000', 
+            'pcv_icu' => 'nullable|numeric|between:30,50', 
+            'trombosit_icu' => 'nullable|numeric|between:150000,400000', 
+            'kreatinin_icu' => 'nullable|numeric|between:0.5,1.5',
+
+            'albumin' => 'nullable|numeric|between:1,10',
+            'laktat' => 'nullable|numeric|between:0,10',
+            'sbut' => 'nullable|numeric|between:0,10',
+            'ureum' => 'nullable|numeric|between:5,100',
+            
+            'ph_icu' => 'nullable|numeric|between:7,8',
+            'pco2_icu' => 'nullable|numeric|between:30,60',
+            'po2_icu' => 'nullable|numeric|between:60,100',
+            'spo2_icu' => 'nullable|numeric|between:80,100',
+            'be_icu' => 'nullable|numeric|between:-10,10',
+            'sbpt' => 'nullable|numeric|between:10,50',
+
+            'ro' => 'required|in:sudah,belum',
+            'blood_culture' => 'nullable|string|max:255',
+            'ro_post_intubation' => 'nullable|string|max:255',
+
+            'sistolik' => 'required|integer|min:0|max:300', 
+            'diastolik' => 'required|integer|min:0|max:200', 
+            'suhu' => 'required|numeric|min:30|max:45', 
+            'nadi' => 'required|integer|min:30|max:200', 
+            'rr_ttv' => 'required|integer|min:0|max:60', 
+            'spo2' => 'required|integer|min:0|max:100', 
+
+            'venti_datetime' => 'required|date', 
+            'mode_venti' => 'required|string|max:255', 
+            'ipl' => 'nullable|numeric|min:0|max:100', 
+            'peep' => 'nullable|numeric|min:0|max:20', 
+            'fio2' => 'nullable|numeric|min:0|max:100', 
+            'rr' => 'nullable|integer|min:0|max:60',
         ];
     }
 
@@ -71,8 +78,6 @@ class StoreIcuRoomRequest extends FormRequest
             'icu_room_datetime.required' => 'Tanggal dan Waktu wajib diisi.',
             'icu_room_name.required' => 'Nama Ruangan wajib diisi.',
             'icu_room_bednum.required' => 'Nomor Bed wajib diisi.',
-            
-            
         ];
     }
 }

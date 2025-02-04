@@ -41,24 +41,27 @@ class PatientController extends Controller
      */
     public function store(StorePatientRequest $request)
     {
-        dd($request);
-        try{
-            DB::transaction(function () use ($request, &$patient) {
-                $patient = Patient::create([
-                    'name' => $request->name,
-                    'no_jkn' => $request->no_jkn, 
-                    'no_rm' => $request->no_rm,
-                    'user_id' => $request->user_id
-                ]);
-            });
+        $patient = null;
         
+        DB::transaction(function () use ($request, &$patient) {                
+            $userId = Auth::id();
+            
+            $patient = Patient::create([
+                'name' => $request->name,
+                'no_jkn' => $request->no_jkn,
+                'no_rm' => $request->no_rm,
+                'user_id' => $userId,
+            ]);
+        });
+
+        if ($patient) {
             return redirect()->route('patients.show', ['patient' => $patient->id])
-            ->with('success', 'Berhasil Menyimpan Data.');
-        } catch (\Exception $e) {
-            return redirect()->route('patients.show', ['patient' => $patient->id])->with('error', 'Gagal Menyimpan Data ! ' . $e->getMessage());
+                ->with('success', 'Berhasil Menyimpan Data.');
+        } else {
+            return redirect()->route('patients.index')
+                ->with('error', 'Terjadi kesalahan saat menyimpan data.');
         }
     }
-
 
 
     /**
@@ -68,7 +71,9 @@ class PatientController extends Controller
     {
         $patient = Patient::findOrFail($id);
         $origin = OriginRoom::with('labResult', 'intubation', 'agd')->where('patient_id', $id)->first();
-        $intubations = Intubation::where('patient_id', $id)->with(['ttv'])->first();
+        $intubations = Intubation::with(['ttvPre', 'ttvPost'])
+        ->where('patient_id', $id)
+        ->first();
         $extubation = Extubation::where('patient_id', $id)->first();
         $transfer = TransferRoom::with('labResult', 'ttv')->where('patient_id', $id)->first();
         $icu = IcuRoom::where('patient_id', $id)->exists();
@@ -148,8 +153,7 @@ class PatientController extends Controller
                     'data' => $ventilatorRecords
                 ]);
             }
-                
-        
+
             $records = [];
             foreach ($icuRecords as $index => $icu) {
                 $icuRoomNameBed = $icu->icu_room_name;
@@ -172,7 +176,10 @@ class PatientController extends Controller
                     'lb2' => $lb2,
                     'agd' => $agd,
                     'ttv' => $ttv,
-                    'action' => '<a href="' . route('icu-rooms.show', $icu->id) . '" style="background-color: #3490dc; color: white; padding: 6px 12px; border-radius: 5px; text-decoration: none; margin-right: 5px;">
+                    'action' => '<a href="' . route('icu-rooms.show', $icu->id) . '" style="background-color: #2f4157; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; margin-right: 5px; 
+                        transition: background-color 0.3s;"
+                        onmouseover="this.style.backgroundColor=\'#577c8e\'" 
+                        onmouseout="this.style.backgroundColor=\'#2f4157\'">
                             Detail
                         </a>'
                 ];

@@ -15,20 +15,28 @@ class UserSeeder extends Seeder
         $adminHospital = UserDetail::firstWhere('hospital', 'KC Soreang');
         
         User::create([
-            'name' => 'Admin',
-            'email' => 'admin@vsmart.com',
-            'password' => Hash::make('password'),
+            'name' => 'Faris F',
+            'username' => 'farisfdlh',
+            'password' => Hash::make('4Dm1nInv!'),
+            'role' => 'super admin',
+            'user_detail_id' => $adminHospital->id,
+        ]);
+
+        User::create([
+            'name' => 'KC Soreang',
+            'username' => 'kcsoreang',
+            'password' => Hash::make('@Kcs385a!'),
             'role' => 'admin',
             'user_detail_id' => $adminHospital->id,
         ]);
 
         // Menambah 3 user dengan nama sesuai dengan nama rumah sakit
-        $hospitals = UserDetail::whereIn('hospital', ['RS Hermina', 'RSUD Otista', 'RSU Bina Sehat'])->get();
+        $hospitals = UserDetail::whereIn('hospital', ['RS Hermina', 'RSUD Otista', 'RS AMC'])->get();
 
         foreach ($hospitals as $hospital) {
             User::factory()->create([
                 'name' => $hospital->hospital,
-                'email' => strtolower(str_replace(' ', '.', $hospital->hospital)) . '@vsmart.com',
+                'username' => strtolower(str_replace(' ', '.', $hospital->hospital)),
                 'role' => 'user',
                 'user_detail_id' => $hospital->id,
             ]);

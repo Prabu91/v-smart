@@ -17,8 +17,6 @@ class StoreOriginRoomRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|uuid|exists:users,id',
-
             'origin_room_name' => 'required|string|max:255',
             'physical_check' => 'nullable|string|max:255',
             'radiology' => 'nullable|string',
@@ -41,24 +39,6 @@ class StoreOriginRoomRequest extends FormRequest
             'po2_origin' => 'nullable|numeric',
             'spo2_origin' => 'nullable|numeric',
             'be_origin' => 'nullable|numeric',
-            
-            'intubation_location' => 'required|string|in:origin,IGD,ICU,PICU,NICU,OK,other',
-            'intubation_location_other' => 'nullable|string|required_if:intubation_location,other|max:255',
-            'intubation_datetime' => 'nullable|date',
-            'dr_intubation_name' => 'nullable|string|max:255',
-            'dr_consultant_name' => 'nullable|string|max:255',
-            'preintubation' => 'nullable|string|max:255',
-            'therapy_type_origin' => 'nullable|string|max:255',
-            'diameter_origin' => 'nullable|numeric',
-            'depth_origin' => 'nullable|numeric',
-            'postintubation' => 'nullable|string|max:255',
-            
-            'sistolik' => 'nullable|numeric',
-            'diastolik' => 'nullable|numeric',
-            'suhu' => 'nullable|numeric',
-            'nadi' => 'nullable|numeric',
-            'rr_ttv' => 'nullable|numeric',
-            'spo2' => 'nullable|numeric',
         ];
     }
 

@@ -32,7 +32,7 @@ class UserDetailSeeder extends Seeder
         ]);
 
         UserDetail::create([
-            'hospital' => 'RSU Bina Sehat',
+            'hospital' => 'RS AMC',
             'venti' => 4,
             'bed' => 10
         ]);    

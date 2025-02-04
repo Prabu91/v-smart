@@ -22,12 +22,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer('*', function ($view) {
-            $layout = Auth::check() && Auth::user()->role === 'admin' 
-                ? 'layouts.app' 
-                : 'layouts.app-rs';
+        // View::composer('*', function ($view) {
+        //     $layout = Auth::check() && Auth::user()->role === 'admin' 
+        //         ? 'layouts.app' 
+        //         : 'layouts.app-rs';
             
-            $view->with('layout', $layout);
-        });
+        //     $view->with('layout', $layout);
+        // });
     }
 }

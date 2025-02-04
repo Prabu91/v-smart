@@ -1,4 +1,6 @@
-@extends($layout)
+@extends('layouts.app')
+
+@section('title', 'Detail Pasien')
 
 @section('content')
 @php
@@ -35,7 +37,7 @@
         @if (($extubation && $extubation->patient_status === 'Meninggal') || ($extubation && $extubation->patient_status !== 'Meninggal' && $transfer))
             <div class="flex justify-end mb-4">
                 <a href="{{ route('patients.export-pdf', $patient->id) }}" 
-                    class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 transition">
+                    class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700 transition">
                     Download PDF
                 </a>
             </div>
@@ -43,22 +45,19 @@
     
         <!-- Table Section -->
         <div class="overflow-x-auto">
-            <table class="w-full text-left">
+            <table class="w-1/2 text-left">
                 <tbody>
                     <tr>
-                        <td class="font-semibold">Nama Pasien</td>
-                        <td class="px-4">:</td>
-                        <td>{{ $patient->name }}</td>
+                        <td class="font-semibold bg-gray-300 p-2">Nama Pasien</td>
+                        <td class="p-2">{{ $patient->name }}</td>
                     </tr>
                     <tr>
-                        <td class="font-semibold">No Kartu JKN</td>
-                        <td class="px-4">:</td>
-                        <td>{{ $patient->no_jkn }}</td>
+                        <td class="font-semibold bg-gray-300 p-2">No Kartu JKN</td>
+                        <td class="p-2">{{ $patient->no_jkn }}</td>
                     </tr>
                     <tr>
-                        <td class="font-semibold">No Rekam Medis</td>
-                        <td class="px-4">:</td>
-                        <td>{{ $patient->no_rm }}</td>
+                        <td class="font-semibold bg-gray-300 p-2">No Rekam Medis</td>
+                        <td class="p-2">{{ $patient->no_rm }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -68,10 +67,10 @@
     {{-- OriginRoom --}}
     <div class="bg-white shadow-md rounded-lg p-6 my-4">
         <div class="flex items-center justify-between mb-6">
-            <h2 class="text-xl font-bold">Data Awal Pasien</h2>
+            <h2 class="text-2xl font-bold">Data Awal Pasien</h2>
             @if(!$origin)
                 <a href="{{ route('origin-rooms.create') }}?patient_id={{ $patient->id }}" 
-                   class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                    class="bg-btn hover:bg-btnh text-white font-bold py-2 px-4 rounded">
                     Tambah Data
                 </a>
             @endif
@@ -79,7 +78,7 @@
 
         @if ($origin)
             <div class="overflow-x-auto">
-                <table class="w-full text-left mb-4">
+                <table class="w-1/4 text-left mb-4">
                     <tbody>
                         <tr>
                             <td>Nama Ruangan Asal</td>
@@ -92,7 +91,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <h2 class="text-xl font-bold mb-4">Hasil Lab Awal</h2>
+                    <h2 class="text-2xl font-bold mb-4">Hasil Lab Awal</h2>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left mb-4">
                             <tbody>
@@ -126,7 +125,7 @@
                     </div>
                 </div>
                 <div>
-                    <h2 class="text-xl font-bold mb-4">Analisis Gas Darah</h2>
+                    <h2 class="text-2xl font-bold mb-4">Analisis Gas Darah</h2>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left">
                             <tbody>
@@ -174,12 +173,12 @@
 					@if ($origin)
 						@if (!$icu && !$intubations)
 							<a href="{{ route('intubations.create') }}?patient_id={{ $patient->id }}" 
-							   class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded text-center">
+								class="bg-yellow-500 hover:bg-yellow-700 text-txtd font-bold py-2 px-4 rounded text-center">
 								Tambah Data Intubasi
 							</a>
 						@elseif (!$extubation)
 							<a href="{{ route('icu-rooms.create') }}?patient_id={{ $patient->id }}" 
-							   class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded text-center">
+								class="bg-btn hover:bg-btnh text-txtd font-bold py-2 px-4 rounded text-center">
 								Data Ruang Intensif
 							</a>
 						@endif
@@ -187,7 +186,7 @@
 			
 					@if ($icu && !$extubation && $ventiReleaseButton === false)
 						<a href="{{ route('extubations.create') }}?patient_id={{ $patient->id }}" 
-						   class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded text-center">
+							class="bg-green-500 hover:bg-green-600 text-txtd font-bold py-2 px-4 rounded text-center">
 							Tambah Data Extubasi
 						</a>
 					@endif
@@ -197,8 +196,8 @@
 
 			{{-- INTUBATION --}}
 			@if ($intubations)
-			<div class="bg-slate-100 shadow-md rounded-lg p-6 my-4">
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+			<div class="p-6 my-4">
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 					<div>
 						<h2 class="text-2xl font-bold mb-4">
 							Intubasi | Ruangan: {{ $intubations->intubation_location }}
@@ -221,10 +220,7 @@
 										<td class="px-2">:</td>
 										<td>{{ $intubations->dr_consultant ?? 'Tidak ada data' }}</td>
 									</tr>
-								</table>
-							</div>
-							<div>
-								<table class="table-auto w-full">
+								
 									<tr>
 										<td>Pre Intubasi</td>
 										<td class="px-2">:</td>
@@ -234,11 +230,6 @@
 										<td>Post Intubasi</td>
 										<td class="px-2">:</td>
 										<td>{{ $intubations->post_intubation ?? 'Tidak ada data' }}</td>
-									</tr>
-									<tr>
-										<td>Therapy</td>
-										<td class="px-2">:</td>
-										<td>{{ $intubations->therapy_type ?? 'Tidak ada data' }}</td>
 									</tr>
 									<tr>
 										<td>ETT / Kedalaman</td>
@@ -252,46 +243,90 @@
 						</div>
 					</div>
 
+					{{-- Pre Int TTV --}}
 					<div>
-						<h2 class="text-xl font-bold mb-4">TTV</h2>
+						<h2 class="text-xl font-bold mb-4">TTV Pre Intubasi</h2>
 						<table class="table-auto w-full">
 							<tr>
 								<td>TD</td>
 								<td class="px-2">:</td>
 								<td>
-									{{ $intubations && $intubations->ttv->sistolik && $intubations->ttv->diastolik ? $intubations->ttv->sistolik . ' / ' . $intubations->ttv->diastolik : '0' }}
+									{{ $intubations && $intubations->ttvPre && $intubations->ttvPre->sistolik && $intubations->ttvPre->diastolik ? $intubations->ttvPre->sistolik . ' / ' . $intubations->ttvPre->diastolik : '0' }}
 								</td>
 							</tr>
 							<tr>
 								<td>Suhu</td>
 								<td class="px-2">:</td>
 								<td>
-									{{ $intubations->ttv->suhu ?? '0'}} °C
+									{{ $intubations->ttvPre->suhu ?? '0'}} °C
 								</td>
 							</tr>
 							<tr>
 								<td>Nadi</td>
 								<td class="px-2">:</td>
 								<td>
-									{{ $intubations->ttv->nadi ?? '0'}} bpm
+									{{ $intubations->ttvPre->nadi ?? '0'}} bpm
 								</td>
 							</tr>
 							<tr>
 								<td>RR</td>
 								<td class="px-2">:</td>
 								<td>
-									{{ $intubations->ttv->rr ?? '0' }} kali per menit
+									{{ $intubations->ttvPre->rr ?? '0' }} kali per menit
 								</td>
 							</tr>
 							<tr>
 								<td>SpO<sub>2</sub></td>
 								<td class="px-2">:</td>
 								<td>
-									{{ $intubations->ttv->spo2 ?? '0'}} %
+									{{ $intubations->ttvPre->spo2 ?? '0'}} %
 								</td>
 							</tr>
 						</table>
 					</div>
+
+					{{-- Post Int TTV --}}
+					<div>
+						<h2 class="text-xl font-bold mb-4">TTV Post Intubasi</h2>
+						<table class="table-auto w-full">
+							<tr>
+								<td>TD</td>
+								<td class="px-2">:</td>
+								<td>
+									{{ $intubations && $intubations->ttvPost && $intubations->ttvPost->sistolik && $intubations->ttvPost->diastolik ? $intubations->ttvPost->sistolik . ' / ' . $intubations->ttvPost->diastolik : '0' }}
+								</td>
+							</tr>
+							<tr>
+								<td>Suhu</td>
+								<td class="px-2">:</td>
+								<td>
+									{{ $intubations->ttvPost->suhu ?? '0'}} °C
+								</td>
+							</tr>
+							<tr>
+								<td>Nadi</td>
+								<td class="px-2">:</td>
+								<td>
+									{{ $intubations->ttvPost->nadi ?? '0'}} bpm
+								</td>
+							</tr>
+							<tr>
+								<td>RR</td>
+								<td class="px-2">:</td>
+								<td>
+									{{ $intubations->ttvPost->rr ?? '0' }} kali per menit
+								</td>
+							</tr>
+							<tr>
+								<td>SpO<sub>2</sub></td>
+								<td class="px-2">:</td>
+								<td>
+									{{ $intubations->ttvPost->spo2 ?? '0'}} %
+								</td>
+							</tr>
+						</table>
+					</div>
+
 				</div>
 
 				{{-- Cek Extubation --}}
@@ -307,7 +342,7 @@
 
 			
 	{{-- Data Intensif --}}
-	<div class="bg-slate-100 shadow-md rounded-lg p-6 my-4">
+	<div class="bg-white shadow-md rounded-lg p-6 my-4">
 		<div class="overflow-x-auto">
 			<table id="icu-table" class="table-auto w-full text-left">
 				<thead class="bg-gray-200">
@@ -346,7 +381,7 @@
 
 	{{-- EXTUBATION --}}
 	@if ($extubation)
-	<div class="bg-slate-200 shadow-md rounded-lg p-6 my-4">
+	<div class="bg-white shadow-md rounded-lg p-6 my-4">
 		<h2 class="text-2xl font-bold mb-6">Extubasi Pasien</h2>
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 			<div>
@@ -462,7 +497,7 @@
 			<h2 class="text-2xl text-left font-bold mb-4 md:mb-0">Pindah Ruangan Pasien</h2>
 			@if ($extubation->patient_status === 'Tidak Meninggal' && !$transfer)
 			<a href="{{ route('transfer-rooms.create') }}?patient_id={{ $patient->id }}" 
-			class="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+			class="bg-btn hover:bg-btnh text-txtd font-bold py-2 px-4 rounded">
 				Tambah Data Pindah Ruangan
 			</a>
 			@endif
@@ -470,7 +505,7 @@
 
 		@if ($transfer)
 		<div class="overflow-x-auto">
-			<table class="table-auto w-full mb-4">
+			<table class="table-auto w-1/2 mb-4">
 				<tbody>
 					<tr>
 						<td class="font-semibold">Waktu dan Tanggal Pindah Ruangan</td>
@@ -587,12 +622,12 @@
 
 	<!-- Modal -->
 	<div id="confirmationModal" class="fixed inset-0 z-50 hidden bg-gray-800 bg-opacity-75 flex items-center justify-center">
-		<div class="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
+		<div class="bg-white rounded-lg shadow-lg p-6">
 			<h3 class="text-lg font-semibold mb-4">Konfirmasi</h3>
 			<p>Apakah Anda yakin ingin menyimpan data <span class="font-bold">Lepas Venti?</span></p>
 			<div class="flex justify-end mt-4">
-				<button id="cancelButton" class="mr-2 px-4 py-2 bg-gray-300 text-gray-700 rounded-md">Batal</button>
-				<button id="confirmButton" class="px-4 py-2 bg-blue-600 text-white rounded-md">Ya, Simpan</button>
+				<button id="cancelButton" class="mr-2 px-4 py-2 bg-btn hover:bg-btnh text-txtd rounded-md">Batal</button>
+				<button id="confirmButton" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-md">Ya, Hapus</button>
 			</div>
 		</div>
 	</div>

@@ -21,9 +21,9 @@ class UserController extends Controller
     {
         if ($request->ajax()) {
             $users = User::with('userDetails')
-            ->where('role', '!=', 'admin')
+            ->where('role', '!=', 'super admin')
             ->take(100)
-            ->select(['id', 'name', 'email', 'role', 'user_detail_id' ]);
+            ->select(['id', 'name', 'username', 'role', 'user_detail_id' ]);
 
             return DataTables::of($users)
             ->addColumn('hospital', function ($user) {
@@ -37,7 +37,7 @@ class UserController extends Controller
             })
             ->addColumn('action', function ($user) {
                 return '
-                <a href="'.route('admin.users.edit', $user->id).'" style="background-color: #3490dc; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; margin-right: 5px;">
+                <a href="'.route('admin.users.edit', $user->id).'" style="background-color: #2f4157; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; margin-right: 5px;">
                     Edit
                 </a>
                 <a href="javascript:void(0)" class="delete" data-id="'.$user->id.'" style="background-color: #e3342f; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none;">

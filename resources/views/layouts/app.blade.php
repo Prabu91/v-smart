@@ -23,25 +23,44 @@
     @stack('styles')
 
 </head>
-<body class="bg-bgcl">
+<body class="bg-bg">
 
     <header>
         @include('partials.header')
     </header>
 
-    <main class="flex flex-col md:flex-row min-h-screen overflow-hidden">
+    <main class="flex flex-col md:flex-row min-h-screen overflow-hidden text-txtl">
         <section class="w-full mx-auto p-6">
             @yield('content') 
         </section>
     </main>
 
-    <footer class="bg-bgftcl p-4 text-center text-white">
+    <footer class="bg-footer p-4 text-center text-txtd">
         © 2024 BPJS Kesehatan Cabang Soreang.
     </footer>
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const tooltip = document.querySelector("#tooltip-patient");
+            const target = document.querySelector("[data-tooltip-target='tooltip-patient']");
+        
+            if (tooltip && target) {
+                target.addEventListener("mouseenter", function() {
+                    tooltip.classList.remove("invisible", "opacity-0");
+                });
+        
+                target.addEventListener("mouseleave", function() {
+                    tooltip.classList.add("invisible", "opacity-0");
+                });
+            }
+        });
+    </script>
+        
+    
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

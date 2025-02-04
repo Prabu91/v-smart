@@ -12,13 +12,13 @@ class Intubation extends Model
     protected $fillable = [
         'patient_id',
         'user_id',
-        'ttv_id',
+        'ttv_pre_id',
+        'ttv_post_id',
         'ventilator_id',
         'intubation_datetime',
         'intubation_location',
         'dr_intubation',
         'dr_consultant',
-        'therapy_type',
         'diameter',
         'depth',
         'pre_intubation',
@@ -54,8 +54,18 @@ class Intubation extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function ttv()
+    // public function ttv()
+    // {
+    //     return $this->belongsTo(TTV::class, 'ttv_id', 'id');
+    // }
+
+    public function ttvPre()
     {
-        return $this->belongsTo(TTV::class, 'ttv_id', 'id');
+        return $this->belongsTo(Ttv::class, 'ttv_pre_id');
+    }
+
+    public function ttvPost()
+    {
+        return $this->belongsTo(Ttv::class, 'ttv_post_id');
     }
 }

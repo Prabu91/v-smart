@@ -77,10 +77,14 @@ class DashboardController extends Controller
                 ->addColumn('updated_time', function ($patient) {
                     return $patient->updated_at ? $patient->updated_at->format('H:i d/m/Y') : '-';
                 })
-                ->addColumn('action', function ($patient) {
+                ->addColumn('action', function ($patient) { 
                     return '
-                    <a href="'.route('patients.show', $patient->id).'" style="background-color: #3490dc; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; margin-right: 5px;">
-                    Detail
+                    <a href="'.route('patients.show', $patient->id).'" 
+                        style="background-color: #2f4157; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; margin-right: 5px; 
+                        transition: background-color 0.3s;"
+                        onmouseover="this.style.backgroundColor=\'#577c8e\'" 
+                        onmouseout="this.style.backgroundColor=\'#2f4157\'">
+                        Detail
                     </a>';
                 })
                 ->rawColumns(['status', 'action'])
@@ -120,7 +124,7 @@ class DashboardController extends Controller
             $ventiRs = $usrHos->venti;
             $isDisabled = $intubatedCount >= $ventiRs;
 
-        return view('dashboard', compact('intubatedCount','user', 'isDisabled'));
+        return view('dashboard', compact('intubatedCount','user', 'isDisabled', 'hospitals'));
     }
 
     public function showDetails(Request $request, $id)
@@ -169,7 +173,10 @@ class DashboardController extends Controller
                     })
                     ->addColumn('action', function ($patient) {
                         return '
-                            <a href="'.route('patients.show', $patient->id).'" style="background-color: #3490dc; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; margin-right: 5px;">
+                            <a href="'.route('patients.show', $patient->id).'" style="background-color: #2f4157; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; margin-right: 5px; 
+                            transition: background-color 0.3s;"
+                            onmouseover="this.style.backgroundColor=\'#577c8e\'" 
+                            onmouseout="this.style.backgroundColor=\'#2f4157\'">
                                 Detail
                             </a>';
                     })

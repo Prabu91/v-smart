@@ -6,8 +6,8 @@
 <div class="container mx-auto flex flex-col md:flex-row md:space-x-8 px-4">
     <div class="bg-white shadow-md rounded-lg p-8 mb-6 md:w-full">
         <div class="flex items-center justify-between mb-4 flex-col md:flex-row">
-            <h2 class="text-2xl font-bold text-center mb-4 md:mb-0 md:text-left flex-grow">DAFTAR PENGGUNA</h2>
-            <a href="{{ route('admin.users.create') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-2 md:mt-0">
+            <h2 class="text-3xl font-bold text-center mb-4 md:mb-0 md:text-left flex-grow">DAFTAR PENGGUNA</h2>
+            <a href="{{ route('admin.users.create') }}" class="bg-btn hover:bg-btnh text-white font-bold py-2 px-4 rounded mt-2 md:mt-0">
                 Tambah Data
             </a>
         </div>
@@ -19,7 +19,7 @@
                     <tr>
                         <th class="px-4 py-2 border-b">No</th>
                         <th class="px-4 py-2 border-b">Name</th>
-                        <th class="px-4 py-2 border-b">Email</th>
+                        <th class="px-4 py-2 border-b">Username</th>
                         <th class="px-4 py-2 border-b">Hospital</th>
                         <th class="px-4 py-2 border-b">Ventilator</th>
                         <th class="px-4 py-2 border-b">Bed</th>
@@ -39,8 +39,8 @@
                 <h3 class="text-lg font-semibold mb-4">Konfirmasi</h3>
                 <p>Apakah Anda Yakin Ingin Menghapus Data Pengguna?</p>
                 <div class="flex justify-end mt-4">
-                    <button id="cancelButton" class="mr-2 px-4 py-2 bg-gray-300 text-gray-700 rounded-md">Batal</button>
-                    <button id="confirmButton" class="px-4 py-2 bg-red-600 text-white rounded-md">Ya, Hapus</button>
+                    <button id="cancelButton" class="mr-2 px-4 py-2 bg-btn hover:bg-btnh text-txtd rounded-md">Batal</button>
+                    <button id="confirmButton" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-md">Ya, Hapus</button>
                 </div>
             </div>
         </div>
@@ -95,7 +95,7 @@
                 }
             },
             { data: 'name', name: 'name' },
-            { data: 'email', name: 'email' },
+            { data: 'username', name: 'username' },
             { data: 'hospital', name: 'hospital' },
             { data: 'venti', name: 'venti' },
             { data: 'bed', name: 'bed' },
@@ -107,9 +107,9 @@
                 searchable: false,
                 render: function (data, type, row) {
                     return `
-                        <button class="edit" data-id="${row.id}" style="background-color: #3490dc; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; transition: background-color 0.3s;" 
-                                onmouseover="this.style.backgroundColor='#2779bd';" 
-                                onmouseout="this.style.backgroundColor='#3490dc';">
+                        <button class="edit" data-id="${row.id}" style="background-color: #eab308; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; transition: background-color 0.3s;" 
+                                onmouseover="this.style.backgroundColor='#facc15';" 
+                                onmouseout="this.style.backgroundColor='#eab308';">
                             Edit
                         </button>
                         <button class="delete" data-id="${row.id}" style="background-color: #e3342f; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; transition: background-color 0.3s;" 

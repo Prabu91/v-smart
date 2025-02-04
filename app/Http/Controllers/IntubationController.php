@@ -6,9 +6,11 @@ use App\Http\Requests\StoreIntubationRequest;
 use App\Models\Agd;
 use App\Models\IcuRoom;
 use App\Models\Intubation;
+use App\Models\OriginRoom;
 use App\Models\Ttv;
 use App\Models\Ventilator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class IntubationController extends Controller
@@ -38,23 +40,34 @@ class IntubationController extends Controller
     {
         try {
             DB::transaction(function () use ($request) {
-                $ttv = Ttv::create([
+                $userId = Auth::id();
+
+                $pre_ttv = Ttv::create([
                     'patient_id' => $request->patient_id,
-                    'user_id' => $request->user_id,
-                    'sistolik' => $request->sistolik,
-                    'diastolik' => $request->diastolik,
-                    'suhu' => $request->suhu,
-                    'nadi' => $request->nadi,
-                    'rr' => $request->rr_ttv,
-                    'spo2' => $request->spo2,
+                    'user_id' => $userId,
+                    'sistolik' => $request->pre_sistolik,
+                    'diastolik' => $request->pre_diastolik,
+                    'suhu' => $request->pre_suhu,
+                    'nadi' => $request->pre_nadi,
+                    'rr' => $request->pre_rr_ttv,
+                    'spo2' => $request->pre_spo2,
+                ]);
+                $post_ttv = Ttv::create([
+                    'patient_id' => $request->patient_id,
+                    'user_id' => $userId,
+                    'sistolik' => $request->post_sistolik,
+                    'diastolik' => $request->post_diastolik,
+                    'suhu' => $request->post_suhu,
+                    'nadi' => $request->post_nadi,
+                    'rr' => $request->post_rr_ttv,
+                    'spo2' => $request->post_spo2,
                 ]);
                 
                 $ventilator = Ventilator::create([
                     'patient_id' => $request->patient_id,
-                    'user_id' => $request->user_id,
-                    'ttv_id' => $ttv->id,
+                    'user_id' => $userId,
+                    'ttv_id' => $post_ttv->id,
                     'venti_datetime' => $request->venti_datetime,
-                    'therapy_type' => $request->therapy_type,
                     'mode_venti' => $request->mode_venti,
                     'diameter' => $request->diameter,
                     'depth' => $request->depth,
@@ -66,8 +79,9 @@ class IntubationController extends Controller
                 
                 $intubation = Intubation::create([
                     'patient_id' => $request->patient_id,
-                    'user_id' => $request->user_id,
-                    'ttv_id' => $ttv->id,
+                    'user_id' => $userId,
+                    'ttv_pre_id' => $pre_ttv->id,
+                    'ttv_post_id' => $post_ttv->id,
                     'ventilator_id' => $ventilator->id,
                     'intubation_datetime' => $request->intubation_datetime,
                     'intubation_location' => $request->intubation_location,
@@ -75,10 +89,18 @@ class IntubationController extends Controller
                     'dr_consultant' => $request->dr_consultant_name,
                     'pre_intubation' => $request->preintubation,
                     'post_intubation' => $request->postintubation,
-                    'therapy_type' => $request->therapy_type,
                     'diameter' => $request->diameter,
                     'depth' => $request->depth,
                 ]);
+
+                $originRoom = OriginRoom::where('patient_id', $request->patient_id)->first();
+
+                if ($originRoom) {
+                    $originRoom->intubation_id = $intubation->id;
+                    $originRoom->save();
+                }
+
+                
             });
 
         return redirect()->route('patients.show', ['patient' => $request->patient_id])

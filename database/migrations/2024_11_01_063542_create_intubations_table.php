@@ -15,8 +15,9 @@ return new class extends Migration
             $table->uuid('id')->primary(); 
             $table->uuid('patient_id');
             $table->uuid('user_id');
-            $table->uuid('ttv_id');
             $table->uuid('ventilator_id')->nullable();
+            $table->uuid('ttv_pre_id');
+            $table->uuid('ttv_post_id');
 
             
             $table->timestamp('intubation_datetime')->nullable();
@@ -24,15 +25,15 @@ return new class extends Migration
             $table->string('dr_intubation')->nullable();
             $table->string('dr_consultant')->nullable();
             
-            $table->string('therapy_type')->nullable();
-            $table->string('pre_intubation')->nullable();
-            $table->string('post_intubation')->nullable();
+            $table->text('pre_intubation')->nullable();
+            $table->text('post_intubation')->nullable();
             $table->float('diameter', 4, 1)->nullable();
             $table->float('depth', 5, 1)->nullable();
             $table->timestamps();
             
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('ttv_id')->references('id')->on('ttv')->onDelete('cascade');
+            $table->foreign('ttv_pre_id')->references('id')->on('ttv')->onDelete('cascade');
+            $table->foreign('ttv_post_id')->references('id')->on('ttv')->onDelete('cascade');
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
             $table->foreign('ventilator_id')->references('id')->on('ventilators')->onDelete('cascade');
 

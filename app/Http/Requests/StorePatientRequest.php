@@ -25,7 +25,7 @@ class StorePatientRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'no_jkn' => 'required|string|size:13|unique:patients',
-            'no_rm' => 'required|string',
+            'no_rm' => 'required|string|unique:patients',
             'user_id' => 'required|uuid|exists:users,id',
         ];
     }
@@ -40,9 +40,11 @@ class StorePatientRequest extends FormRequest
             'no_jkn.required' => 'Nomor JKN wajib diisi.',
             'no_jkn.string' => 'Nomor JKN harus berupa teks.',
             'no_jkn.size' => 'Nomor JKN harus 13 Digit.',
+            'no_jkn.unique' => 'Nomor JKN sudah ada.',
             
             'no_rm.required' => 'Nomor Rekam Medis wajib diisi.',
             'no_rm.string' => 'Nomor Rekam Medis harus berupa teks.',
+            'no_rm.unique' => 'Nomor Rekam Medis sudah ada.',
         ];
     }
 }

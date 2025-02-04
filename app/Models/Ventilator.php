@@ -12,7 +12,6 @@ class Ventilator extends Model
     protected $fillable = [
         'patient_id',
         'user_id',
-        'icu_id',
         'venti_datetime',
         'venti_usagetime',
         'mode_venti',

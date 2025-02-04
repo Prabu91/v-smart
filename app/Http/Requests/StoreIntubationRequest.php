@@ -17,7 +17,6 @@ class StoreIntubationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|uuid|exists:users,id',
             'patient_id' => 'required|uuid|exists:patients,id',
 
             'intubation_location' => 'required|string',
@@ -25,17 +24,23 @@ class StoreIntubationRequest extends FormRequest
             'dr_intubation_name' => 'nullable|string|max:255',
             'dr_consultant_name' => 'nullable|string|max:255',
             'preintubation' => 'nullable|string|max:255',
-            'therapy_type_origin' => 'nullable|string|max:255',
-            'diameter_origin' => 'nullable|numeric',
-            'depth_origin' => 'nullable|numeric',
+            'diameter' => 'nullable|numeric',
+            'depth' => 'nullable|numeric',
             'postintubation' => 'nullable|string|max:255',
 
-            'sistolik' => 'nullable|numeric',
-            'diastolik' => 'nullable|numeric',
-            'suhu' => 'nullable|numeric',
-            'nadi' => 'nullable|numeric',
-            'rr_ttv' => 'nullable|numeric',
-            'spo2' => 'nullable|numeric',
+            'pre_sistolik' => 'nullable|numeric',
+            'pre_diastolik' => 'nullable|numeric',
+            'pre_suhu' => 'nullable|numeric',
+            'pre_nadi' => 'nullable|numeric',
+            'pre_rr_ttv' => 'nullable|numeric',
+            'pre_spo2' => 'nullable|numeric',
+
+            'post_sistolik' => 'nullable|numeric',
+            'post_diastolik' => 'nullable|numeric',
+            'post_suhu' => 'nullable|numeric',
+            'post_nadi' => 'nullable|numeric',
+            'post_rr_ttv' => 'nullable|numeric',
+            'post_spo2' => 'nullable|numeric',
             
             'venti_datetime' => 'required|date|after_or_equal:intubation_datetime',
             'mode_venti' => 'nullable|string|max:255',

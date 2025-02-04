@@ -22,7 +22,6 @@ class StoreExtubationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|uuid|exists:users,id',
             'patient_id' => 'required|uuid|exists:patients,id',
 
             'extubation_datetime' => 'required|date',

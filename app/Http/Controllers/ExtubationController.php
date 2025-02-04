@@ -6,6 +6,7 @@ use App\Http\Requests\StoreExtubationRequest;
 use App\Models\Extubation;
 use App\Models\Ttv;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ExtubationController extends Controller
@@ -27,30 +28,32 @@ class ExtubationController extends Controller
         return view('observation.icu-room.extubation.create',compact('patient_id'));
     }
 
+
     public function store(StoreExtubationRequest $request)
     {
         try {
-            if($request->patient_status == "Tidak Meninggal"){
-                $ttv = Ttv::create([
-                    'patient_id' => $request->patient_id,
-                    'user_id' => $request->user_id,
+            DB::transaction(function () use ($request) {
+                $userId = Auth::id();
+                if ($request->patient_status == "Tidak Meninggal") {
+                    $ttv = Ttv::create([
+                        'patient_id' => $request->patient_id,
+                        'user_id' => $userId,
+                        'sistolik' => $request->sistolik,
+                        'diastolik' => $request->diastolik,
+                        'suhu' => $request->suhu,
+                        'nadi' => $request->nadi,
+                        'rr' => $request->rr_ttv,
+                        'spo2' => $request->spo2,
+                    ]);
 
-                    'sistolik' => $request->sistolik,
-                    'diastolik' => $request->diastolik,
-                    'suhu' => $request->suhu,
-                    'nadi' => $request->nadi,
-                    'rr' => $request->rr_ttv,
-                    'spo2' => $request->spo2,
-                ]);
-                $ttvId = $ttv->id;
-            } else {
-                $ttvId = null;
-            }
-
+                    $ttvId = $ttv->id;
+                } else {
+                    $ttvId = null;
+                }
 
                 Extubation::create([
                     'patient_id' => $request->patient_id,
-                    'user_id' => $request->user_id,
+                    'user_id' => $userId,
                     'ttv_id' => $ttvId,
                     'extubation_datetime' => $request->extubation_datetime,
                     'preparation_extubation_therapy' => $request->preparation_extubation_therapy,
@@ -58,14 +61,16 @@ class ExtubationController extends Controller
                     'nebulizer' => $request->nebulizer,
                     'patient_status' => $request->patient_status,
                 ]);
+            });
 
-                return redirect()->route('patients.show', ['patient' => $request->patient_id])
+            return redirect()->route('patients.show', ['patient' => $request->patient_id])
                 ->with('success', 'Berhasil Menyimpan Data.');
-                }catch (\Exception $e) {
-                    return redirect()->route('patients.show', ['patient' => $request->patient_id])
-                        ->with('error', 'Gagal Menyimpan Data! Error: ' . $e->getMessage());
-                }
+        } catch (\Exception $e) {
+            return redirect()->route('patients.show', ['patient' => $request->patient_id])
+                ->with('error', 'Gagal Menyimpan Data! Error: ' . $e->getMessage());
+        }
     }
+
 
     /**
      * Display the specified resource.

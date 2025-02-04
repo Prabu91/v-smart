@@ -34,24 +34,24 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $email = strtolower($request->input('email'));
+        $username = strtolower($request->input('username'));
         $ip = $request->ip();
-        $throttleKey = "login:$email|$ip";
+        $throttleKey = "login:$username|$ip";
     
         if (RateLimiter::tooManyAttempts($throttleKey, 1)) {
             $seconds = RateLimiter::availableIn($throttleKey);
             return back()->withErrors([
-                'email' => "Terlalu banyak percobaan login. Coba lagi dalam $seconds detik."
-            ])->onlyInput('email');
+                'username' => "Terlalu banyak percobaan login. Coba lagi dalam $seconds detik."
+            ])->onlyInput('username');
         }
     
         $request->validate([
-            'email' => 'required|email',
+            'username' => 'required',
             'password' => 'required',
             'g-recaptcha-response' => 'required'
         ], [
-            'email.required' => 'Email harus diisi.',   
-            'email.email' => 'Email tidak valid.',
+            'username.required' => 'Username harus diisi.',   
+            'username.username' => 'Username tidak valid.',
             'password.required' => 'Password harus diisi.',
             'g-recaptcha-response.required' => 'Silakan verifikasi bahwa Anda bukan robot.'
         ]);
@@ -66,14 +66,14 @@ class AuthController extends Controller
         if (!$result['success']) {
             return back()->withErrors([
                 'g-recaptcha-response' => 'Verifikasi reCAPTCHA gagal, silakan coba lagi.'
-            ])->onlyInput('email');
+            ])->onlyInput('username');
         }
     
-        if (!Auth::attempt($request->only('email', 'password'))) {
+        if (!Auth::attempt($request->only('username', 'password'))) {
             RateLimiter::hit($throttleKey, 180);
             return back()->withErrors([
-                'email' => 'Email atau password salah.'
-            ])->onlyInput('email');
+                'username' => 'Username atau password salah.'
+            ])->onlyInput('username');
         }
     
         RateLimiter::clear($throttleKey);

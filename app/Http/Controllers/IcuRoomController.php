@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreIcuRoomRequest;
 use App\Models\Agd;
 use App\Models\Elektrolit;
 use App\Models\IcuRoom;
@@ -11,6 +12,7 @@ use App\Models\Ttv;
 use App\Models\Ventilator;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 class IcuRoomController extends Controller
 {
@@ -39,20 +41,19 @@ class IcuRoomController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreIcuRoomRequest $request)
     {
         try {
             DB::transaction(function () use ($request) {
-                // Variabel untuk menyimpan ID yang akan digunakan di ICU Room
+                $userId = Auth::id();
+
                 $ttvId = null;
                 $labResultId = null;
                 $elektrolitId = null;
                 $agdId = null;
                 $ventilatorId = null;
 
-                // Cek apakah data venti diisi
                 if ($request->filled(['venti_datetime', 'mode_venti'])) {
-                    // Cari ventilator sebelumnya berdasarkan patient_id
                     $previousVentilator = Ventilator::where('patient_id', $request->patient_id)
                         ->orderBy('venti_datetime', 'desc')
                         ->first();
@@ -60,7 +61,7 @@ class IcuRoomController extends Controller
                     // Tambahkan data ventilator baru
                     $ventilator = Ventilator::create([
                         'patient_id' => $request->patient_id,
-                        'user_id' => $request->user_id,
+                        'user_id' => $userId,
                         'venti_datetime' => $request->venti_datetime,
                         'mode_venti' => $request->mode_venti,
                         'ipl' => $request->ipl,
@@ -71,7 +72,6 @@ class IcuRoomController extends Controller
 
                     $ventilatorId = $ventilator->id;
 
-                    // Jika ada ventilator sebelumnya, simpan venti_datetime baru ke kolom venti_usagetime
                     if ($previousVentilator->venti_usagetime === null) {
                         $previousVentilator->update([
                             'venti_usagetime' => $request->venti_datetime
@@ -79,7 +79,6 @@ class IcuRoomController extends Controller
                     }
                 }
 
-                // Cek apakah data lain diisi (selain venti)
                 if ($request->filled([
                     'hb_icu', 'leukosit_icu', 'natrium', 'kalium', 'ph_icu', 'sistolik', 'icu_room_datetime'
                 ])) {
@@ -87,7 +86,7 @@ class IcuRoomController extends Controller
                     if ($request->filled(['hb_icu', 'leukosit_icu'])) {
                         $labResult = LabResult::create([
                             'patient_id' => $request->patient_id,
-                            'user_id' => $request->user_id,
+                            'user_id' => $userId,
                             'hb' => $request->hb_icu,
                             'leukosit' => $request->leukosit_icu,
                             'pcv' => $request->pcv_icu,
@@ -105,7 +104,7 @@ class IcuRoomController extends Controller
                     if ($request->filled(['natrium', 'kalium'])) {
                         $elektrolit = Elektrolit::create([
                             'patient_id' => $request->patient_id,
-                            'user_id' => $request->user_id,
+                            'user_id' => $userId,
                             'natrium' => $request->natrium,
                             'kalium' => $request->kalium,
                             'calsium' => $request->calsium,
@@ -119,7 +118,7 @@ class IcuRoomController extends Controller
                     if ($request->filled(['ph_icu', 'pco2_icu'])) {
                         $agd = Agd::create([
                             'patient_id' => $request->patient_id,
-                            'user_id' => $request->user_id,
+                            'user_id' => $userId,
                             'ph' => $request->ph_icu,
                             'pco2' => $request->pco2_icu,
                             'po2' => $request->po2_icu,
@@ -134,7 +133,7 @@ class IcuRoomController extends Controller
                     if ($request->filled(['sistolik', 'diastolik'])) {
                         $ttv = Ttv::create([
                             'patient_id' => $request->patient_id,
-                            'user_id' => $request->user_id,
+                            'user_id' => $userId,
                             'sistolik' => $request->sistolik,
                             'diastolik' => $request->diastolik,
                             'suhu' => $request->suhu,
@@ -149,7 +148,7 @@ class IcuRoomController extends Controller
                 // ICU Room
                 if ($ttvId || $labResultId || $elektrolitId || $agdId) {
                     IcuRoom::create([
-                        'user_id' => $request->user_id,
+                        'user_id' => $userId,
                         'icu_room_datetime' => $request->icu_room_datetime,
                         'icu_room_name' => $request->icu_room_name,
                         'icu_room_bednum' => $request->icu_room_bednum,
