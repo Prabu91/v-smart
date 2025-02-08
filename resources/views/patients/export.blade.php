@@ -70,35 +70,35 @@
         </tr>
         <tr>
             <th>Hb</th>
-            <td>{{ $patient->originRoom->labResult->hb ?? '-' }}</td>
+            <td>{{ $patient->originRoom->labResult->hb ?? '-' }} g/dL</td>
         </tr>
         <tr>
             <th>Leukosit</th>
-            <td>{{ $patient->originRoom->labResult->leukosit ?? '-' }}</td>
+            <td>{{ $patient->originRoom->labResult->leukosit ?? '-' }} /µL</td>
         </tr>
         <tr>
             <th>PCV</th>
-            <td>{{ $patient->originRoom->labResult->pcv ?? '-' }}</td>
+            <td>{{ $patient->originRoom->labResult->pcv ?? '-' }} %</td>
         </tr>
         <tr>
             <th>Trombosit</th>
-            <td>{{ $patient->originRoom->labResult->trombosit ?? '-' }}</td>
+            <td>{{ $patient->originRoom->labResult->trombosit ?? '-' }} /µL</td>
         </tr>
         <tr>
             <th>Kreatinin</th>
-            <td>{{ $patient->originRoom->labResult->kreatinin ?? '-' }}</td>
+            <td>{{ $patient->originRoom->labResult->kreatinin ?? '-' }} mg/dL</td>
         </tr>
         <tr>
             <th>Natrium</th>
-            <td>{{ $patient->originRoom->natrium ?? '-' }}</td>
+            <td>{{ $patient->originRoom->natrium ?? '-' }} mmol/L</td>
         </tr>
         <tr>
             <th>Kalium</th>
-            <td>{{ $patient->originRoom->kalium ?? '-' }}</td>
+            <td>{{ $patient->originRoom->kalium ?? '-' }} mmol/L</td>
         </tr>
         <tr>
             <th>GDS</th>
-            <td>{{ $patient->originRoom->gds ?? '-' }}</td>
+            <td>{{ $patient->originRoom->gds ?? '-' }} mg/dL</td>
         </tr>
         <tr>
             <th>Radiologi</th>
@@ -130,19 +130,19 @@
         </tr>
         <tr>
             <th>PCO2</th>
-            <td>{{ $patient->originRoom->agd->pco2 ?? '-' }}</td>
+            <td>{{ $patient->originRoom->agd->pco2 ?? '-' }} mmHg</td>
         </tr>
         <tr>
             <th>Po2</th>
-            <td>{{ $patient->originRoom->agd->po2 ?? '-' }}</td>
+            <td>{{ $patient->originRoom->agd->po2 ?? '-' }} mmHg</td>
         </tr>
         <tr>
             <th>SPO2</th>
-            <td>{{ $patient->originRoom->agd->spo2 ?? '-' }}</td>
+            <td>{{ $patient->originRoom->agd->spo2 ?? '-' }} %</td>
         </tr>
         <tr>
             <th>Base Excees</th>
-            <td>{{ $patient->originRoom->agd->base_excees ?? '-' }}</td>
+            <td>{{ $patient->originRoom->agd->base_excees ?? '-' }} %</td>
         </tr>
     </table>
 
@@ -173,14 +173,67 @@
             <td>{{ $patient->intubation->post_intubation }}</td>
         </tr>
         <tr>
-            <th>Therapy</th>
-            <td>{{ $patient->intubation->therapy_type }}</td>
-        </tr>
-        <tr>
             <th>ETT/Kedalaman</th>
             <td>{{ $patient->intubation->diameter }} / {{ $patient->intubation->depth }}</td>
         </tr>
     </table>
+
+    <h3 class="header">TTV Pre Intubation</h3>
+	<table border="1" style="border-collapse: collapse; width: 100%;">
+        <thead>
+            <th>TD</th>
+            <th>Suhu</th>
+            <th>Nadi</th>
+            <th>RR</th>
+            <th>SpO<sub>2</sub></th>
+        </thead>
+        <tbody>
+            <td>
+                {{ $intubations && $intubations->ttvPre && $intubations->ttvPre->sistolik && $intubations->ttvPre->diastolik ? $intubations->ttvPre->sistolik . ' / ' . $intubations->ttvPre->diastolik : '0' }}
+            </td>
+            <td>
+                {{ $intubations->ttvPre->suhu ?? '0'}} °C
+            </td>
+            <td>
+                {{ $intubations->ttvPre->nadi ?? '0'}} bpm
+            </td>
+            <td>
+                {{ $intubations->ttvPre->rr ?? '0' }} kali per menit
+            </td>
+            <td>
+                {{ $intubations->ttvPre->spo2 ?? '0'}} %
+            </td>
+        </tbody>
+    </table>
+    
+    <h3 class="header">TTV Post Intubation</h3>
+	<table border="1" style="border-collapse: collapse; width: 100%;">
+        <thead>
+            <th>TD</th>
+            <th>Suhu</th>
+            <th>Nadi</th>
+            <th>RR</th>
+            <th>SpO<sub>2</sub></th>
+        </thead>
+        <tbody>
+            <td>
+                {{ $intubations && $intubations->ttvPost && $intubations->ttvPost->sistolik && $intubations->ttvPost->diastolik ? $intubations->ttvPost->sistolik . ' / ' . $intubations->ttvPost->diastolik : '0' }}
+            </td>
+            <td>
+                {{ $intubations->ttvPost->suhu ?? '0'}} °C
+            </td>
+            <td>
+                {{ $intubations->ttvPost->nadi ?? '0'}} bpm
+            </td>
+            <td>
+                {{ $intubations->ttvPost->rr ?? '0' }} kali per menit
+            </td>
+            <td>
+                {{ $intubations->ttvPost->spo2 ?? '0'}} %
+            </td>
+        </tbody>
+    </table>
+
 
 </body>
 </html>

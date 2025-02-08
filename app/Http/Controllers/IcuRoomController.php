@@ -9,7 +9,9 @@ use App\Models\IcuRoom;
 use App\Models\Intubation;
 use App\Models\LabResult;
 use App\Models\Ttv;
+use App\Models\User;
 use App\Models\Ventilator;
+use App\Support\LogHelper;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -44,8 +46,9 @@ class IcuRoomController extends Controller
     public function store(StoreIcuRoomRequest $request)
     {
         try {
-            DB::transaction(function () use ($request) {
+            DB::transaction(function () use ($request, &$icuId, &$user) {
                 $userId = Auth::id();
+                $user = User::where('id', $userId)->first();
 
                 $ttvId = null;
                 $labResultId = null;
@@ -70,12 +73,15 @@ class IcuRoomController extends Controller
                         'rr' => $request->rr,
                     ]);
 
+                    
                     $ventilatorId = $ventilator->id;
+                    LogHelper::log('Tambah Venti', "(ID : {$user->name}) Pasang Ventilator: ({$ventilatorId})");
 
                     if ($previousVentilator->venti_usagetime === null) {
                         $previousVentilator->update([
                             'venti_usagetime' => $request->venti_datetime
                         ]);
+                        LogHelper::log('Lepas Venti', "(ID : {$user->name}) Lepas Ventilator: ({$previousVentilator->id})");
                     }
                 }
 
@@ -147,7 +153,7 @@ class IcuRoomController extends Controller
 
                 // ICU Room
                 if ($ttvId || $labResultId || $elektrolitId || $agdId) {
-                    IcuRoom::create([
+                    $icuId = IcuRoom::create([
                         'user_id' => $userId,
                         'icu_room_datetime' => $request->icu_room_datetime,
                         'icu_room_name' => $request->icu_room_name,
@@ -165,6 +171,7 @@ class IcuRoomController extends Controller
                 }
             });
 
+            LogHelper::log('Tambah Data intensif', "(ID : {$user->name}) Menambahkan Data intensif {$icuId->id}");
             return redirect()->route('patients.show', ['patient' => $request->patient_id])
                 ->with('success', 'Berhasil Menyimpan Data.');
         } catch (\Exception $e) {

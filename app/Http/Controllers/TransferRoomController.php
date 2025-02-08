@@ -6,6 +6,8 @@ use App\Http\Requests\StoreTransferRoomRequest;
 use App\Models\LabResult;
 use App\Models\TransferRoom;
 use App\Models\Ttv;
+use App\Models\User;
+use App\Support\LogHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -35,8 +37,10 @@ class TransferRoomController extends Controller
     public function store(StoreTransferRoomRequest $request)
     {
         try {
-            DB::transaction(function () use ($request) {
+            DB::transaction(function () use ($request, &$user, &$transferRoom) {
                 $userId = Auth::id();
+                $user = User::where('id', $userId)->first();
+
                 $labResult = LabResult::create([
                     'patient_id' => $request->patient_id,
                     'user_id' => $userId,
@@ -71,6 +75,7 @@ class TransferRoomController extends Controller
                 ]);
             });
 
+            LogHelper::log('Tambah Data TransferRoom', "(ID : {$user->name}) Menambah Data TransferRoom {$transferRoom->id}");
             return redirect()->route('patients.show', ['patient' => $request->patient_id])
             ->with('success', 'Berhasil Menyimpan Data.');
         } catch (\Exception $e) {

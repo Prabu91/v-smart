@@ -120,6 +120,51 @@
                                     <td class="px-4">:</td>
                                     <td>{{ $origin->labResult->trombosit ?? '0'}} /µL</td>
                                 </tr>
+                                <tr>
+                                    <td>Kreatinin</td>
+                                    <td class="px-4">:</td>
+                                    <td>{{ $origin->labResult->kreatinin ?? '0'}} mg/dL</td>
+                                </tr>
+                                <tr>
+                                    <td>Natrium</td>
+                                    <td class="px-4">:</td>
+                                    <td>{{ $origin->natrium ?? '0'}} mmol/L</td>
+                                </tr>
+                                <tr>
+                                    <td>Kalium</td>
+                                    <td class="px-4">:</td>
+                                    <td>{{ $origin->kalium ?? '0'}} mmol/L</td>
+                                </tr>
+                                <tr>
+                                    <td>GDS</td>
+                                    <td class="px-4">:</td>
+                                    <td>{{ $origin->gds ?? '0'}} mg/dL</td>
+                                </tr>
+                                <tr>
+                                    <td>Radiologi</td>
+                                    <td class="px-4">:</td>
+                                    <td>{{ $origin->radiology ?? '0'}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Penunjang Lain</td>
+                                    <td class="px-4">:</td>
+                                    <td>{{ $origin->additional_check ?? '0'}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Score EWS</td>
+                                    <td class="px-4">:</td>
+                                    <td>{{ $origin->ews ?? '0'}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Diagnosa Utama</td>
+                                    <td class="px-4">:</td>
+                                    <td>{{ $origin->main_diagnose ?? '0'}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Diagnosa Sekunder</td>
+                                    <td class="px-4">:</td>
+                                    <td>{{ $origin->secondary_diagnose ?? '0'}}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

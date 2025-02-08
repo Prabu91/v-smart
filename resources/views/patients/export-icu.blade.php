@@ -269,7 +269,7 @@
 			<tr>
 				<th>Parameter</th>
 				@foreach ($patient->venti as $venti)
-					<th>{{ \Carbon\Carbon::parse($venti->venti_datetime)->format('d/m/Y') }}</th>
+					<th>{{ \Carbon\Carbon::parse($venti->venti_datetime)->format('H:i d/m/Y') }}</th>
 				@endforeach
 			</tr>
 		</thead>

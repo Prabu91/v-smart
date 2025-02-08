@@ -12,7 +12,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::user() && Auth::user()->role === 'admin';
+        return Auth::user() && Auth::user()->role === 'super admin';
     }
 
     /**
@@ -26,7 +26,7 @@ class UpdateUserRequest extends FormRequest
 
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $userId, 
+            'username' => 'required|string|unique:users,username,' . $userId, 
             'password' => 'nullable|string|min:8',
             'role' => 'required|in:admin,user',
             'hospital' => 'required|string|max:255',
@@ -42,9 +42,8 @@ class UpdateUserRequest extends FormRequest
             'name.string' => 'Nama harus berupa teks.',
             'name.max' => 'Nama tidak boleh lebih dari 255 karakter.',
             
-            'email.required' => 'Email wajib diisi.',
-            'email.email' => 'Format email tidak valid.',
-            'email.unique' => 'Email ini sudah terdaftar.',
+            'username.required' => 'Username wajib diisi.',
+            'username.unique' => 'Username ini sudah terdaftar.',
 
             'role.required' => 'Role wajib dipilih.',
             'role.in' => 'Role yang dipilih tidak valid.',

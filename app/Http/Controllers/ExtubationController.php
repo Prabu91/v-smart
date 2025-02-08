@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreExtubationRequest;
 use App\Models\Extubation;
 use App\Models\Ttv;
+use App\Models\User;
+use App\Support\LogHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -32,8 +34,10 @@ class ExtubationController extends Controller
     public function store(StoreExtubationRequest $request)
     {
         try {
-            DB::transaction(function () use ($request) {
+            DB::transaction(function () use ($request, &$user, &$extubation) {
                 $userId = Auth::id();
+                $user = User::where('id', $userId)->first();
+
                 if ($request->patient_status == "Tidak Meninggal") {
                     $ttv = Ttv::create([
                         'patient_id' => $request->patient_id,
@@ -51,7 +55,7 @@ class ExtubationController extends Controller
                     $ttvId = null;
                 }
 
-                Extubation::create([
+                $extubation = Extubation::create([
                     'patient_id' => $request->patient_id,
                     'user_id' => $userId,
                     'ttv_id' => $ttvId,
@@ -63,6 +67,7 @@ class ExtubationController extends Controller
                 ]);
             });
 
+            LogHelper::log('Tambah Extubation', "(ID : {$user->name}) Menambah Data Extubation {$extubation->id}");
             return redirect()->route('patients.show', ['patient' => $request->patient_id])
                 ->with('success', 'Berhasil Menyimpan Data.');
         } catch (\Exception $e) {

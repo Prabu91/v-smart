@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityLogController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
@@ -18,9 +19,11 @@ Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     
     Route::post('/login', [AuthController::class, 'login'])->name('login.process');
+
 });
 
 Route::middleware(['auth', CheckIntubationStatus::class])->group(function () {
+    Route::get('/logs', [ActivityLogController::class, 'index'])->name('logs.index')->middleware('auth');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     

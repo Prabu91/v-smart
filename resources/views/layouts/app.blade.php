@@ -38,6 +38,35 @@
     <footer class="bg-footer p-4 text-center text-txtd">
         © 2024 BPJS Kesehatan Cabang Soreang.
     </footer>
+
+    {{-- SWAL --}}
+    @if (session('success'))
+    <script>
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: '{{ session('success') }}',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+    </script>
+    @endif
+
+    @if (session('error'))
+    <script>
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            title: '{{ session('error') }}',
+            showConfirmButton: true,
+            timer: 5000,
+            timerProgressBar: true,
+        });
+    </script>
+    @endif
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -59,21 +88,7 @@
             }
         });
     </script>
-        
-    
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const successMessage = document.getElementById('successMessage');
-            if (successMessage) {
-                setTimeout(() => {
-                    successMessage.style.display = 'none';
-                }, 3000); 
-            }
-        });
-    </script>
-
-    
     @stack('scripts')
     @vite('resources/js/app.js')
 

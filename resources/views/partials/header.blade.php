@@ -20,16 +20,6 @@
                         <span>Beranda</span>
                     </a>
                 </li>
-                @if (Auth::User()->role === 'super admin')
-                    <li>
-                        <a href="{{ route('admin.users.index') }}"
-                            class="flex items-center font-semibold hover:text-txtl hover:border-txtd hover:bg-txtd p-3 rounded-3xl 
-                            {{ Request::routeIs('admin.users*') ? 'bg-txtd text-txtl border-txtl' : '' }}">
-                            <i class="fas fa-user-friends mr-2"></i>
-                            <span>Pengguna</span>
-                        </a>
-                    </li>
-                @endif
 
                 <li class="relative">
                     <a href="{{ $isDisabled ? '#' : route('patients.index') }}" 
@@ -52,6 +42,18 @@
                     </div>
                     @endif
                 </li>
+
+                @if (Auth::User()->role === 'super admin')
+                    <li>
+                        <a href="{{ route('admin.users.index') }}"
+                            class="flex items-center font-semibold hover:text-txtl hover:border-txtd hover:bg-txtd p-3 rounded-3xl 
+                            {{ Request::routeIs('admin.users*') ? 'bg-txtd text-txtl border-txtl' : '' }}">
+                            <i class="fas fa-user-friends mr-2"></i>
+                            <span>Pengguna</span>
+                        </a>
+                    </li>
+                @endif
+                
             </ul>
         </div>
 
@@ -68,6 +70,16 @@
                             {{ Auth::user()->name }}
                         </h5>
                     </div>
+                    @if (Auth::User()->role === 'super admin')
+                    <div class="py-2">
+                        <ul>
+                            <li>
+                                <a href="{{ route('logs.index') }}" class="flex items-center font-semibold text-txtl hover:text-txtl hover:border-txtd hover:bg-txtd p-3 
+                                    {{ Request::routeIs('logs*') ? 'bg-txtd text-txtl border-txtl' : '' }}">View Log</a>
+                            </li>
+                        </ul>
+                    </div>
+                    @endif
                     <div class="py-2">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf

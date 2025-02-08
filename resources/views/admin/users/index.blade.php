@@ -47,37 +47,6 @@
     </div>
 </div>
 
-
-
-    {{-- SWAL --}}
-    @if (session('success'))
-        <script>
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'success',
-                title: '{{ session('success') }}',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-            });
-        </script>
-    @endif
-
-    @if (session('error'))
-        <script>
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'error',
-                title: '{{ session('error') }}',
-                showConfirmButton: true,
-                timer: 5000,
-                timerProgressBar: true,
-            });
-        </script>
-    @endif
-
 @push('scripts')
 <script>
     var table = $('#users-table').DataTable({
@@ -107,9 +76,10 @@
                 searchable: false,
                 render: function (data, type, row) {
                     return `
-                        <button class="edit" data-id="${row.id}" style="background-color: #eab308; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; transition: background-color 0.3s;" 
-                                onmouseover="this.style.backgroundColor='#facc15';" 
-                                onmouseout="this.style.backgroundColor='#eab308';">
+                        <button class="edit" data-id="${row.id}" style="background-color: #2f4157; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; margin-right: 5px; 
+                        transition: background-color 0.3s;"
+                        onmouseover="this.style.backgroundColor=\'#577c8e\'" 
+                        onmouseout="this.style.backgroundColor=\'#2f4157\'">
                             Edit
                         </button>
                         <button class="delete" data-id="${row.id}" style="background-color: #e3342f; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; transition: background-color 0.3s;" 

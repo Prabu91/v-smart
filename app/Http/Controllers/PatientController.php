@@ -11,6 +11,7 @@ use App\Models\Patient;
 use App\Models\TransferRoom;
 use App\Models\Ttv;
 use App\Models\Ventilator;
+use App\Support\LogHelper;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -43,7 +44,7 @@ class PatientController extends Controller
     {
         $patient = null;
         
-        DB::transaction(function () use ($request, &$patient) {                
+        DB::transaction(function () use ($request, &$patient, &$userId) {                
             $userId = Auth::id();
             
             $patient = Patient::create([
@@ -55,6 +56,7 @@ class PatientController extends Controller
         });
 
         if ($patient) {
+            LogHelper::log('Tambah Pasien', "(ID : {$userId}) Menambahkan pasien bernama {$request->name}");
             return redirect()->route('patients.show', ['patient' => $patient->id])
                 ->with('success', 'Berhasil Menyimpan Data.');
         } else {
@@ -201,8 +203,6 @@ class PatientController extends Controller
         return view('patients.detail', compact('patient', 'origin', 'icu', 'intubations', 'extubation', 'transfer', 'ventiReleaseButton'));
     }
 
-
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -229,15 +229,23 @@ class PatientController extends Controller
 
     public function exportPdf($patientId)
     {
+        $userId = Auth::id();
+
         $patient = Patient::with([
             'originRoom',
             'icuRoom',
-            'venti',
+            'venti' => function ($query) {
+                    $query->orderBy('created_at', 'asc');
+                },
             'intubation',
             'extubation',
             'transferRoom',
             'user'
         ])->findOrFail($patientId);
+
+        $intubations = Intubation::with(['ttvPre', 'ttvPost'])
+        ->where('patient_id', $patientId)
+        ->first();
 
         $icuRoomsByDate = $patient->icuRoom
         ->sortBy(function ($room) {
@@ -284,6 +292,7 @@ class PatientController extends Controller
         // Buat PDF potret
         $portraitPdf = Pdf::loadView('patients.export', [
             'patient' => $patient,
+            'intubations' => $intubations,
             ])->setPaper('A4', 'portrait')->output();
             
         // Buat PDF lanskap
@@ -311,6 +320,7 @@ class PatientController extends Controller
         $pdfMerger->addPDF($landscapePath, 'all');
         $pdfMerger->addPDF($portraitPath2, 'all');
 
+        LogHelper::log('Export Data Pasien', "(ID : {$userId}) Mengeksport pasien bernama {$patient->name} | ID: {$patientId} ");
         // Simpan file gabungan
         $outputPath = storage_path('app/Detail_Patient_' . $patient->id . '.pdf');
         $pdfMerger->merge('file', $outputPath);
@@ -321,7 +331,6 @@ class PatientController extends Controller
         unlink($portraitPath2);
 
         return response()->download($outputPath)->deleteFileAfterSend();
-        // return $pdf->download('Detail_Patient_' . $patient->id . '.pdf');
 
     }
 

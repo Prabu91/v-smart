@@ -8,7 +8,9 @@ use App\Models\IcuRoom;
 use App\Models\Intubation;
 use App\Models\OriginRoom;
 use App\Models\Ttv;
+use App\Models\User;
 use App\Models\Ventilator;
+use App\Support\LogHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -39,8 +41,9 @@ class IntubationController extends Controller
     public function store(StoreIntubationRequest $request)
     {
         try {
-            DB::transaction(function () use ($request) {
-                $userId = Auth::id();
+            DB::transaction(function () use ($request, &$user, &$intubation) {
+                $userId = Auth::id();                
+                $user = User::where('id', $userId)->first();
 
                 $pre_ttv = Ttv::create([
                     'patient_id' => $request->patient_id,
@@ -99,9 +102,9 @@ class IntubationController extends Controller
                     $originRoom->intubation_id = $intubation->id;
                     $originRoom->save();
                 }
-
-                
             });
+
+        LogHelper::log('Tambah Data Intubation', "(ID : {$user->name}) Menambahkan Data Intubation {$intubation->id}");
 
         return redirect()->route('patients.show', ['patient' => $request->patient_id])
             ->with('success', 'Berhasil Menyimpan Data.');

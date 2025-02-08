@@ -41,13 +41,20 @@
                 </div>
                 @endforeach
             </div>
-
         @endif
 
-
-
+        
         <div class="bg-white shadow-md rounded-lg p-6">
-            <h2 class="text-xl font-bold text-gray-700 mb-4">Data Pasien</h2>
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-gray-700 mb-4">Data Pasien</h2>
+                <select id="filter-year" class="border border-gray-300 rounded px-3 py-2 focus:outline-none">
+                    <option value="">Semua Tahun</option>
+                    @foreach(range(date('Y'), date('Y') - 5) as $year)
+                        <option value="{{ $year }}">{{ $year }}</option>
+                    @endforeach
+                </select>
+            </div>    
+
             <div class="overflow-x-auto">
                 <table id="patients-table" class="table-auto w-full text-left border-collapse">
                     <thead>
@@ -71,35 +78,43 @@
 
 
 @push('scripts')
-    <script>
-        $(document).ready(function() {
-            $('#patients-table').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: '{{ route('dashboard') }}',
-                pageLength: 10,
-                columns: [
-                    { data: 'id', name: 'id'},
-                    { data: 'no_rm', name: 'no_rm' },
-                    { data: 'name', name: 'name' },
-                    { data: 'status', name: 'status' },
-                    { data: 'room', name: 'room' },
-                    { data: 'room_date', name: 'room_date' },
-                    { data: 'updated_time', name: 'updated_time' },
-                    { data: 'action', name: 'action', orderable: false, searchable: false }
-                ],
-                columnDefs: [
-                    { targets: 0, render: function (data, type, row, meta) {
-                        return meta.row + 1 + meta.settings._iDisplayStart;
-                    }}
-                ],
-                language: {
-                    emptyTable: "Belum Ada Data Pasien"
+<script>
+    $(document).ready(function() {
+        let table = $('#patients-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: '{{ route('dashboard') }}',
+                data: function(d) {
+                    d.year = $('#filter-year').val();
                 }
-            });
+            },
+            pageLength: 10,
+            columns: [
+                { data: 'id', name: 'id'},
+                { data: 'no_rm', name: 'no_rm' },
+                { data: 'name', name: 'name' },
+                { data: 'status', name: 'status' },
+                { data: 'room', name: 'room' },
+                { data: 'room_date', name: 'room_date' },
+                { data: 'updated_time', name: 'updated_time' },
+                { data: 'action', name: 'action', orderable: false, searchable: false }
+            ],
+            columnDefs: [
+                { targets: 0, render: function (data, type, row, meta) {
+                    return meta.row + 1 + meta.settings._iDisplayStart;
+                }}
+            ],
+            language: {
+                emptyTable: "Belum Ada Data Pasien"
+            }
         });
 
-    </script>
+        $('#filter-year').change(function() {
+            table.ajax.reload();
+        });
+    });
+</script>
 @endpush
 
 @endsection

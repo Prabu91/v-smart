@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Support\LogHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -34,51 +38,36 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $username = strtolower($request->input('username'));
-        $ip = $request->ip();
-        $throttleKey = "login:$username|$ip";
-    
-        if (RateLimiter::tooManyAttempts($throttleKey, 1)) {
-            $seconds = RateLimiter::availableIn($throttleKey);
+        $userId = User::where('username', $request->username)->first();
+        if (RateLimiter::tooManyAttempts($this->throttleKey($request), 2)) {
+            $seconds = RateLimiter::availableIn($this->throttleKey($request));
+
             return back()->withErrors([
-                'username' => "Terlalu banyak percobaan login. Coba lagi dalam $seconds detik."
-            ])->onlyInput('username');
+                'username' => "Terlalu banyak percobaan login. Silakan coba lagi dalam $seconds detik."
+            ])->withInput();
         }
-    
-        $request->validate([
-            'username' => 'required',
-            'password' => 'required',
-            'g-recaptcha-response' => 'required'
-        ], [
-            'username.required' => 'Username harus diisi.',   
-            'username.username' => 'Username tidak valid.',
-            'password.required' => 'Password harus diisi.',
-            'g-recaptcha-response.required' => 'Silakan verifikasi bahwa Anda bukan robot.'
-        ]);
-    
-        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret'   => env('RECAPTCHA_SECRET_KEY'),
-            'response' => $request->input('g-recaptcha-response'),
-        ]);
-    
-        $result = $response->json();
-    
-        if (!$result['success']) {
-            return back()->withErrors([
-                'g-recaptcha-response' => 'Verifikasi reCAPTCHA gagal, silakan coba lagi.'
-            ])->onlyInput('username');
+
+        $credentials = $request->only('username', 'password');
+        $user = User::where('username', $credentials['username'])->first();
+
+        if ($user && Hash::check($credentials['password'], $user->password)) {
+            Auth::login($user);
+            $request->session()->regenerate();
+            RateLimiter::clear($this->throttleKey($request));
+            LogHelper::log('Login', "User {$request->name} (ID: {$userId->id} Role: {$userId->role}) berhasil login.");
+            return redirect()->intended('/dashboard')->with('success', 'Login Berhasil!');
         }
-    
-        if (!Auth::attempt($request->only('username', 'password'))) {
-            RateLimiter::hit($throttleKey, 180);
-            return back()->withErrors([
-                'username' => 'Username atau password salah.'
-            ])->onlyInput('username');
-        }
-    
-        RateLimiter::clear($throttleKey);
-        $request->session()->regenerate();
-        return redirect()->intended('dashboard')->with('success', 'Login berhasil.');
+
+        RateLimiter::hit($this->throttleKey($request), 180); 
+
+        return back()->withErrors([
+            'username' => 'username atau password salah!'
+        ])->withInput();
+    }
+
+    private function throttleKey(Request $request)
+    {
+        return Str::lower($request->input('username')) . '|' . $request->ip();
     }
 
     /**
@@ -89,6 +78,13 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+        // Ambil data user sebelum logout
+        $user = Auth::user();
+
+        if ($user) {
+            LogHelper::log('Logout', "User {$user->name} (ID: {$user->id} Role: {$user->role}) berhasil logout.");
+        }
+
         Auth::logout();
 
         // Invalidate and regenerate session after logout

@@ -57,13 +57,15 @@
 							class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 focus:border-btnh focus:ring-btnh {{ $errors->has('password') ? 'border-red-500' : '' }}" oncopy="return false" oncut="return false">
 						<x-input-error :messages="$errors->get('password')" class="mt-1 text-red-500 text-sm" />
 					</div>
-					<!-- reCAPTCHA -->
-					<div class="mt-4 flex justify-center">
-						<div class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}"></div>
-					</div>
-					<x-input-error :messages="$errors->get('g-recaptcha-response')" class="mt-1 text-red-500 text-sm" />
 
-					<div class="flex justify-center">
+					<!-- cAPTCHA -->
+					<div class="mt-4 flex justify-center">
+						<img src="{{ captcha_src('flat'); }}" id="captcha-img" alt="CAPTCHA" class="mb-2 rounded">
+					</div>
+					<input type="text" name="captcha" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 focus:border-btn focus:ring-btn {{ $errors->has('password') ? 'border-red-500' : '' }}" placeholder="Masukkan kode di atas">
+					<x-input-error :messages="$errors->get('captcha')" class="mt-1 text-red-500 text-sm" />
+					
+						<div class="flex justify-center">
 						<button type="submit"
 							class="w-full text-txtd bg-btn hover:bg-btnh focus:ring-4 focus:ring-bth1 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
 							LOGIN

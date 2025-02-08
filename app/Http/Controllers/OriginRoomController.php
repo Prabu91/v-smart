@@ -6,7 +6,8 @@ use App\Http\Requests\StoreOriginRoomRequest;
 use App\Models\OriginRoom;
 use App\Models\LabResult;
 use App\Models\Agd;
-
+use App\Models\User;
+use App\Support\LogHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -37,8 +38,9 @@ class OriginRoomController extends Controller
     public function store(StoreOriginRoomRequest $request)
     {
         try {
-            DB::transaction(function () use ($request) {
+            DB::transaction(function () use ($request, &$user, &$originId) {
                 $userId = Auth::id();
+                $user = User::where('id', $userId)->first();
 
                 $labResult = LabResult::create([
                     'patient_id' => $request->patient_id,
@@ -60,7 +62,7 @@ class OriginRoomController extends Controller
                     'base_excees' => $request->be_origin,
                 ]);
             
-                OriginRoom::create([
+                $originId = OriginRoom::create([
                     'user_id' => $userId,
                     'origin_room_name' => $request->origin_room_name,
                     'physical_check' => $request->physical_check,
@@ -79,6 +81,7 @@ class OriginRoomController extends Controller
                 ]);
             });
 
+            LogHelper::log('Tambah Data Origin Room', "(ID : {$user->name}) Menambahkan Data Origin {$originId->id}");
             return redirect()->route('patients.show', ['patient' => $request->patient_id])
                 ->with('success', 'Berhasil Menyimpan Data.');
             } catch (\Exception $e) {

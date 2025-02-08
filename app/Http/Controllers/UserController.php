@@ -11,6 +11,8 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Support\LogHelper;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -35,15 +37,6 @@ class UserController extends Controller
             ->addColumn('bed', function ($user) {
                 return $user->userDetails ? $user->userDetails->bed : '-';
             })
-            ->addColumn('action', function ($user) {
-                return '
-                <a href="'.route('admin.users.edit', $user->id).'" style="background-color: #2f4157; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; margin-right: 5px;">
-                    Edit
-                </a>
-                <a href="javascript:void(0)" class="delete" data-id="'.$user->id.'" style="background-color: #e3342f; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none;">
-                    Hapus
-                </a>';
-            })
             ->rawColumns(['action'])
             ->make(true);
         }
@@ -51,8 +44,6 @@ class UserController extends Controller
         return view('admin.users.index');
     }
     
-
-
     /**
      * Show the form for creating a new resource.
      */
@@ -63,10 +54,11 @@ class UserController extends Controller
 
     public function store(StoreUserRequest $request)
     {    
-        $request->validated();
+        $userId = Auth::id();
 
+        $request->validated();
         try {
-            DB::transaction(function () use ($request) {
+            DB::transaction(function () use ($request, &$user) {
                 $userDetail = UserDetail::create([
                     'hospital' => $request->hospital,
                     'venti' => $request->venti,
@@ -74,15 +66,16 @@ class UserController extends Controller
                 ]);
 
                 
-                User::create([
+                $user = User::create([
                     'name' => $request->name,
                     'user_detail_id' => $userDetail->id,
-                    'email' => $request->email,
+                    'username' => $request->username,
                     'password' => $request->password,
                     'role' => $request->role,
                 ]);
             });
 
+            LogHelper::log('Tambah User', "User {$userId} Menambahkan User bernama {$request->name} dengan id {$user->id}");
             return redirect()->route('admin.users.index')
                 ->with('success', 'Data Pengguna berhasil disimpan.');
         } catch (\Exception $e) {
@@ -117,7 +110,8 @@ class UserController extends Controller
         
         try {
             DB::transaction(function () use ($request, $id) {
-                $user = User::findOrFail($id);
+                $userId = User::findOrFail($id);
+                $user = User::where('id', $userId)->first();
 
                 $user->update([
                     'name' => $request->name,
@@ -131,7 +125,7 @@ class UserController extends Controller
                     ]);
                 }
 
-                $userDetail = $user->userDetails; // Mengambil relasi userDetails jika sudah ada
+                $userDetail = $user->userDetails;
                 if (!$userDetail) {
                     $userDetail = new UserDetail();
                 }
@@ -148,6 +142,7 @@ class UserController extends Controller
                 }
             });
 
+            LogHelper::log('Edit User', "Mengubah User bernama {$request->name} dengan id {$id}");
             return redirect()->route('admin.users.index')
                 ->with('success', 'Data Pengguna berhasil diperbarui.');
         } catch (\Exception $e) {
@@ -163,7 +158,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         try {
-            DB::transaction(function () use ($id) {
+            DB::transaction(function () use ($id, &$user) {
                 $user = User::findOrFail($id);
                 
                 if ($user->userDetails) {
@@ -172,6 +167,7 @@ class UserController extends Controller
                 $user->delete();
             });
 
+            LogHelper::log('Hapus User', "Menghapus User bernama {$user->name} dengan id {$id}");
             return response()->json(['success' => 'Data Pengguna berhasil dihapus.']);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Gagal Menghapus Pengguna!.'], 500);
