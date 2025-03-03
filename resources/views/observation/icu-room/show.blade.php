@@ -86,7 +86,7 @@
 						<td>Albumin</td>
 						<td class="px-4">:</td>
 						<td>
-							{{ $icuRecords->labResult->albumin ?? '0' }} g/dL
+							{{  number_format($icuRecords->labResult->albumin ?? '0', 1) }} g/dL
 						</td>
 					</tr>
 					<tr>
@@ -127,7 +127,7 @@
 						<td>K<sub>+</sub></td>
 						<td class="px-4">:</td>
 						<td>
-							{{ $icuRecords->elektrolit->kalium ?? '0' }} mmol/L
+							{{ number_format($icuRecords->elektrolit->kalium ?? '0', 1) }} mmol/L
 						</td>
 					</tr>
 					<tr>
@@ -148,7 +148,7 @@
 						<td>Cl<sub></sub></td>
 						<td class="px-4">:</td>
 						<td>
-							{{ $icuRecords->elektrolit->clorida ?? '0'}} mmol/L
+							{{ number_format($icuRecords->elektrolit->clorida ?? '0', 1)}} mmol/L
 						</td>
 					</tr>
 				</table>

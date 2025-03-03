@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 
 
@@ -20,7 +21,7 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $intubatedCount = Intubation::whereIn('user_id', $user)
+        $intubatedCount = Intubation::where('user_id', $user->id)
             ->whereNotIn('patient_id', function ($query) {
                 $query->select('patient_id')->from('extubations');
             })
@@ -56,6 +57,9 @@ class DashboardController extends Controller
         
         if ($request->ajax()) {
             return DataTables::of($patientsQuery)
+                ->addColumn('name', function ($patient) {
+                    return Str::mask($patient->name, '*', 2, -1);
+                })
                 ->addColumn('hospital', function ($patient) use ($user) {
                     return $user->role === 'user' ? null : ($patient->user->userDetails->hospital ?? '-');
                 })
@@ -167,6 +171,9 @@ class DashboardController extends Controller
         
         if ($request->ajax()) {
             return DataTables::of($patientsQuery)
+                ->addColumn('name', function ($patient) {
+                    return Str::mask($patient->name, '*', 2, -1);
+                })
                 ->addColumn('status', function ($patient) {
                     if ($patient->extubation && $patient->extubation->patient_status) {
                         return '<span style="display: inline-block; padding: 5px 10px; border: 1px solid #FFC107; background-color: #FFF7D1; color: #FFC107; border-radius: 5px;">' 

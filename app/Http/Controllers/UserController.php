@@ -106,16 +106,13 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, $id)
     {
-        $request->validated();
-        
         try {
             DB::transaction(function () use ($request, $id) {
-                $userId = User::findOrFail($id);
-                $user = User::where('id', $userId)->first();
+                $user = User::findOrFail($id);
 
                 $user->update([
                     'name' => $request->name,
-                    'email' => $request->email,
+                    'username' => $request->username,
                     'role' => $request->role,
                 ]);
 

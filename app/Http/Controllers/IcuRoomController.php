@@ -45,10 +45,14 @@ class IcuRoomController extends Controller
      */
     public function store(StoreIcuRoomRequest $request)
     {
+
         try {
             DB::transaction(function () use ($request, &$icuId, &$user) {
                 $userId = Auth::id();
                 $user = User::where('id', $userId)->first();
+                $ventiDatetime = Carbon::parse($request->venti_datetime)->format('Y-m-d H:i:s');
+                $icuDatetime = Carbon::parse($request->icu_room_datetime)->format('Y-m-d H:i:s');
+
 
                 $ttvId = null;
                 $labResultId = null;
@@ -65,7 +69,7 @@ class IcuRoomController extends Controller
                     $ventilator = Ventilator::create([
                         'patient_id' => $request->patient_id,
                         'user_id' => $userId,
-                        'venti_datetime' => $request->venti_datetime,
+                        'venti_datetime' => $ventiDatetime,
                         'mode_venti' => $request->mode_venti,
                         'ipl' => $request->ipl,
                         'peep' => $request->peep,
@@ -155,7 +159,7 @@ class IcuRoomController extends Controller
                 if ($ttvId || $labResultId || $elektrolitId || $agdId) {
                     $icuId = IcuRoom::create([
                         'user_id' => $userId,
-                        'icu_room_datetime' => $request->icu_room_datetime,
+                        'icu_room_datetime' => $icuDatetime,
                         'icu_room_name' => $request->icu_room_name,
                         'icu_room_bednum' => $request->icu_room_bednum,
                         'ro' => $request->ro,
@@ -171,12 +175,13 @@ class IcuRoomController extends Controller
                 }
             });
 
-            LogHelper::log('Tambah Data intensif', "(ID : {$user->name}) Menambahkan Data intensif {$icuId->id}");
+            // LogHelper::log('Tambah Data intensif', "(ID : {$user->name}) Menambahkan Data intensif {$icuId->id}");
             return redirect()->route('patients.show', ['patient' => $request->patient_id])
                 ->with('success', 'Berhasil Menyimpan Data.');
         } catch (\Exception $e) {
-            return redirect()->route('patients.show', ['patient' => $request->patient_id])
-                ->with('error', 'Gagal Menyimpan Data!');
+            dd($e->getMessage(), $e->getFile(), $e->getLine());
+            // return redirect()->route('patients.show', ['patient' => $request->patient_id])
+            //     ->with('error', 'Gagal Menyimpan Data!'. $e->getMessage());
         }
     }
 

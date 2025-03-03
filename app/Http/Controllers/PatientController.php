@@ -24,7 +24,7 @@ class PatientController extends Controller
 {
     /**
      * Display a listing of the resource.
-     */
+     */ 
     public function index()
     {
         return view('patients.index');
@@ -51,10 +51,13 @@ class PatientController extends Controller
                 'name' => $request->name,
                 'no_jkn' => $request->no_jkn,
                 'no_rm' => $request->no_rm,
+                'no_sep' => $request->no_sep,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'gender' => $request->gender,
                 'user_id' => $userId,
             ]);
         });
-
+    
         if ($patient) {
             LogHelper::log('Tambah Pasien', "(ID : {$userId}) Menambahkan pasien bernama {$request->name}");
             return redirect()->route('patients.show', ['patient' => $patient->id])
@@ -163,9 +166,9 @@ class PatientController extends Controller
                     $icuRoomNameBed .= " - Bed {$icu->icu_room_bednum}";
                 }
 
-                $elektrolit = "Na: " . $icu->elektrolit->natrium . " K: " . $icu->elektrolit->kalium;
+                $elektrolit = "Na: " . $icu->elektrolit->natrium . " K: " .  number_format($icu->elektrolit->kalium, 1);
                 $lb1 = "Hb: " . $icu->labResult->hb . " L: " . $icu->labResult->leukosit;
-                $lb2 = "Alb: " . $icu->labResult->albumin . " L: " . $icu->labResult->laktat;
+                $lb2 = "Alb: " . number_format($icu->labResult->albumin, 1) . " L: " . $icu->labResult->laktat;
                 $agd = $icu->agd->ph . " / " . $icu->agd->pco2;
                 $ttv = $icu->ttv->sistolik . " / " . $icu->ttv->diastolik . ", " . $icu->ttv->nadi;
                 
@@ -227,6 +230,7 @@ class PatientController extends Controller
         //
     }
 
+
     public function exportPdf($patientId)
     {
         $userId = Auth::id();
@@ -242,6 +246,11 @@ class PatientController extends Controller
             'transferRoom',
             'user'
         ])->findOrFail($patientId);
+
+        $patient->name = substr($patient->name, 0, 4) . str_repeat('*', strlen($patient->name) - 4);
+        $patient->no_jkn = substr($patient->no_jkn, 0, 4) . str_repeat('*', strlen($patient->no_jkn) - 4);
+        $patient->no_rm = substr($patient->no_rm, 0, 4) . str_repeat('*', strlen($patient->no_rm) - 4);
+
 
         $intubations = Intubation::with(['ttvPre', 'ttvPost'])
         ->where('patient_id', $patientId)

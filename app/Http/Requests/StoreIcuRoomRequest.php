@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreIcuRoomRequest extends FormRequest
@@ -22,9 +23,26 @@ class StoreIcuRoomRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'venti_datetime' => ['nullable', function ($attribute, $value, $fail) {
+                $now = now();
+                $selectedTime = Carbon::parse($value);
+                $earliestAllowedTime = $now->subHours(1);
+
+                if ($selectedTime->lessThan($earliestAllowedTime) || $selectedTime->greaterThan($now)) {
+                    $fail('Waktu pemakaian hanya bisa diinput dalam rentang 1 jam terakhir.');
+                }
+            }],
+        ];
+
+        return [
             'patient_id' => 'required|uuid|exists:patients,id',
 
-            'icu_room_datetime' => 'required|date|after:today', 
+            'icu_room_datetime' => [
+                    'required',
+                    'date',
+                    'after_or_equal:today',
+                    'before_or_equal:' . now()->addDay()->endOfDay()->toDateString(),
+                ],
             'icu_room_name' => 'required|string|in:ICU,PICU,NICU,IGD', 
             'icu_room_bednum' => 'required|integer|min:1', 
 
@@ -52,7 +70,7 @@ class StoreIcuRoomRequest extends FormRequest
             'be_icu' => 'nullable|numeric|between:-10,10',
             'sbpt' => 'nullable|numeric|between:10,50',
 
-            'ro' => 'required|in:sudah,belum',
+            'ro' => 'nullable|in:sudah,belum',
             'blood_culture' => 'nullable|string|max:255',
             'ro_post_intubation' => 'nullable|string|max:255',
 
@@ -63,8 +81,8 @@ class StoreIcuRoomRequest extends FormRequest
             'rr_ttv' => 'required|integer|min:0|max:60', 
             'spo2' => 'required|integer|min:0|max:100', 
 
-            'venti_datetime' => 'required|date', 
-            'mode_venti' => 'required|string|max:255', 
+            'venti_datetime' => 'nullable|date', 
+            'mode_venti' => 'nullable|string|max:255', 
             'ipl' => 'nullable|numeric|min:0|max:100', 
             'peep' => 'nullable|numeric|min:0|max:20', 
             'fio2' => 'nullable|numeric|min:0|max:100', 

@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('no_jkn', 13)->unique(); 
             $table->string('no_rm')->unique(); 
+            $table->string('no_sep');
+            $table->enum('gender', ['L','P']);
+            $table->date('tanggal_lahir');
             $table->uuid('user_id');
             $table->timestamps();
 

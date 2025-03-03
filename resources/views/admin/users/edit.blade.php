@@ -16,7 +16,7 @@
         </div>
     
         <div>
-            <label for="username" class="block text-sm font-medium">username</label>
+            <label for="username" class="block text-sm font-medium">Username</label>
             <input type="text" name="username" id="username" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" value="{{ old('username', $user->username) }}">
             <x-input-error :messages="$errors->get('username')" class="mt-2" />
         </div>

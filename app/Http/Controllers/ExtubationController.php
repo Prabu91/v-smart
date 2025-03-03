@@ -7,6 +7,7 @@ use App\Models\Extubation;
 use App\Models\Ttv;
 use App\Models\User;
 use App\Support\LogHelper;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -35,6 +36,8 @@ class ExtubationController extends Controller
     {
         try {
             DB::transaction(function () use ($request, &$user, &$extubation) {
+                $extubationDatetime = Carbon::parse($request->extubation_datetime)->format('Y-m-d H:i:s');
+
                 $userId = Auth::id();
                 $user = User::where('id', $userId)->first();
 
@@ -59,7 +62,7 @@ class ExtubationController extends Controller
                     'patient_id' => $request->patient_id,
                     'user_id' => $userId,
                     'ttv_id' => $ttvId,
-                    'extubation_datetime' => $request->extubation_datetime,
+                    'extubation_datetime' => $extubationDatetime,
                     'preparation_extubation_therapy' => $request->preparation_extubation_therapy,
                     'extubation' => $request->extubation,
                     'nebulizer' => $request->nebulizer,

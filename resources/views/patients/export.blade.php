@@ -34,6 +34,11 @@
             margin-bottom: 10px;
         }
     </style>
+
+    @php
+        use Carbon\Carbon;
+    @endphp
+
 </head>
 <body>
     <div class="header">
@@ -44,15 +49,27 @@
     <table>
         <tr>
             <th>Nama</th>
-            <td>{{ $patient->name }}</td>
+            <td id="name">{{ $patient->name }}</td>
+        </tr>
+        <tr>
+            <th>Tanggal Lahir</th>
+            <td>**-**-{{  Carbon::parse($patient->tanggal_lahir)->format('Y') }}</td>
+        </tr>
+        <tr>
+            <th>Jenis Kelamin</th>
+            <td>{{ $patient->gender }}</td>
+        </tr>
+        <tr>
+            <th>Nomor SEP</th>
+            <td>{{ $patient->no_sep }}</td>
         </tr>
         <tr>
             <th>No JKN</th>
-            <td>{{ $patient->no_jkn }}</td>
+            <td id="noJkn">{{ $patient->no_jkn }}</td>
         </tr>
         <tr>
             <th>No Rekam Medis</th>
-            <td>{{ $patient->no_rm }}</td>
+            <td id="noRm">{{ $patient->no_rm }}</td>
         </tr>
         <tr>
             <th>Rumah Sakit</th>
@@ -94,7 +111,7 @@
         </tr>
         <tr>
             <th>Kalium</th>
-            <td>{{ $patient->originRoom->kalium ?? '-' }} mmol/L</td>
+            <td>{{ number_format($patient->originRoom->kalium ?? '0', 1) }} mmol/L</td>
         </tr>
         <tr>
             <th>GDS</th>
@@ -154,7 +171,7 @@
         </tr>
         <tr>
             <th>Waktu Intubasi</th>
-            <td>{{ $patient->intubation->intubation_datetime }}</td>
+            <td>{{Carbon::parse($patient->intubation->intubation_datetime)->format('H:i d-m-Y') }}</td>
         </tr>
         <tr>
             <th>Dokter Intubasi</th>

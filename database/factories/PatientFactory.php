@@ -24,6 +24,9 @@ class PatientFactory extends Factory
             'name' => $this->faker->name(),
             'no_jkn' => $this->faker->numerify('00###########'),
             'no_rm' => $this->faker->numerify('RM######'),
+            'no_sep' => $this->faker->numerify('0120R0150225V#######'),
+            'gender' => $this->faker->randomElement(['L', 'P']),
+            'birth_date' => $this->faker->date('Y-m-d', '-20 years'),
             'user_id' => User::inRandomOrder()->first()->id,
         ];
     }

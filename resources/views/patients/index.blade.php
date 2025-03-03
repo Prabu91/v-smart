@@ -41,6 +41,36 @@
                         placeholder="Masukan Nama Pasien" 
                         required>
                     <x-input-error :messages="$errors->get('name')" />
+                </div>                  
+                <div>
+                    <label for="gender" class="block text-sm font-medium">Jenis Kelamin</label>
+                    <select name="gender" id="gender" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option value="L">Laki - laki</option>
+                        <option value="P">Perempuan</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="tanggal_lahir" class="block text-md font-medium">Tanggal Lahir</label>
+                    <input 
+                        type="date" 
+                        name="tanggal_lahir" 
+                        id="tanggal_lahir" 
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" 
+                        required>
+                    <x-input-error :messages="$errors->get('tanggal_lahir')" />
+                </div>
+                
+                <div>
+                    <label for="no_rm" class="mt-4 block text-md font-medium">No Kartu Rekam Medis</label>
+                    <input 
+                    type="text" 
+                    name="no_rm" 
+                    id="no_rm" 
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" 
+                    placeholder="Masukan No Kartu Rekam Medis" 
+                    required>
+                    <x-input-error :messages="$errors->get('no_rm')" />
                 </div>
 
                 <div>
@@ -56,15 +86,15 @@
                 </div>
 
                 <div>
-                    <label for="no_rm" class="mt-4 block text-md font-medium">No Kartu Rekam Medis</label>
+                    <label for="no_sep" class="mt-4 block text-md font-medium">Nomor SEP</label>
                     <input 
                         type="text" 
-                        name="no_rm" 
-                        id="no_rm" 
+                        name="no_sep" 
+                        id="no_sep" 
                         class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" 
-                        placeholder="Masukan No Kartu Rekam Medis" 
+                        placeholder="Masukan Nomor SEP" 
                         required>
-                    <x-input-error :messages="$errors->get('no_rm')" />
+                    <x-input-error :messages="$errors->get('no_sep')" />
                 </div>
 
                 <div class="flex flex-col sm:flex-row justify-between items-center gap-4 ">

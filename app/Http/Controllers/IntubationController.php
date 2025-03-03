@@ -11,6 +11,7 @@ use App\Models\Ttv;
 use App\Models\User;
 use App\Models\Ventilator;
 use App\Support\LogHelper;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -42,6 +43,9 @@ class IntubationController extends Controller
     {
         try {
             DB::transaction(function () use ($request, &$user, &$intubation) {
+                $ventiDatetime = Carbon::parse($request->venti_datetime)->format('Y-m-d H:i:s');
+                $intubationDatetime = Carbon::parse($request->intubation_datetime)->format('Y-m-d H:i:s');
+
                 $userId = Auth::id();                
                 $user = User::where('id', $userId)->first();
 
@@ -70,7 +74,7 @@ class IntubationController extends Controller
                     'patient_id' => $request->patient_id,
                     'user_id' => $userId,
                     'ttv_id' => $post_ttv->id,
-                    'venti_datetime' => $request->venti_datetime,
+                    'venti_datetime' => $ventiDatetime,
                     'mode_venti' => $request->mode_venti,
                     'diameter' => $request->diameter,
                     'depth' => $request->depth,
@@ -86,7 +90,7 @@ class IntubationController extends Controller
                     'ttv_pre_id' => $pre_ttv->id,
                     'ttv_post_id' => $post_ttv->id,
                     'ventilator_id' => $ventilator->id,
-                    'intubation_datetime' => $request->intubation_datetime,
+                    'intubation_datetime' => $intubationDatetime,
                     'intubation_location' => $request->intubation_location,
                     'dr_intubation' => $request->dr_intubation_name,
                     'dr_consultant' => $request->dr_consultant_name,

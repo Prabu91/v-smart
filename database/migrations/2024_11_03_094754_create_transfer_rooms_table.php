@@ -26,10 +26,10 @@ return new class extends Migration
             $table->timestamps();
 
             // Foreign keys
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('no action');
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
-            $table->foreign('labresult_id')->references('id')->on('lab_results')->onDelete('cascade');
-            $table->foreign('ttv_id')->references('id')->on('ttv')->onDelete('cascade');        
+            $table->foreign('labresult_id')->references('id')->on('lab_results')->onDelete('no action');
+            $table->foreign('ttv_id')->references('id')->on('ttv')->onDelete('no action');        
         });
     }
 

@@ -52,6 +52,18 @@
                         <td class="p-2">{{ $patient->name }}</td>
                     </tr>
                     <tr>
+                        <td class="font-semibold bg-gray-300 p-2">Tanggal Lahir</td>
+                        <td class="p-2">{{ Carbon::parse($patient->tanggal_lahir)->format('d-m-Y') }}</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold bg-gray-300 p-2">Jenis Kelamin</td>
+                        <td class="p-2">{{ $patient->gender }}</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold bg-gray-300 p-2">Nomor SEP</td>
+                        <td class="p-2">{{ $patient->no_sep }}</td>
+                    </tr>
+                    <tr>
                         <td class="font-semibold bg-gray-300 p-2">No Kartu JKN</td>
                         <td class="p-2">{{ $patient->no_jkn }}</td>
                     </tr>
@@ -103,17 +115,17 @@
                                 <tr>
                                     <td>Hb</td>
                                     <td class="px-4">:</td>
-                                    <td>{{ $origin->labResult->hb ?? '0' }} g/dL</td>
+                                    <td>{{ number_format($origin->labResult->hb ?? '0', 1) }} g/dL</td>
                                 </tr>
                                 <tr>
                                     <td>Leukosit</td>
                                     <td class="px-4">:</td>
-                                    <td>{{ $origin->labResult->leukosit ?? '0' }} /µL</td>
+                                    <td>{{ number_format($origin->labResult->leukosit ?? '0', 1) }} /µL</td>
                                 </tr>
                                 <tr>
                                     <td>PCV</td>
                                     <td class="px-4">:</td>
-                                    <td>{{ $origin->labResult->pcv ?? '0' }} %</td>
+                                    <td>{{ number_format($origin->labResult->pcv ?? '0', 1) }} %</td>
                                 </tr>
                                 <tr>
                                     <td>Trombosit</td>
@@ -123,32 +135,32 @@
                                 <tr>
                                     <td>Kreatinin</td>
                                     <td class="px-4">:</td>
-                                    <td>{{ $origin->labResult->kreatinin ?? '0'}} mg/dL</td>
+                                    <td>{{ number_format($origin->labResult->kreatinin ?? '0', 1) }} mg/dL</td>
                                 </tr>
                                 <tr>
                                     <td>Natrium</td>
                                     <td class="px-4">:</td>
-                                    <td>{{ $origin->natrium ?? '0'}} mmol/L</td>
+                                    <td>{{ number_format($origin->natrium ?? '0', 1) }} mmol/L</td>
                                 </tr>
                                 <tr>
                                     <td>Kalium</td>
                                     <td class="px-4">:</td>
-                                    <td>{{ $origin->kalium ?? '0'}} mmol/L</td>
+                                    <td>{{ number_format($origin->kalium ?? '0', 1) }} mmol/L</td>
                                 </tr>
                                 <tr>
                                     <td>GDS</td>
                                     <td class="px-4">:</td>
-                                    <td>{{ $origin->gds ?? '0'}} mg/dL</td>
+                                    <td>{{ number_format($origin->gds ?? '0', 1) }} mg/dL</td>
                                 </tr>
                                 <tr>
                                     <td>Radiologi</td>
                                     <td class="px-4">:</td>
-                                    <td>{{ $origin->radiology ?? '0'}}</td>
+                                    <td>{{ $origin->radiology ?? '-'}}</td>
                                 </tr>
                                 <tr>
                                     <td>Penunjang Lain</td>
                                     <td class="px-4">:</td>
-                                    <td>{{ $origin->additional_check ?? '0'}}</td>
+                                    <td>{{ $origin->additional_check ?? '-'}}</td>
                                 </tr>
                                 <tr>
                                     <td>Score EWS</td>
@@ -158,12 +170,12 @@
                                 <tr>
                                     <td>Diagnosa Utama</td>
                                     <td class="px-4">:</td>
-                                    <td>{{ $origin->main_diagnose ?? '0'}}</td>
+                                    <td>{{ $origin->main_diagnose ?? '-'}}</td>
                                 </tr>
                                 <tr>
                                     <td>Diagnosa Sekunder</td>
                                     <td class="px-4">:</td>
-                                    <td>{{ $origin->secondary_diagnose ?? '0'}}</td>
+                                    <td>{{ $origin->secondary_diagnose ?? '-'}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -182,17 +194,17 @@
                                 <tr>
                                     <td>pCO<sub>2</sub></td>
                                     <td class="px-4">:</td>
-                                    <td>{{ $origin->agd->pco2 ?? '0' }} mmHg</td>
+                                    <td>{{ number_format($origin->agd->pco2 ?? '0', 1) }} mmHg</td>
                                 </tr>
                                 <tr>
                                     <td>pO<sub>2</sub></td>
                                     <td class="px-4">:</td>
-                                    <td>{{ $origin->agd->po2 ?? '0'}} mmHg</td>
+                                    <td>{{ number_format($origin->agd->po2 ?? '0', 1) }} mmHg</td>
                                 </tr>
                                 <tr>
                                     <td>SpO<sub>2</sub></td>
                                     <td class="px-4">:</td>
-                                    <td>{{ $origin->agd->spo2 ?? '0' }} %</td>
+                                    <td>{{ number_format($origin->agd->spo2 ?? '0', 1) }} %</td>
                                 </tr>
                                 <tr>
                                     <td>Base Excees</td>

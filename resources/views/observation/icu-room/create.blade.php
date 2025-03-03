@@ -14,30 +14,36 @@
 				
 				<div class="bg-white p-8 rounded-xl">
 					<h1 class="text-3xl font-bold mb-8 text-center">Data Ruang Intensif</h1>
-					
 					<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+						@php
+							$minDate = now()->format('Y-m-d\TH:i');
+							$maxDate = now()->addDay()->endOfDay()->format('Y-m-d\TH:i');
+						@endphp
+
 						<div>
-							<label for="icu_room_datetime" class="block text-md font-medium text-gray-700">Tanggal dan Waktu Masuk</label>
+							<label for="icu_room_datetime" class="block text-md font-medium text-gray-700">Tanggal dan Waktu</label>
 							<input 
 								type="datetime-local" 
 								name="icu_room_datetime" 
-								id="icu_room_datetime" 
-								class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('icu_room_datetime') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm">
+								id="icu_room_datetime"
+								class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('icu_room_datetime') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm"
+								value="{{ old('icu_room_datetime') }}"
+								min="{{ $minDate }}" 
+								max="{{ $maxDate }}">
 							<x-input-error :messages="$errors->get('icu_room_datetime')" class="mt-2" />
 						</div>
 						
 						<div>
 							<label for="icu_room_name" class="block text-md font-medium text-gray-700">Ruangan</label>
 							<select 
-								name="icu_room_name" 
 								id="icu_room_name" 
 								class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('icu_room_name') border-red-500 @else {{ $icuData ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'border-gray-300' }} @enderror rounded-md shadow-sm"
-								@if($icuData) readonly @endif>
+								{{ $icuData ? 'disabled' : '' }}>
 								<option value="">Pilih Ruangan</option>
-								<option value="ICU" {{ old('icu_room_name', $icuData ? $icuData->icu_room_name : '') == 'ICU' ? 'selected' : '' }}>ICU</option>
-								<option value="PICU" {{ old('icu_room_name', $icuData ? $icuData->icu_room_name : '') == 'PICU' ? 'selected' : '' }}>PICU</option>
-								<option value="NICU" {{ old('icu_room_name', $icuData ? $icuData->icu_room_name : '') == 'NICU' ? 'selected' : '' }}>NICU</option>
-								<option value="IGD" {{ old('icu_room_name', $icuData ? $icuData->icu_room_name : '') == 'IGD' ? 'selected' : '' }}>IGD</option>
+								<option value="ICU" {{ old('icu_room_name', $icuData->icu_room_name ?? '') == 'ICU' ? 'selected' : '' }}>ICU</option>
+								<option value="PICU" {{ old('icu_room_name', $icuData->icu_room_name ?? '') == 'PICU' ? 'selected' : '' }}>PICU</option>
+								<option value="NICU" {{ old('icu_room_name', $icuData->icu_room_name ?? '') == 'NICU' ? 'selected' : '' }}>NICU</option>
+								<option value="IGD" {{ old('icu_room_name', $icuData->icu_room_name ?? '') == 'IGD' ? 'selected' : '' }}>IGD</option>
 							</select>
 							<x-input-error :messages="$errors->get('icu_room_name')" class="mt-2" />
 						</div>
@@ -264,25 +270,25 @@
 				<div class="bg-white my-6 p-8 rounded-xl">
 					<div class="my-4 grid grid-cols-1 md:grid-cols-2 gap-4 pt-6">
 						<div class="mb-4">
-							<label for="ro" class="block text-sm font-medium text-gray-700">RO Sudah / Belum</label>
+							<label for="ro" class="block text-md font-medium text-gray-700">RO Sudah / Belum</label>
 							<select id="ro" name="ro" class="ro block w-full mt-1 px-3 py-2 border @error('ro') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300">
 								<option value="">Pilih status</option>
-								<option value="sudah">Sudah</option>
-								<option value="belum">Belum</option>
+								<option value="sudah" {{ old('ro', $icuData ? $icuData->ro : '') == 'sudah' ? 'selected' : '' }}>Sudah</option>
+								<option value="belum" {{ old('ro', $icuData ? $icuData->ro : '') == 'belum' ? 'selected' : '' }}>Belum</option>
 							</select>
 							<x-input-error :messages="$errors->get('ro')" class="mt-2" />
 
 						</div>
 						<div>
 							<label for="blood_culture" class="block text-md font-medium text-gray-700">Kultur Darah</label>
-							<input type="text" name="blood_culture" id="blood_culture" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('blood_culture') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="Negatif">
+							<input type="text" name="blood_culture" id="blood_culture" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('blood_culture') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="Negatif" value="{{ old('blood_culture') }}">
 							<x-input-error :messages="$errors->get('blood_culture')" class="mt-2" />
 
 						</div>
 					</div>
 					<div>
 						<label for="ro_post_intubation" class="block text-md font-medium text-gray-700">RO Post Intubasi</label>
-						<input type="text" name="ro_post_intubation" id="ro_post_intubation" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('ro_post_intubtion') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="Stabil">
+						<input type="text" name="ro_post_intubation" id="ro_post_intubation" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('ro_post_intubtion') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="Stabil" value="{{ old('ro_post_intubation') }}">
 						<x-input-error :messages="$errors->get('ro_post_intubation')" class="mt-2" />
 
 					</div>
@@ -295,9 +301,9 @@
 						<div>
 							<label for="td" class="block text-md font-medium text-gray-700">TD</label>
 							<div class="flex space-x-2">
-								<input type="number" name="sistolik" id="sistolik" class="text-black font-semibold mt-1 block w-1/2 px-3 py-2 border @error('sistolik') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="110" min="0">
+								<input type="number" name="sistolik" id="sistolik" class="text-black font-semibold mt-1 block w-1/2 px-3 py-2 border @error('sistolik') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="110" min="0" value="{{ old('sistolik', $icuData ? $icuData->sistolik : '') }}">
 								<span class="flex items-center text-lg">/</span>
-								<input type="number" name="diastolik" id="diastolik" class="text-black font-semibold mt-1 block w-1/2 px-3 py-2 border @error('diastolik') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="70" min="0">
+								<input type="number" name="diastolik" id="diastolik" class="text-black font-semibold mt-1 block w-1/2 px-3 py-2 border @error('diastolik') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="70" min="0" value="{{ old('diastolik', $icuData ? $icuData->diastolik : '') }}">
 								<x-input-error :messages="$errors->get('sistolik' || 'diastolik')" class="mt-2" />
 							</div>
 						</div>
@@ -305,37 +311,33 @@
 						<div>
 							<label for="suhu" class="block text-md font-medium text-gray-700">S.</label>
 							<div class="relative">
-								<input type="number" name="suhu" id="suhu" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('suhu') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="38.5">
+								<input type="number" name="suhu" id="suhu" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('suhu') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="38.5" value="{{ old('suhu', $icuData ? $icuData->suhu : '') }}">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">°C</span>
 								<x-input-error :messages="$errors->get('sistolik' || 'diastolik')" class="mt-2" />
-
 							</div> 
 						</div>
 						<div>
 							<label for="nadi" class="block text-md font-medium text-gray-700">N.</label>
 							<div class="relative">
-								<input type="number" name="nadi" id="nadi" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('nadi') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="80">
+								<input type="number" name="nadi" id="nadi" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('nadi') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="80" value="{{ old('nadi', $icuData ? $icuData->nadi : '') }}">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">bpm</span>
 								<x-input-error :messages="$errors->get('nadi')" class="mt-2" />
-
 							</div> 
 						</div>
 						<div>
 							<label for="rr_ttv" class="block text-md font-medium text-gray-700">RR</label>
 							<div class="relative">
-								<input type="number" name="rr_ttv" id="rr_ttv" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('rr_ttv') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="18">
+								<input type="number" name="rr_ttv" id="rr_ttv" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('rr_ttv') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="18" value="{{ old('rr_ttv', $icuData ? $icuData->rr_ttv : '') }}">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">kali per menit</span>
 								<x-input-error :messages="$errors->get('rr_ttv')" class="mt-2" />
-
 							</div> 
 						</div>
 						<div>
 							<label for="spo2" class="block text-md font-medium text-gray-700">SpO<sub>2</sub></label>
 							<div class="relative">
-								<input type="number" name="spo2" id="spo2" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('spo2') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="95">
+								<input type="number" name="spo2" id="spo2" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('spo2') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="95" value="{{ old('spo2', $icuData ? $icuData->spo2 : '') }}">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">%</span>
 								<x-input-error :messages="$errors->get('spo2')" class="mt-2" />
-
 							</div> 
 						</div>
 					</div>
@@ -351,12 +353,12 @@
 								type="datetime-local" 
 								name="venti_datetime" 
 								id="venti_datetime" 
-								class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('venti_datetime') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm">
+								class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('venti_datetime') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" value="{{ old('venti_datetime', $icuData ? $icuData->venti_datetime : '') }}">
 							<x-input-error :messages="$errors->get('venti_datetime')" class="mt-2" />
 						</div>
 						<div>
 							<label for="mode_venti" class="block text-md font-semibold text-txtl">Mode Venti</label>
-							<input type="text" name="mode_venti" id="mode_venti" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('mode_venti') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="Masukan Mode Venti">
+							<input type="text" name="mode_venti" id="mode_venti" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('mode_venti') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="Masukan Mode Venti" value="{{ old('mode_venti', $icuData ? $icuData->mode_venti : '') }}">
 							<x-input-error :messages="$errors->get('mode_venti')" class="mt-2" />
 						</div>
 					</div>
@@ -365,7 +367,7 @@
 						<div>
 							<label for="ipl" class="block text-md font-semibold text-txtl">IPL</label>
 							<div class="relative">
-								<input type="number" name="ipl" id="ipl" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('ipl') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="15">
+								<input type="number" name="ipl" id="ipl" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('ipl') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="15" value="{{ old('ipl', $icuData ? $icuData->ipl : '') }}">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">cmH₂O</span>
 								<x-input-error :messages="$errors->get('ipl')" class="mt-2" />
 
@@ -374,7 +376,7 @@
 						<div>
 							<label for="peep" class="block text-md font-semibold text-txtl">PEEP</label>
 							<div class="relative">
-								<input type="number" name="peep" id="peep" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('peep') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="5">
+								<input type="number" name="peep" id="peep" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('peep') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="5" value="{{ old('peep', $icuData ? $icuData->peep : '') }}">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">cmH₂O</span>
 								<x-input-error :messages="$errors->get('peep')" class="mt-2" />
 
@@ -383,7 +385,7 @@
 						<div>
 							<label for="fio2" class="block text-md font-semibold text-txtl">FiO<sub>2</sub></label>
 							<div class="relative">
-								<input type="number" name="fio2" id="fio2" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('fio2') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="40">
+								<input type="number" name="fio2" id="fio2" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('fio2') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="40" value="{{ old('fio2', $icuData ? $icuData->fio2 : '') }}">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">%</span>
 								<x-input-error :messages="$errors->get('fio2')" class="mt-2" />
 
@@ -392,7 +394,7 @@
 						<div>
 							<label for="rr" class="block text-md font-semibold text-txtl">RR</label>
 							<div class="relative">
-								<input type="number" name="rr" id="rr" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('rr') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="20">
+								<input type="number" name="rr" id="rr" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('rr') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="20" value="{{ old('rr', $icuData ? $icuData->rr : '') }}">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">kali per menit</span>
 								<x-input-error :messages="$errors->get('rr')" class="mt-2" />
 
@@ -451,6 +453,14 @@
 		document.getElementById('icuForm').submit(); 
 	});
 
+	//venti datetime
+    document.addEventListener("DOMContentLoaded", function() {
+        let now = new Date();
+        let oneHoursAgo = new Date(now.getTime() - (1 * 60 * 60 * 1000));
+
+        document.getElementById("venti_datetime").max = now.toISOString().slice(0,16);
+        document.getElementById("venti_datetime").min = oneHoursAgo.toISOString().slice(0,16);
+    });
 
 </script>
 @endpush

@@ -21,24 +21,25 @@ class PatientSeeder extends Seeder
     public function run()
     {
         // Ambil semua user yang ada di database
-        $users = User::pluck('id')->toArray(); 
+        $users = User::where('role', 'user')->pluck('id')->toArray(); 
 
         $patients = [
-            ['name' => 'Saip', 'no_jkn' => '0045777687321', 'no_rm' => 'RM00001'],
-            ['name' => 'Rispal', 'no_jkn' => '0015567867655', 'no_rm' => 'RM00002'],
-            ['name' => 'Jibar', 'no_jkn' => '0075444347332', 'no_rm' => 'RM00003'],
-            ['name' => 'Hilman', 'no_jkn' => '0012375384943', 'no_rm' => 'RM00004'],
-            ['name' => 'Nabil', 'no_jkn' => '0019233895574', 'no_rm' => 'RM00005'],
-            ['name' => 'Justin', 'no_jkn' => '123456789008', 'no_rm' => 'RM00008'],
-            ['name' => 'Siti', 'no_jkn' => '123456789007', 'no_rm' => 'RM00007'],
-            ['name' => 'Ramlan', 'no_jkn' => '123456789006', 'no_rm' => 'RM006606'],
-            ['name' => 'Ujang', 'no_jkn' => '123456783006', 'no_rm' => 'RM00036'],
-            ['name' => 'Dani', 'no_jkn' => '123436789006', 'no_rm' => 'RM01006'],
-            ['name' => 'Kinan', 'no_jkn' => '123756789006', 'no_rm' => 'RM29006'],
-            ['name' => 'Septi', 'no_jkn' => '113456789006', 'no_rm' => 'RM10006'],
-            ['name' => 'Ina', 'no_jkn' => '193456789006', 'no_rm' => 'RM90006'],
-            ['name' => 'Yuli', 'no_jkn' => '129956789006', 'no_rm' => 'RM14006'],
+            ['name' => 'Saipudding Rahman Hakim', 'no_jkn' => '0045777687321', 'no_rm' => 'RM00001', 'no_sep' => '0120R0150225V000001', 'gender' => 'L', 'tanggal_lahir' => '1990-05-15'],
+            ['name' => 'Rispal Mahendra Putra', 'no_jkn' => '0015567867655', 'no_rm' => 'RM00002', 'no_sep' => '0120R0150225V000001', 'gender' => 'L', 'tanggal_lahir' => '1985-08-22'],
+            ['name' => 'Jibar Alfarizi Faiz', 'no_jkn' => '0075444347332', 'no_rm' => 'RM00003', 'no_sep' => '0120R0150225V000002', 'gender' => 'L', 'tanggal_lahir' => '1992-11-10'],
+            ['name' => 'Hilman Saputra Cendana', 'no_jkn' => '0012375384943', 'no_rm' => 'RM00004', 'no_sep' => '0120R0150225V000003', 'gender' => 'L', 'tanggal_lahir' => '1988-07-30'],
+            ['name' => 'Nabil Wafa idzin', 'no_jkn' => '0019233895574', 'no_rm' => 'RM00005', 'no_sep' => '0120R0150225V000004', 'gender' => 'L', 'tanggal_lahir' => '1995-12-05'],
+            ['name' => 'Justin Case pratama', 'no_jkn' => '123456789008', 'no_rm' => 'RM00008', 'no_sep' => '0120R0150225V000005', 'gender' => 'L', 'tanggal_lahir' => '2000-04-25'],
+            ['name' => 'Leni Siti', 'no_jkn' => '123456789007', 'no_rm' => 'RM00007', 'no_sep' => '0120R0150225V000006', 'gender' => 'P', 'tanggal_lahir' => '1993-09-14'],
+            ['name' => 'Ramlan', 'no_jkn' => '123456789006', 'no_rm' => 'RM006606', 'no_sep' => '0120R0150225V000007', 'gender' => 'L', 'tanggal_lahir' => '1987-02-18'],
+            ['name' => 'Ujang', 'no_jkn' => '123456783006', 'no_rm' => 'RM00036', 'no_sep' => '0120R0150225V000008', 'gender' => 'L', 'tanggal_lahir' => '1991-06-07'],
+            ['name' => 'Dani Harmawan', 'no_jkn' => '123436789006', 'no_rm' => 'RM01006', 'no_sep' => '0120R0150225V000009', 'gender' => 'L', 'tanggal_lahir' => '1994-03-12'],
+            ['name' => 'Kinan Permata Sari', 'no_jkn' => '123756789006', 'no_rm' => 'RM29006', 'no_sep' => '0120R0150225V000010', 'gender' => 'P', 'tanggal_lahir' => '1996-08-29'],
+            ['name' => 'Septi Anggraini', 'no_jkn' => '113456789006', 'no_rm' => 'RM10006', 'no_sep' => '0120R0150225V000011', 'gender' => 'P', 'tanggal_lahir' => '1999-01-21'],
+            ['name' => 'Ina Rahmadani', 'no_jkn' => '193456789006', 'no_rm' => 'RM90006', 'no_sep' => '0120R0150225V000012', 'gender' => 'P', 'tanggal_lahir' => '2001-10-10'],
+            ['name' => 'Yuli Wulandari', 'no_jkn' => '129956789006', 'no_rm' => 'RM14006', 'no_sep' => '0120R0150225V000013', 'gender' => 'P', 'tanggal_lahir' => '1989-05-03'],
         ];
+        
 
         foreach ($patients as $patientData) {
             // Pilih user secara random
@@ -154,8 +155,8 @@ class PatientSeeder extends Seeder
                 $icuRoom = IcuRoom::create([
                     'user_id' => $randomUserId,
                     'icu_room_datetime' => now(),
-                    'icu_room_name' => 'ICU Room ' . rand(1, 3),
-                    'icu_room_bednum' => rand(1, 5),
+                    'icu_room_name' => 'ICU',
+                    'icu_room_bednum' => rand(1, 10),
                     'ro' => 'Normal',
                     'ro_post_intubation' => 'Improved',
                     'blood_culture' => 'Negative',

@@ -83,7 +83,7 @@
 			<tr>
 				<th>Albumin</th>
 				@foreach ($icuRoomsByDate as $icuRooms)
-					<td>{{ $icuRooms->first()->labResult->albumin ?? '-' }} g/dL</td>
+					<td>{{ number_format($icuRooms->first()->labResult->albumin ?? '0', 1) }} g/dL</td>
 				@endforeach
 			</tr>
 			<tr>
@@ -127,7 +127,7 @@
 			<tr>
 				<th>K+</th>
 				@foreach ($icuRoomsByDate as $icuRooms)
-					<td>{{ $icuRooms->first()->elektrolit->kalium ?? '-' }} mmol/L</td>
+					<td>{{ number_format($icuRooms->first()->elektrolit->kalium ?? '0', 1) }} mmol/L</td>
 				@endforeach
 			</tr>
 			<tr>
@@ -145,7 +145,7 @@
 			<tr>
 				<th>Cl</th>
 				@foreach ($icuRoomsByDate as $icuRooms)
-					<td>{{ $icuRooms->first()->elektrolit->clorida ?? '-' }} mmol/L</td>
+					<td>{{ number_format($icuRooms->first()->elektrolit->clorida ?? '0', 1) }} mmol/L</td>
 				@endforeach
 			</tr>
 		</tbody>

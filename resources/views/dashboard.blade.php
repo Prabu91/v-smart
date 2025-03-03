@@ -62,6 +62,7 @@
                             <th class="px-4 py-2 text-sm font-semibold border">No</th>
                             <th class="px-4 py-2 text-sm font-semibold border">No RM</th>
                             <th class="px-4 py-2 text-sm font-semibold border">Nama Pasien</th>
+                            <th class="px-4 py-2 text-sm font-semibold border">Rumah Sakit</th>
                             <th class="px-4 py-2 text-sm font-semibold border">Status</th>
                             <th class="px-4 py-2 text-sm font-semibold border">Ruangan</th>
                             <th class="px-4 py-2 text-sm font-semibold border">Tanggal Masuk Ruangan ICU</th>
@@ -94,6 +95,7 @@
                 { data: 'id', name: 'id'},
                 { data: 'no_rm', name: 'no_rm' },
                 { data: 'name', name: 'name' },
+                { data: 'hospital', name: 'hospital' },
                 { data: 'status', name: 'status' },
                 { data: 'room', name: 'room' },
                 { data: 'room_date', name: 'room_date' },

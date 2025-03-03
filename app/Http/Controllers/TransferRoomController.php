@@ -8,6 +8,7 @@ use App\Models\TransferRoom;
 use App\Models\Ttv;
 use App\Models\User;
 use App\Support\LogHelper;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -38,6 +39,8 @@ class TransferRoomController extends Controller
     {
         try {
             DB::transaction(function () use ($request, &$user, &$transferRoom) {
+                $transferDatetime = Carbon::parse($request->transfer_room_datetime)->format('Y-m-d H:i:s');
+
                 $userId = Auth::id();
                 $user = User::where('id', $userId)->first();
 
@@ -64,7 +67,7 @@ class TransferRoomController extends Controller
 
                 $transferRoom = TransferRoom::create([
                     'user_id' => $userId,
-                    'transfer_room_datetime' => $request->transfer_room_datetime,
+                    'transfer_room_datetime' => $transferDatetime,
                     'transfer_room_name' => $request->transfer_room_name,
                     'lab_culture_data' => $request->lab_culture_data,
                     'main_diagnose' => $request->main_diagnose_transfer,

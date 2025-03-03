@@ -8,6 +8,7 @@
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "^3.0",
         "clegginabox/pdf-merger": "dev-master",
+        "doctrine/dbal": "^4.2",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "mews/captcha": "^3.4",
