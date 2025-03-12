@@ -43,7 +43,7 @@
 						<x-input-error :messages="$errors->get('leukosit_origin')" class="mt-2" />
 
 					</div>
-					<div>
+					<div>	
 						<label for="pcv_origin" class="block text-lg font-medium text-txtl">PCV</label>
 						<div class="relative">
 							<input type="number" name="pcv_origin" id="pcv_origin" value="{{ old('pcv_origin') }}" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('pcv_origin') border-red-500 @else border-gray-300 @enderror" placeholder="38">

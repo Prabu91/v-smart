@@ -13,6 +13,7 @@ use App\Http\Controllers\IntubationController;
 use App\Http\Controllers\ExtubationController;
 use App\Http\Controllers\TransferRoomController;
 use App\Http\Middleware\CheckIntubationStatus;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
@@ -54,5 +55,7 @@ Route::middleware(['auth', CheckIntubationStatus::class])->group(function () {
     Route::post('/ventilators/{id}/release', [VentilatorController::class, 'release'])->name('ventilators.release');
 
     Route::get('/patients/{patient}/export-pdf', [PatientController::class, 'exportPdf'])->name('patients.export-pdf');
+    Route::get('/hospital/{id}/download', [DashboardController::class, 'downloadDetails'])->name('hospital.download');
+
 });
 

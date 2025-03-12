@@ -49,19 +49,46 @@
                 <h2 class="text-xl font-bold text-gray-700 mb-4">Data Pasien</h2>
                 <div class="flex flex-wrap gap-2">
                     <p class="flex items-center">Filter :</p>
+
                     <select id="filter-year" class="border border-gray-300 rounded px-3 py-2 focus:outline-none">
                         <option value="">Semua Tahun</option>
                         @foreach(range(date('Y'), date('Y') - 5) as $year)
                             <option value="{{ $year }}">{{ $year }}</option>
                         @endforeach
                     </select>
+
+                    <!-- Filter Bulan -->
+                    <select id="filter-month" class="border border-gray-300 rounded px-3 py-2 focus:outline-none">
+                        <option value="">Semua Bulan</option>
+                        @foreach(range(1, 12) as $month)
+                            <option value="{{ str_pad($month, 2, '0', STR_PAD_LEFT) }}">
+                                {{ date('F', mktime(0, 0, 0, $month, 1)) }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    <!-- Tombol Download -->
+                    {{-- <button id="download-button" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                        Download CSV
+                    </button> --}}
+
+                    <script>
+                        document.getElementById("download-button").addEventListener("click", function() {
+                            const year = document.getElementById("filter-year").value;
+                            const month = document.getElementById("filter-month").value;
+                            const hospitalId = "{{ $hospital->id }}"; // Ambil ID dari variabel yang sudah ada di blade
+
+                            let url = `/hospital/${hospitalId}/download?year=${year}&month=${month}`;
+                            window.location.href = url;
+                        });
+                    </script>
                 </div>
             </div>    
             <table id="patients-table" class="table-auto w-full text-left">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>No JKN</th>
+                        <th>No SEP</th>
                         <th>Nama Pasien</th>
                         <th>Status</th>
                         <th>Ruangan</th>
@@ -84,12 +111,13 @@
                     url: '{{ route('hospital.details', $hospital->id) }}',
                     data: function(d) {
                         d.year = $('#filter-year').val();
+                        d.month = $('#filter-month').val();
                     }
                 },
                 pageLength: 10,
                 columns: [
                     { data: 'id', name: 'id' },
-                    { data: 'no_jkn', name: 'no_jkn' },
+                    { data: 'no_sep', name: 'no_sep' },
                     { data: 'name', name: 'name' },
                     { data: 'status', name: 'status' },
                     { data: 'room', name: 'room' },
@@ -108,6 +136,10 @@
             });
 
             $('#filter-year').change(function() {
+                table.ajax.reload();
+            });
+            
+            $('#filter-month').change(function() {
                 table.ajax.reload();
             });
         });

@@ -13,6 +13,9 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Response;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 
 
@@ -42,6 +45,9 @@ class DashboardController extends Controller
         ->leftJoin('extubations', 'patients.id', '=', 'extubations.patient_id')
         ->when($request->year, function ($query) use ($request) {
             $query->whereYear('patients.created_at', $request->year);
+        })
+        ->when($request->month, function ($query) use ($request) {
+            $query->whereMonth('patients.created_at', $request->month);
         })
         ->take(100);
 
@@ -149,7 +155,7 @@ class DashboardController extends Controller
         $patientsQuery = Patient::select([
                 'patients.id',
                 'patients.name',
-                'patients.no_jkn',
+                'patients.no_sep',
                 'patients.updated_at',
             ])
             ->selectRaw("
@@ -164,6 +170,9 @@ class DashboardController extends Controller
             ->where('patients.user_id', $users->id) 
             ->when($request->year, function ($query) use ($request) {
                 $query->whereYear('patients.created_at', $request->year);
+            })
+            ->when($request->month, function ($query) use ($request) {
+                $query->whereMonth('patients.created_at', $request->month);
             })
             ->orderBy('status_priority', 'asc')  
             ->orderBy('patients.updated_at', 'desc') 
@@ -216,5 +225,127 @@ class DashboardController extends Controller
         ));
     }
 
+        
+    public function downloadDetails(Request $request, $id)
+    {
+        $hospital = UserDetail::findOrFail($id);
+        $users = User::where('user_detail_id', $id)->where('role', 'user')->first();
+
+        // Ambil semua data ventilator unik berdasarkan tanggal pemasangan
+        $ventilatorDates = DB::table('ventilators')
+            ->whereIn('patient_id', function ($query) use ($users) {
+                $query->select('id')->from('patients')->where('user_id', $users->id);
+            })
+            ->select('venti_datetime')
+            ->orderBy('venti_datetime', 'asc')
+            ->distinct()
+            ->get()
+            ->pluck('venti_datetime')
+            ->map(function ($date) {
+                return Carbon::parse($date)->format('d-m-Y');
+            })
+            ->toArray();
+
+        // Ambil semua pasien
+        $patientsQuery = Patient::select(['patients.id', 'patients.name', 'patients.no_sep'])
+            ->where('patients.user_id', $users->id)
+            ->when($request->year, function ($query) use ($request) {
+                $query->whereYear('patients.created_at', $request->year);
+            })
+            ->when($request->month, function ($query) use ($request) {
+                $query->whereMonth('patients.created_at', $request->month);
+            })
+            ->orderBy('patients.updated_at', 'desc')
+            ->get();
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Header pertama (ID, Nama, No SEP)
+        $headers1 = ['ID', 'Nama', 'No SEP'];
+        
+        foreach ($ventilatorDates as $date) {
+            $headers1[] = $date;
+            $headers1[] = $date;
+        }
+
+        // Header kedua (Mode Venti & Durasi Pemakaian)
+        $headers2 = ['', '', ''];
+        foreach ($ventilatorDates as $date) {
+            $headers2[] = "Mode Venti";
+            $headers2[] = "Durasi Pemakaian";
+        }
+
+        // Menulis header ke Excel
+        $sheet->fromArray($headers1, NULL, 'A1');
+        $sheet->fromArray($headers2, NULL, 'A2');
+
+        // Mengisi data pasien + ventilator
+        $rowNumber = 3;
+        foreach ($patientsQuery as $patient) {
+            $rowData = [$patient->id, $patient->name, $patient->no_sep];
+
+            foreach ($ventilatorDates as $date) {
+                $ventilator = DB::table('ventilators')
+                    ->where('patient_id', $patient->id)
+                    ->whereDate('venti_datetime', Carbon::createFromFormat('d-m-Y', $date)->toDateString())
+                    ->select('mode_venti', 'venti_usagetime', 'venti_datetime')
+                    ->first();
+
+                if ($ventilator) {
+                    $ventiDatetime = Carbon::parse($ventilator->venti_datetime);
+                    $ventiUsageTime = Carbon::parse($ventilator->venti_usagetime);
+                    $usageDuration = $ventiDatetime->diffInHours($ventiUsageTime);
+
+                    $rowData[] = $ventilator->mode_venti; // Mode ventilator
+                    $rowData[] = $usageDuration . ' Jam'; // Durasi dalam jam
+                } else {
+                    $rowData[] = '-';
+                    $rowData[] = '-';
+                }
+            }
+
+            $sheet->fromArray($rowData, NULL, "A$rowNumber");
+            $rowNumber++;
+        }
+
+        // Mengatur Merge Cell untuk Header Utama
+        $colIndex = 4; // Mulai dari kolom "Tanggal"
+        foreach ($ventilatorDates as $date) {
+            $colLetter1 = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($colIndex);
+            $colLetter2 = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($colIndex + 1);
+            $sheet->mergeCells("{$colLetter1}1:{$colLetter2}1");
+            $colIndex += 2;
+        }
+
+        // Membuat Border agar lebih rapi
+        $styleArray = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+        $sheet->getStyle("A1:Z$rowNumber")->applyFromArray($styleArray);
+
+        // Auto size untuk semua kolom
+        foreach (range('A', 'Z') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
+
+        // Simpan file Excel dan kirim ke browser untuk di-download
+        $fileName = 'data_pasien_ventilator_' . now()->format('YmdHis') . '.xlsx';
+        $writer = new Xlsx($spreadsheet);
+
+        ob_start();
+        $writer->save('php://output');
+        $excelOutput = ob_get_clean();
+
+        return Response::make($excelOutput, 200, [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Content-Disposition' => "attachment; filename=$fileName",
+        ]);
+    }
+    
 
 }

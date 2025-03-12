@@ -47,12 +47,25 @@
         <div class="bg-white shadow-md rounded-lg p-6">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-xl font-bold text-gray-700 mb-4">Data Pasien</h2>
-                <select id="filter-year" class="border border-gray-300 rounded px-3 py-2 focus:outline-none">
-                    <option value="">Semua Tahun</option>
-                    @foreach(range(date('Y'), date('Y') - 5) as $year)
-                        <option value="{{ $year }}">{{ $year }}</option>
-                    @endforeach
-                </select>
+                <div class="flex flex-wrap gap-2">
+                    <p class="flex items-center">Filter :</p>
+                    <select id="filter-year" class="border border-gray-300 rounded px-3 py-2 focus:outline-none">
+                        <option value="">Semua Tahun</option>
+                        @foreach(range(date('Y'), date('Y') - 5) as $year)
+                            <option value="{{ $year }}">{{ $year }}</option>
+                        @endforeach
+                    </select>
+
+                    <!-- Filter Bulan -->
+                    <select id="filter-month" class="border border-gray-300 rounded px-3 py-2 focus:outline-none">
+                        <option value="">Semua Bulan</option>
+                        @foreach(range(1, 12) as $month)
+                            <option value="{{ str_pad($month, 2, '0', STR_PAD_LEFT) }}">
+                                {{ date('F', mktime(0, 0, 0, $month, 1)) }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>    
             </div>    
 
             <div class="overflow-x-auto">
@@ -60,7 +73,7 @@
                     <thead>
                         <tr class="bg-gray-200 text-gray-700">
                             <th class="px-4 py-2 text-sm font-semibold border">No</th>
-                            <th class="px-4 py-2 text-sm font-semibold border">No RM</th>
+                            <th class="px-4 py-2 text-sm font-semibold border">No SEP</th>
                             <th class="px-4 py-2 text-sm font-semibold border">Nama Pasien</th>
                             <th class="px-4 py-2 text-sm font-semibold border">Rumah Sakit</th>
                             <th class="px-4 py-2 text-sm font-semibold border">Status</th>
@@ -88,12 +101,13 @@
                 url: '{{ route('dashboard') }}',
                 data: function(d) {
                     d.year = $('#filter-year').val();
+                    d.month = $('#filter-month').val();
                 }
             },
             pageLength: 10,
             columns: [
                 { data: 'id', name: 'id'},
-                { data: 'no_rm', name: 'no_rm' },
+                { data: 'no_sep', name: 'no_sep' },
                 { data: 'name', name: 'name' },
                 { data: 'hospital', name: 'hospital' },
                 { data: 'status', name: 'status' },
@@ -113,6 +127,10 @@
         });
 
         $('#filter-year').change(function() {
+            table.ajax.reload();
+        });
+
+        $('#filter-month').change(function() {
             table.ajax.reload();
         });
     });
