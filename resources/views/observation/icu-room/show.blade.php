@@ -93,7 +93,7 @@
 						<td>Laktat</td>
 						<td class="px-4">:</td>
 						<td>
-							{{ $icuRecords->labResult->laktat ?? '0' }} mmol/L
+							{{  number_format($icuRecords->labResult->laktat ?? '0',1) }} mmol/L
 						</td>
 					</tr>
 					<tr>

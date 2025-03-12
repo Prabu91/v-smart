@@ -684,7 +684,7 @@
 			<p>Apakah Anda yakin ingin menyimpan data <span class="font-bold">Lepas Venti?</span></p>
 			<div class="flex justify-end mt-4">
 				<button id="cancelButton" class="mr-2 px-4 py-2 bg-btn hover:bg-btnh text-txtd rounded-md">Batal</button>
-				<button id="confirmButton" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-md">Ya, Hapus</button>
+				<button id="confirmButton" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-md">Ya, Lepas</button>
 			</div>
 		</div>
 	</div>

@@ -107,7 +107,7 @@
         </tr>
         <tr>
             <th>Natrium</th>
-            <td>{{ $patient->originRoom->natrium ?? '-' }} mmol/L</td>
+            <td>{{ isset($patient->originRoom->natrium) ? number_format($patient->originRoom->natrium, 2) : '-' }} mmol/L</td>
         </tr>
         <tr>
             <th>Kalium</th>

@@ -37,14 +37,15 @@
 							<label for="icu_room_name" class="block text-md font-medium text-gray-700">Ruangan</label>
 							<select 
 								id="icu_room_name" 
-								class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('icu_room_name') border-red-500 @else {{ $icuData ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'border-gray-300' }} @enderror rounded-md shadow-sm"
-								{{ $icuData ? 'disabled' : '' }}>
+								name="icu_room_name"
+								class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('icu_room_name') border-red-500  @enderror rounded-md shadow-sm">
 								<option value="">Pilih Ruangan</option>
 								<option value="ICU" {{ old('icu_room_name', $icuData->icu_room_name ?? '') == 'ICU' ? 'selected' : '' }}>ICU</option>
 								<option value="PICU" {{ old('icu_room_name', $icuData->icu_room_name ?? '') == 'PICU' ? 'selected' : '' }}>PICU</option>
 								<option value="NICU" {{ old('icu_room_name', $icuData->icu_room_name ?? '') == 'NICU' ? 'selected' : '' }}>NICU</option>
 								<option value="IGD" {{ old('icu_room_name', $icuData->icu_room_name ?? '') == 'IGD' ? 'selected' : '' }}>IGD</option>
 							</select>
+
 							<x-input-error :messages="$errors->get('icu_room_name')" class="mt-2" />
 						</div>
 						
@@ -454,13 +455,13 @@
 	});
 
 	//venti datetime
-    document.addEventListener("DOMContentLoaded", function() {
-        let now = new Date();
-        let oneHoursAgo = new Date(now.getTime() - (1 * 60 * 60 * 1000));
+    // document.addEventListener("DOMContentLoaded", function() {
+    //     let now = new Date();
+    //     let oneHoursAgo = new Date(now.getTime() - (1 * 60 * 60 * 1000));
 
-        document.getElementById("venti_datetime").max = now.toISOString().slice(0,16);
-        document.getElementById("venti_datetime").min = oneHoursAgo.toISOString().slice(0,16);
-    });
+    //     document.getElementById("venti_datetime").max = now.toISOString().slice(0,16);
+    //     document.getElementById("venti_datetime").min = oneHoursAgo.toISOString().slice(0,16);
+    // });
 
 </script>
 @endpush

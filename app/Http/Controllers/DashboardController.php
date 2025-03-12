@@ -133,6 +133,8 @@ class DashboardController extends Controller
             $usrHos = UserDetail::where('id', $userDet)->first();
             $ventiRs = $usrHos->venti;
             $isDisabled = $intubatedCount >= $ventiRs;
+            
+
 
         return view('dashboard', compact('intubatedCount','user', 'isDisabled', 'hospitals'));
     }

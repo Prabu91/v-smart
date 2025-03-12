@@ -22,17 +22,17 @@ class StoreIcuRoomRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'venti_datetime' => ['nullable', function ($attribute, $value, $fail) {
-                $now = now();
-                $selectedTime = Carbon::parse($value);
-                $earliestAllowedTime = $now->subHours(1);
+        // return [
+        //     'venti_datetime' => ['nullable', function ($attribute, $value, $fail) {
+        //         $now = now();
+        //         $selectedTime = Carbon::parse($value);
+        //         $earliestAllowedTime = $now->copy()->subHours(1);
 
-                if ($selectedTime->lessThan($earliestAllowedTime) || $selectedTime->greaterThan($now)) {
-                    $fail('Waktu pemakaian hanya bisa diinput dalam rentang 1 jam terakhir.');
-                }
-            }],
-        ];
+        //         if ($selectedTime->lessThan($earliestAllowedTime) || $selectedTime->greaterThan($now)) {
+        //             $fail('Waktu pemakaian hanya bisa diinput dalam rentang 1 jam terakhir.');
+        //         }
+        //     }],
+        // ];
 
         return [
             'patient_id' => 'required|uuid|exists:patients,id',
@@ -43,7 +43,7 @@ class StoreIcuRoomRequest extends FormRequest
                     'after_or_equal:today',
                     'before_or_equal:' . now()->addDay()->endOfDay()->toDateString(),
                 ],
-            'icu_room_name' => 'required|string|in:ICU,PICU,NICU,IGD', 
+            'icu_room_name' => 'required', 
             'icu_room_bednum' => 'required|integer|min:1', 
 
             'natrium' => 'nullable|numeric|between:120,160', 

@@ -87,6 +87,7 @@
                     </tbody>
                 </table>
             </div>
+
         </div>
     </div>
 
@@ -133,6 +134,7 @@
         $('#filter-month').change(function() {
             table.ajax.reload();
         });
+
     });
 </script>
 @endpush

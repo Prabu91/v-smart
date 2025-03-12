@@ -89,7 +89,7 @@
 			<tr>
 				<th>Laktat</th>
 				@foreach ($icuRoomsByDate as $icuRooms)
-					<td>{{ $icuRooms->first()->labResult->laktat ?? '-' }} mmol/L</td>
+					<td>{{ isset($icuRooms->first()->labResult->laktat) ? number_format($icuRooms->first()->labResult->laktat, 2) : '-' }} mmol/L</td>
 				@endforeach
 			</tr>
 			<tr>
@@ -139,7 +139,7 @@
 			<tr>
 				<th>Mg2+</th>
 				@foreach ($icuRoomsByDate as $icuRooms)
-					<td>{{ $icuRooms->first()->elektrolit->magnesium ?? '-' }} mg/dL</td>
+					<td>{{ isset($icuRooms->first()->elektrolit->magnesium) ? number_format($icuRooms->first()->elektrolit->magnesium, 2) : '-' }} mg/dL</td>
 				@endforeach
 			</tr>
 			<tr>

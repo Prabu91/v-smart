@@ -168,7 +168,7 @@ class PatientController extends Controller
 
                 $elektrolit = "Na: " . $icu->elektrolit->natrium . " K: " .  number_format($icu->elektrolit->kalium, 1);
                 $lb1 = "Hb: " . $icu->labResult->hb . " L: " . $icu->labResult->leukosit;
-                $lb2 = "Alb: " . number_format($icu->labResult->albumin, 1) . " L: " . $icu->labResult->laktat;
+                $lb2 = "Alb: " . number_format($icu->labResult->albumin, 1) . " L: " .  number_format($icu->labResult->laktat,1);
                 $agd = $icu->agd->ph . " / " . $icu->agd->pco2;
                 $ttv = $icu->ttv->sistolik . " / " . $icu->ttv->diastolik . ", " . $icu->ttv->nadi;
                 

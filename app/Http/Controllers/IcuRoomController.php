@@ -81,10 +81,11 @@ class IcuRoomController extends Controller
                     $ventilatorId = $ventilator->id;
                     LogHelper::log('Tambah Venti', "(ID : {$user->name}) Pasang Ventilator: ({$ventilatorId})");
 
-                    if ($previousVentilator->venti_usagetime === null) {
+                    if ($previousVentilator && is_null($previousVentilator->venti_usagetime)) {
                         $previousVentilator->update([
-                            'venti_usagetime' => $request->venti_datetime
+                            'venti_usagetime' => Carbon::parse($request->venti_datetime)->format('Y-m-d H:i:s')
                         ]);
+                        
                         LogHelper::log('Lepas Venti', "(ID : {$user->name}) Lepas Ventilator: ({$previousVentilator->id})");
                     }
                 }
