@@ -42,6 +42,6 @@ class TransferRoom extends Model
     // Relasi ke tabel TTV
     public function ttv()
     {
-        return $this->belongsTo(TTV::class, 'ttv_id', 'id');
+        return $this->belongsTo(Ttv::class, 'ttv_id', 'id');
     }
 }

@@ -66,7 +66,7 @@ class IcuRoom extends Model
     // Relasi ke tabel AGD
     public function agd()
     {
-        return $this->belongsTo(AGD::class, 'agd_id', 'id');
+        return $this->belongsTo(Agd::class, 'agd_id', 'id');
     }
 
     public function ttv()
