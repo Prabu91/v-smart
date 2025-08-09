@@ -16,16 +16,27 @@ class StoreIntubationRequest extends FormRequest
 
     public function rules(): array
     {
+        $minDate = now()->subHours(5);
+        $maxDate = now();
+
         return [
             'patient_id' => 'required|uuid|exists:patients,id',
 
             'intubation_location' => 'required|string',
-            'intubation_datetime' => 'required|date',
+            'intubation_datetime' => [
+                'required',
+                'date',
+                'after_or_equal:' . $minDate,
+                'before_or_equal:' . $maxDate,
+            ],
             'dr_intubation_name' => 'nullable|string|max:255',
             'dr_consultant_name' => 'nullable|string|max:255',
             'preintubation' => 'nullable|string|max:255',
-            'diameter' => 'nullable|numeric',
-            'depth' => 'nullable|numeric',
+            'intubation_type' => 'nullable|string',
+            'ett_diameter' => 'nullable|numeric',
+            'ett_depth' => 'nullable|numeric',
+            'tc_diameter' => 'nullable|numeric',
+            'tc_type' => 'nullable|string',
             'postintubation' => 'nullable|string|max:255',
 
             'pre_sistolik' => 'nullable|numeric',
@@ -34,6 +45,7 @@ class StoreIntubationRequest extends FormRequest
             'pre_nadi' => 'nullable|numeric',
             'pre_rr_ttv' => 'nullable|numeric',
             'pre_spo2' => 'nullable|numeric',
+            'pre_consciousness' => 'nullable|string',
 
             'post_sistolik' => 'nullable|numeric',
             'post_diastolik' => 'nullable|numeric',
@@ -41,6 +53,7 @@ class StoreIntubationRequest extends FormRequest
             'post_nadi' => 'nullable|numeric',
             'post_rr_ttv' => 'nullable|numeric',
             'post_spo2' => 'nullable|numeric',
+            'post_consciousness' => 'nullable|string',
             
             'venti_datetime' => 'required|date|after_or_equal:intubation_datetime',
             'mode_venti' => 'nullable|string|max:255',
@@ -48,12 +61,16 @@ class StoreIntubationRequest extends FormRequest
             'peep' => 'nullable|numeric',
             'fio2' => 'nullable|numeric',
             'rr' => 'nullable|numeric',
+            'ps' => 'nullable|numeric',
+            'trigger' => 'nullable|numeric',
         ];
     }
 
     public function messages(): array
     {
         return [
+            'intubation_datetime.after_or_equal' => 'Tanggal dan waktu intubasi tidak boleh lebih awal dari 5 jam yang lalu.',
+            'intubation_datetime.before_or_equal' => 'Tanggal dan waktu intubasi tidak boleh lebih dari waktu saat ini.',
             'venti_datetime.after_or_equal' => 'Waktu pemasangan ventilator tidak boleh lebih awal dari waktu intubasi.',
             'origin_room_name.required' => 'Nama ruangan asal wajib diisi.',
             'origin_room_name.string' => 'Nama ruangan asal harus berupa teks.',

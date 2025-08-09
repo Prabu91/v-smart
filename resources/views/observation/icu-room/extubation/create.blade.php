@@ -5,24 +5,24 @@
 @section('content')
 
 <div class="container mx-auto p-6">
-	<h2 class="text-2xl font-bold mb-6 text-center">Data Persiapan Extubasi</h2>
-
-    <div class="relative w-full ">
-        <!-- Form -->
+	
+	<div class="relative w-full ">
+		<!-- Form -->
 		<form id="extubationForm" action="{{ route('extubations.store') }}" method="POST" class="space-y-6">
 			@csrf
 			<input type="hidden" name="patient_id" value="{{ $patient_id }}">
-
+			
 			<div class="bg-white p-8 rounded-xl">
+				<h2 class="text-3xl font-bold mb-8 text-center">Data Persiapan Extubasi</h2>
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<div>
-						<label for="extubation_datetime" class="block text-md font-medium text-txtl">Tanggal dan Waktu Extubasi</label>
-						<input type="datetime-local" name="extubation_datetime" id="extubation_datetime" 
+						<label for="extubation_datetime" class="block text-md font-bold text-txtl">Tanggal dan Waktu Extubasi</label>
+						<input type="datetime-local" name="extubation_datetime" 	id="extubation_datetime" 
 								class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('extubation_datetime') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm">
 						<x-input-error :messages="$errors->get('extubation_datetime')" class="mt-2" />
 					</div>					
 					<div>
-						<label for="patient_status" class="block text-md font-medium text-txtl">Kondisi Pasien</label>
+						<label for="patient_status" class="block text-md font-bold text-txtl">Kondisi Pasien</label>
 						<div class="relative">
 							<select name="patient_status" id="patient_status" 
 									class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('patient_status') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm">
@@ -34,31 +34,38 @@
 						<x-input-error :messages="$errors->get('patient_status')" class="mt-2" />
 					</div>
 				</div>
-
-				<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+				
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<div>
-						<label for="extubation" class="block text-md font-medium text-txtl mt-4 mb-2">Tindakan Ekstubasi</label>
-						<textarea name="extubation" id="extubation" value="{{ old('extubation') }}" rows="8" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm resize-none @error('extubation') border-red-500 @else border-gray-300 @enderror" placeholder="Masukan extubation"></textarea>
+						<label for="extubation" class="block text-md font-bold text-txtl mt-4 mb-2">Tindakan Extubasi</label>
+						<textarea name="extubation" id="extubation" value="{{ old('extubation') }}" rows="8" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm resize-none @error('extubation') border-red-500 @else border-gray-300 @enderror" placeholder="Masukan extubasi"></textarea>
 						<x-input-error :messages="$errors->get('extubation')" class="mt-2" />
 					</div>
 					<div>
-						<label for="nebulizer" class="block text-md font-medium text-txtl mt-4 mb-2">Nebulizer</label>
+						<label for="nebulizer" class="block text-md font-bold text-txtl mt-4 mb-2">Nebulizer</label>
 						<x-input-error :messages="$errors->get('nebulizer')" class="mt-2" />
 						<textarea name="nebulizer" id="nebulizer" value="{{ old('nebulizer') }}" rows="8" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm resize-none @error('nebulizer') border-red-500 @else border-gray-300 @enderror" placeholder="Masukan Nebulizer"></textarea>
 					</div>
+				</div>
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<div>
-						<label for="preparation_extubation_therapy" class="block text-md font-medium text-txtl mt-4 mb-2">Therapy Persiapan Ekstubasi</label>
+						<label for="preparation_extubation_therapy" class="block text-md font-bold text-txtl mt-4 mb-2">Therapy Persiapan Extubasi</label>
 						<x-input-error :messages="$errors->get('preparation_extubation_therapy')" class="mt-2" />
-						<textarea name="preparation_extubation_therapy" id="preparation_extubation_therapy" value="{{ old('preparation_extubation_therapy') }}" rows="8" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm resize-none @error('preparation_extubation_therapy') border-red-500 @else border-gray-300 @enderror" placeholder="Masukan Therapy Persiapan Ekstubasi"></textarea>
+						<textarea name="preparation_extubation_therapy" id="preparation_extubation_therapy" value="{{ old('preparation_extubation_therapy') }}" rows="8" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm resize-none @error('preparation_extubation_therapy') border-red-500 @else border-gray-300 @enderror" placeholder="Masukan Therapy Persiapan Extubasi"></textarea>
+					</div>
+					<div>
+						<label for="extubation_notes" class="block text-md font-bold text-txtl mt-4 mb-2">Notes</label>
+						<x-input-error :messages="$errors->get('extubation_notes')" class="mt-2" />
+						<textarea name="extubation_notes" id="extubation_notes" value="{{ old('extubation_notes') }}" rows="8" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm resize-none @error('extubation_notes') border-red-500 @else border-gray-300 @enderror" placeholder="Keterangan Tambahan"></textarea>
 					</div>
 				</div>
 			
 				{{-- TTV --}}
 				<div id="ttv-section" class="hidden">
 					<h2 class="text-xl font-bold mb-6 mt-10 ">TTV</h2>
-					<div class="my-4 grid grid-cols-1 md:grid-cols-5 gap-4">
+					<div class="my-4 grid grid-cols-1 md:grid-cols-6 gap-4">
 						<div>
-							<label for="td" class="block text-md font-medium text-txtl">TD</label>
+							<label for="td" class="block text-md font-bold text-txtl">TD</label>
 							<div class="flex space-x-2">
 								<input type="number" name="sistolik" id="sistolik" class="text-black font-semibold mt-1 block w-1/2 px-3 py-2 border rounded-md shadow-sm" placeholder="110" min="0">
 								<span class="flex items-center text-lg">/</span>
@@ -93,24 +100,29 @@
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">%</span>
 							</div>
 						</div>
+						<div>
+							<label for="consciousness" class="block text-md font-medium text-txtl">Kesadaran</label>
+							<input type="text" name="consciousness" id="consciousness" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('consciousness') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="">
+							<x-input-error :messages="$errors->get('consciousness')" class="mt-2" />
+						</div>
 					</div>
 				</div>
-
-				<div class="flex flex-col sm:flex-row justify-between items-center gap-4 mt-16">
-					<!-- Tombol Back -->
-					<a href="{{ url()->previous() }}" 
-						class="inline-flex items-center px-4 py-2 bg-gray-300 hover:bg-gray-200 text-gray-700 font-semibold rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
-						Kembali
-					</a>
-		
-					<!-- Tombol Simpan Data -->
-					<button 
-						type="button" 
-						id="openModalButton" 
-						class="inline-flex items-center px-4 py-2 bg-btn text-white font-semibold rounded-md shadow-sm hover:bg-btnh focus:outline-none focus:ring-2 focus:ring-btn focus:ring-offset-2">
-						Simpan Data
-					</button>
-				</div>
+			</div>
+			<div class="flex flex-col sm:flex-row justify-between items-center gap-4 mt-16">
+				<!-- Tombol Back -->
+				<a href="{{ url()->previous() }}" 
+					class="inline-flex items-center px-4 py-2 bg-gray-300 hover:bg-gray-200 text-gray-700 font-semibold rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+					Kembali
+				</a>
+	
+				<!-- Tombol Simpan Data -->
+				<button 
+					type="button" 
+					id="openModalButton" 
+					class="inline-flex items-center px-4 py-2 bg-btn text-white font-semibold rounded-md shadow-sm hover:bg-btnh focus:outline-none focus:ring-2 focus:ring-btn focus:ring-offset-2">
+					Simpan Data
+				</button>
+			</div>
 		</form>
 
 		<!-- Modal -->
@@ -154,7 +166,7 @@
 	
 
 	document.getElementById('confirmButton').addEventListener('click', function() {
-		document.getElementById('extubationForm~').submit(); 
+		document.getElementById('extubationForm').submit(); 
 	});
 </script>
 @endpush

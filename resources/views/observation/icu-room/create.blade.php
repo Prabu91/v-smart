@@ -214,12 +214,11 @@
 
 				<div class="bg-white my-6 p-8 rounded-xl">
 					<h2 class="text-xl font-bold my-4">AGD</h2>
-					<div class="grid grid-cols-1 md:grid-cols-6 gap-4">
+					<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 						<div>
 							<label for="ph_icu" class="block text-md font-medium text-gray-700">pH</label>
 							<input type="number" name="ph_icu" id="ph_icu" value="{{ old('ph_icu') }}" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('ph_icu') border-red-500 @else border-gray-300 @enderror" placeholder="7,35">
 							<x-input-error :messages="$errors->get('ph_icu')" class="mt-2" />
-
 						</div>
 						<div>
 							<label for="pco2_icu" class="block text-md font-medium text-gray-700">pCO<sub>2</sub></label>
@@ -228,7 +227,6 @@
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmHg</span>
 							</div>
 							<x-input-error :messages="$errors->get('pco2_icu')" class="mt-2" />
-
 						</div>
 						<div>
 							<label for="po2_icu" class="block text-md font-medium text-gray-700">pO<sub>2</sub></label>
@@ -237,7 +235,6 @@
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmHg</span>
 							</div>
 								<x-input-error :messages="$errors->get('po2_icu')" class="mt-2" />
-
 						</div>
 						<div>
 							<label for="spo2_icu" class="block text-md font-medium text-gray-700">SpO<sub>2</sub></label>
@@ -264,6 +261,27 @@
 							</div>
 							<x-input-error :messages="$errors->get('sbpt')" class="mt-2" />
 						</div>
+						<div>
+							<label for="pf_ratio" class="block text-lg font-medium text-gray-700">P/F Ratio</label>
+							<div class="relative">
+								<input type="number" name="pf_ratio" id="pf_ratio" value="{{ old('pf_ratio') }}" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('pf_ratio') border-red-500 @else border-gray-300 @enderror" placeholder="300">
+							</div>
+							<x-input-error :messages="$errors->get('pf_ratio')" class="mt-2" />
+						</div>
+						<div>
+							<label for="hco2" class="block text-lg font-medium text-gray-700">HCO2</label>
+							<div class="relative">
+								<input type="number" name="hco2" id="hco2" value="{{ old('hco2') }}" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('hco2') border-red-500 @else border-gray-300 @enderror" placeholder="18">
+							</div>
+							<x-input-error :messages="$errors->get('hco2')" class="mt-2" />
+						</div>
+						<div>
+							<label for="tco2" class="block text-lg font-medium text-gray-700">TCO2</label>
+							<div class="relative">
+								<input type="number" name="tco2" id="tco2" value="{{ old('tco2') }}" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('tco2') border-red-500 @else border-gray-300 @enderror" placeholder="19">
+							</div>
+							<x-input-error :messages="$errors->get('tco2')" class="mt-2" />
+						</div>
 					</div>
 				</div>
 
@@ -287,18 +305,30 @@
 
 						</div>
 					</div>
-					<div>
-						<label for="ro_post_intubation" class="block text-md font-medium text-gray-700">RO Post Intubasi</label>
-						<input type="text" name="ro_post_intubation" id="ro_post_intubation" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('ro_post_intubtion') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="Stabil" value="{{ old('ro_post_intubation') }}">
-						<x-input-error :messages="$errors->get('ro_post_intubation')" class="mt-2" />
+					<div class="my-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+						<div class="mb-4">
+							<label for="ro_post_intubation" class="block text-md font-medium text-gray-700">RO Post Intubasi</label>
+							<input type="text" name="ro_post_intubation" id="ro_post_intubation" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('ro_post_intubtion') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="" value="{{ old('ro_post_intubation') }}">
+							<x-input-error :messages="$errors->get('ro_post_intubation')" class="mt-2" />
+						</div>
 
+						<div class="mb-4">
+							<label for="sputum_color" class="block text-md font-medium text-gray-700">Karakteristik warna sputum</label>
+							<input type="text" name="sputum_color" id="sputum_color" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('sputum_color') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="" value="{{ old('sputum_color') }}">
+							<x-input-error :messages="$errors->get('sputum_color')" class="mt-2" />
+						</div>
+					</div>
+					<div>
+						<label for="lab_tests_sent" class="block text-md font-medium text-gray-700">Pemeriksaan yang dikirim ke lab</label>
+						<textarea name="lab_tests_sent" id="lab_tests_sent" value="{{ old('lab_tests_sent', $icuData->lab_tests_sent ?? '') }}" {{ $icuData ? 'disabled' : '' }} rows="4" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm resize-none @error('lab_tests_sent') border-red-500 @else border-gray-300 @enderror" placeholder="">{{ old('lab_tests_sent', $icuData->lab_tests_sent ?? '') }}</textarea>
+						<x-input-error :messages="$errors->get('lab_tests_sent')" class="mt-2" />
 					</div>
 				</div>
 
 				{{-- TTV --}}
 				<div class="bg-white my-6 p-8 rounded-xl">
 					<h2 class="text-xl font-bold mb-6 mt-10 ">TTV</h2>
-					<div class="my-4 grid grid-cols-1 md:grid-cols-5 gap-4">
+					<div class="my-4 grid grid-cols-1 md:grid-cols-6 gap-4">
 						<div>
 							<label for="td" class="block text-md font-medium text-gray-700">TD</label>
 							<div class="flex space-x-2">
@@ -308,7 +338,6 @@
 								<x-input-error :messages="$errors->get('sistolik' || 'diastolik')" class="mt-2" />
 							</div>
 						</div>
-						
 						<div>
 							<label for="suhu" class="block text-md font-medium text-gray-700">S.</label>
 							<div class="relative">
@@ -341,7 +370,65 @@
 								<x-input-error :messages="$errors->get('spo2')" class="mt-2" />
 							</div> 
 						</div>
+						<div>
+							<label for="consciousness" class="block text-md font-medium text-txtl">Kesadaran</label>
+							<input type="text" name="consciousness" id="consciousness" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('consciousness') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" value="{{ old('consciousness', $icuData->ttv->consciousness ?? '') }}" placeholder="">
+							<x-input-error :messages="$errors->get('consciousness')" class="mt-2" />
+						</div>
 					</div>
+				</div>
+
+				<div class="bg-white p-8 rounded-xl">
+					<h1 class="text-2xl text-center font-bold mb-8">Informasi Tabung Intubasi</h1>
+					
+					{{-- Select Option ETT atau TC --}}
+					<div class="mb-4">
+						<label for="intubation_type" class="block text-md font-medium text-txtl">Jenis Intubasi</label>
+						<select name="intubation_type" id="intubation_type" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+							<option value="ETT" {{ old('intubation_type') == 'ETT' ? 'selected' : '' }}>ETT (Endotracheal Tube)</option>
+							<option value="TC" {{ old('intubation_type') == 'TC' ? 'selected' : '' }}>TC (Tracheostomy Tube)</option>
+						</select>
+					</div>
+					
+					{{-- Container untuk input ETT (default) --}}
+					<div id="ett_fields">
+						<div>
+							<label for="ett_diameter" class="block text-md font-medium text-txtl">Diameter ETT</label>
+							<div class="relative">
+								<input type="number" name="ett_diameter" id="ett_diameter" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('ett_diameter') border-red-500 @else border-gray-300 @enderror" placeholder="7.5" value="{{ old('ett_diameter') }}" min="0" step="any">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mm</span>
+							</div>
+							<x-input-error :messages="$errors->get('ett_diameter')" class="mt-2" />
+						</div>
+
+						<div class="mt-4">
+							<label for="ett_depth" class="block text-md font-medium text-txtl">Kedalaman ETT</label>
+							<div class="relative">
+								<input type="number" name="ett_depth" id="ett_depth" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('ett_depth') border-red-500 @else border-gray-300 @enderror" placeholder="22" value="{{ old('ett_depth') }}" min="0" step="any">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">cm</span>
+							</div>
+							<x-input-error :messages="$errors->get('ett_depth')" class="mt-2" />
+						</div>
+					</div>
+
+					{{-- Container untuk input TC (hidden by default) --}}
+					<div id="tc_fields" class="hidden">
+						<div>
+							<label for="tc_diameter" class="block text-md font-medium text-txtl">Diameter TC</label>
+							<div class="relative">
+								<input type="number" name="tc_diameter" id="tc_diameter" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('tc_diameter') border-red-500 @else border-gray-300 @enderror" placeholder="8.0" value="{{ old('tc_diameter') }}" min="0" step="any">
+								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mm</span>
+							</div>
+							<x-input-error :messages="$errors->get('tc_diameter')" class="mt-2" />
+						</div>
+
+						<div class="mt-4">
+							<label for="tc_type" class="block text-md font-medium text-txtl">Jenis TC</label>
+							<input type="text" name="tc_type" id="tc_type" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('tc_type') border-red-500 @else border-gray-300 @enderror" placeholder="Masukkan jenis TC" value="{{ old('tc_type') }}">
+							<x-input-error :messages="$errors->get('tc_type')" class="mt-2" />
+						</div>
+					</div>
+
 				</div>
 
 				{{-- Venti --}}
@@ -364,7 +451,7 @@
 						</div>
 					</div>
 					<!-- Additional Ventilation Settings -->
-					<div class="my-4 grid grid-cols-1 md:grid-cols-4 gap-4">
+					<div class="my-4 grid grid-cols-1 md:grid-cols-6 gap-4">
 						<div>
 							<label for="ipl" class="block text-md font-semibold text-txtl">IPL</label>
 							<div class="relative">
@@ -389,7 +476,6 @@
 								<input type="number" name="fio2" id="fio2" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('fio2') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="40" value="{{ old('fio2', $icuData ? $icuData->fio2 : '') }}">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">%</span>
 								<x-input-error :messages="$errors->get('fio2')" class="mt-2" />
-
 							</div>
 						</div>
 						<div>
@@ -398,12 +484,35 @@
 								<input type="number" name="rr" id="rr" class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('rr') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" placeholder="20" value="{{ old('rr', $icuData ? $icuData->rr : '') }}">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">kali per menit</span>
 								<x-input-error :messages="$errors->get('rr')" class="mt-2" />
-
 							</div>
 						</div>
+						<div>
+                            <label for="ps" class="block text-md font-medium text-txtl">PS</label>
+                            <div class="relative">
+                                <input 
+                                    type="number" 
+                                    name="ps" 
+                                    id="ps" 
+                                    class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('ps') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" 
+                                    placeholder="5"
+                                    value="{{ old('ps') }}"> <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">cmH2O</span>
+                                <x-input-error :messages="$errors->get('ps')" class="mt-2" />
+                            </div>
+                        </div>
+                        <div>
+                            <label for="trigger" class="block text-md font-medium text-txtl">Trigger</label>
+                            <div class="relative">
+                                <input 
+                                    type="number" 
+                                    name="trigger" 
+                                    id="trigger" 
+                                    class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('trigger') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm" 
+                                    placeholder=""
+                                    value="{{ old('trigger') }}"> <x-input-error :messages="$errors->get('trigger')" class="mt-2" />
+                            </div>
+                        </div>
 					</div>
 				</div>
-
 
 				<div class="flex justify-between items-center">
 					<!-- Tombol Back -->
@@ -435,35 +544,44 @@
 				</div>
 			</div>
 		</div>
-
     </div>
 </div>
 
-<!-- Script for Slide Navigation -->
 @push('scripts')
-<script>
-	document.getElementById('openModalButton').addEventListener('click', function() {
-		document.getElementById('confirmationModal').classList.remove('hidden');
-	});
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const intubationTypeSelect = document.getElementById('intubation_type');
+			const ettFields = document.getElementById('ett_fields');
+			const tcFields = document.getElementById('tc_fields');
 
-	document.getElementById('cancelButton').addEventListener('click', function() {
-		document.getElementById('confirmationModal').classList.add('hidden');
-	});
+			const toggleIntubationTypeFields = () => {
+				if (intubationTypeSelect.value === 'ETT') {
+					ettFields.classList.remove('hidden');
+					tcFields.classList.add('hidden');
+				} else {
+					tcFields.classList.remove('hidden');
+					ettFields.classList.add('hidden');
+				}
+			};
 
-	document.getElementById('confirmButton').addEventListener('click', function() {
-		document.getElementById('icuForm').submit(); 
-	});
+			toggleIntubationTypeFields();
+			intubationTypeSelect.addEventListener('change', toggleIntubationTypeFields);
+			
 
-	//venti datetime
-    // document.addEventListener("DOMContentLoaded", function() {
-    //     let now = new Date();
-    //     let oneHoursAgo = new Date(now.getTime() - (1 * 60 * 60 * 1000));
+			document.getElementById('openModalButton').addEventListener('click', function() {
+				document.getElementById('confirmationModal').classList.remove('hidden');
+			});
 
-    //     document.getElementById("venti_datetime").max = now.toISOString().slice(0,16);
-    //     document.getElementById("venti_datetime").min = oneHoursAgo.toISOString().slice(0,16);
-    // });
+			document.getElementById('cancelButton').addEventListener('click', function() {
+				document.getElementById('confirmationModal').classList.add('hidden');
+			});
 
-</script>
+			document.getElementById('confirmButton').addEventListener('click', function() {
+				document.getElementById('icuForm').submit(); 
+			});
+		});
+
+	</script>
 @endpush
 
 

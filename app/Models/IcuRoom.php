@@ -20,6 +20,8 @@ class IcuRoom extends Model
         'ro',
         'ro_post_intubation',
         'blood_culture',
+        'sputum_color',
+        'lab_tests_sent',
         'labresult_id',
         'ventilator_id',
         'ttv_id',

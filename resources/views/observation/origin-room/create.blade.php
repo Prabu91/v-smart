@@ -23,7 +23,7 @@
 					<textarea name="physical_check" id="physical_check" value="{{ old('physical_check') }}" rows="8" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm resize-none @error('physical_check') border-red-500 @else border-gray-300 @enderror" placeholder="Masukan hasil pemeriksaan fisik	"></textarea>
 				</div>
 
-				<h2 class="text-xl font-bold my-4">Hasil Lab Awal Masuk</h2>
+				<h2 class="text-xl font-bold my-4">Hasil Penunjang Awal Masuk</h2>
 				<div class="grid grid-cols-1 md:grid-cols-5 gap-4">
 					<div>
 						<label for="hb_origin" class="block text-lg font-medium text-txtl">Hb</label>
@@ -106,7 +106,7 @@
 					<div>
 						<label for="be_origin" class="block text-lg font-medium text-txtl">Base Excees</label>
 						<div class="relative">
-							<input type="number" name="be_origin" id="be_origin" value="{{ old('be_origin') }}" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('be_origin') border-red-500 @else border-gray-300 @enderror" placeholder="95">
+							<input type="number" name="be_origin" id="be_origin" value="{{ old('be_origin') }}" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('be_origin') border-red-500 @else border-gray-300 @enderror" placeholder="-9">
 							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmol/L</span>
 						</div>
 						<x-input-error :messages="$errors->get('be_origin')" class="mt-2" />

@@ -51,6 +51,7 @@ class ExtubationController extends Controller
                         'nadi' => $request->nadi,
                         'rr' => $request->rr_ttv,
                         'spo2' => $request->spo2,
+                        'consciousness' => $request->consciousness,
                     ]);
 
                     $ttvId = $ttv->id;
@@ -67,6 +68,7 @@ class ExtubationController extends Controller
                     'extubation' => $request->extubation,
                     'nebulizer' => $request->nebulizer,
                     'patient_status' => $request->patient_status,
+                    'extubation_notes' => $request->extubation_notes,
                 ]);
             });
 

@@ -64,7 +64,7 @@
                     <span class="font-semibold">{{ Auth::user()->name }}</span>
                     <i class="fa fa-angle-down"></i>
                 </button>
-                <div class="dropdown-menu absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg hidden" id="dropdown" aria-labelledby="page-header-user-dropdown">
+                <div class="dropdown-menu absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg hidden z-20" id="dropdown" aria-labelledby="page-header-user-dropdown">
                     <div class="px-4 py-3 text-center border-b border-gray-100">
                         <h5 class="text-sm font-semibold text-txtl">
                             {{ Auth::user()->name }}

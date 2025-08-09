@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 class TransferRoom extends Model
 {
-    protected $fillable = ['patient_id', 'user_id', 'transfer_room_datetime', 'transfer_room_name', 'main_diagnose', 'secondary_diagnose', 'labresult_id', 'lab_culture_data', 'ttv_id'];
+    protected $fillable = ['patient_id', 'user_id', 'transfer_room_datetime', 'transfer_room_name', 'main_diagnose', 'secondary_diagnose', 'labresult_id', 'lab_culture_data', 'notes', 'ttv_id'];
 
     protected $keyType = 'string';
     public $incrementing = false;

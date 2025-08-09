@@ -58,6 +58,7 @@ class IntubationController extends Controller
                     'nadi' => $request->pre_nadi,
                     'rr' => $request->pre_rr_ttv,
                     'spo2' => $request->pre_spo2,
+                    'consciousness' => $request->pre_consciousness,
                 ]);
                 $post_ttv = Ttv::create([
                     'patient_id' => $request->patient_id,
@@ -68,6 +69,7 @@ class IntubationController extends Controller
                     'nadi' => $request->post_nadi,
                     'rr' => $request->post_rr_ttv,
                     'spo2' => $request->post_spo2,
+                    'consciousness' => $request->post_consciousness,
                 ]);
                 
                 $ventilator = Ventilator::create([
@@ -76,12 +78,12 @@ class IntubationController extends Controller
                     'ttv_id' => $post_ttv->id,
                     'venti_datetime' => $ventiDatetime,
                     'mode_venti' => $request->mode_venti,
-                    'diameter' => $request->diameter,
-                    'depth' => $request->depth,
                     'ipl' => $request->ipl,
                     'peep' => $request->peep,
                     'fio2' => $request->fio2,
                     'rr' => $request->rr,
+                    'ps' => $request->ps,
+                    'trigger' => $request->trigger,
                 ]);
                 
                 $intubation = Intubation::create([
@@ -96,8 +98,11 @@ class IntubationController extends Controller
                     'dr_consultant' => $request->dr_consultant_name,
                     'pre_intubation' => $request->preintubation,
                     'post_intubation' => $request->postintubation,
-                    'diameter' => $request->diameter,
-                    'depth' => $request->depth,
+                    'intubation_type' => $request->intubation_type,
+                    'ett_diameter' => $request->ett_diameter,
+                    'ett_depth' => $request->ett_depth,
+                    'tc_diameter' => $request->tc_diameter,
+                    'tc_type' => $request->tc_type,
                 ]);
 
                 $originRoom = OriginRoom::where('patient_id', $request->patient_id)->first();

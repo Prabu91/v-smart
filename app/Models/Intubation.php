@@ -19,8 +19,11 @@ class Intubation extends Model
         'intubation_location',
         'dr_intubation',
         'dr_consultant',
-        'diameter',
-        'depth',
+        'intubation_type',
+        'ett_diameter',
+        'ett_depth',
+        'tc_diameter',
+        'tc_type',
         'pre_intubation',
         'post_intubation',
     ];
@@ -54,10 +57,10 @@ class Intubation extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    // public function ttv()
-    // {
-    //     return $this->belongsTo(TTV::class, 'ttv_id', 'id');
-    // }
+    public function ttv()
+    {
+        return $this->belongsTo(Ttv::class, 'ttv_id', 'id');
+    }
 
     public function ttvPre()
     {

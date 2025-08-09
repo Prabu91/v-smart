@@ -22,18 +22,6 @@ class StoreIcuRoomRequest extends FormRequest
      */
     public function rules(): array
     {
-        // return [
-        //     'venti_datetime' => ['nullable', function ($attribute, $value, $fail) {
-        //         $now = now();
-        //         $selectedTime = Carbon::parse($value);
-        //         $earliestAllowedTime = $now->copy()->subHours(1);
-
-        //         if ($selectedTime->lessThan($earliestAllowedTime) || $selectedTime->greaterThan($now)) {
-        //             $fail('Waktu pemakaian hanya bisa diinput dalam rentang 1 jam terakhir.');
-        //         }
-        //     }],
-        // ];
-
         return [
             'patient_id' => 'required|uuid|exists:patients,id',
 
@@ -46,11 +34,11 @@ class StoreIcuRoomRequest extends FormRequest
             'icu_room_name' => 'required', 
             'icu_room_bednum' => 'required|integer|min:1', 
 
-            'natrium' => 'nullable|numeric|between:120,160', 
-            'kalium' => 'nullable|numeric|between:3.0,5.0', 
-            'calsium' => 'nullable|numeric|between:7.5,12.0', 
-            'magnesium' => 'nullable|numeric|between:1.5,2.5', 
-            'clorida' => 'nullable|numeric|between:90,115', 
+            'natrium' => 'nullable|numeric', 
+            'kalium' => 'nullable|numeric', 
+            'calsium' => 'nullable|numeric', 
+            'magnesium' => 'nullable|numeric', 
+            'clorida' => 'nullable|numeric', 
 
             'hb_icu' => 'nullable|numeric|between:10,18', 
             'leukosit_icu' => 'nullable|numeric|between:4000,12000', 
@@ -69,17 +57,29 @@ class StoreIcuRoomRequest extends FormRequest
             'spo2_icu' => 'nullable|numeric|between:80,100',
             'be_icu' => 'nullable|numeric|between:-10,10',
             'sbpt' => 'nullable|numeric|between:10,50',
+            'pf_ratio' => 'nullable|numeric',
+            'hco2' => 'nullable|numeric',
+            'tco2' => 'nullable|numeric',
 
             'ro' => 'nullable|in:sudah,belum',
             'blood_culture' => 'nullable|string|max:255',
             'ro_post_intubation' => 'nullable|string|max:255',
+            'sputum_color' => 'nullable|string|max:255',
+            'lab_tests_sent' => 'nullable|string|max:255',
 
-            'sistolik' => 'required|integer|min:0|max:300', 
-            'diastolik' => 'required|integer|min:0|max:200', 
-            'suhu' => 'required|numeric|min:30|max:45', 
-            'nadi' => 'required|integer|min:30|max:200', 
-            'rr_ttv' => 'required|integer|min:0|max:60', 
-            'spo2' => 'required|integer|min:0|max:100', 
+            'sistolik' => 'required|integer', 
+            'diastolik' => 'required|integer', 
+            'suhu' => 'required|numeric', 
+            'nadi' => 'required|integer', 
+            'rr_ttv' => 'required|integer', 
+            'spo2' => 'required|integer', 
+            'consciousness' => 'required|string', 
+
+            'intubation_type' => 'nullable|string',
+            'ett_diameter' => 'nullable|numeric',
+            'ett_depth' => 'nullable|numeric',
+            'tc_diameter' => 'nullable|numeric',
+            'tc_type' => 'nullable|string',
 
             'venti_datetime' => 'nullable|date', 
             'mode_venti' => 'nullable|string|max:255', 
@@ -87,6 +87,8 @@ class StoreIcuRoomRequest extends FormRequest
             'peep' => 'nullable|numeric|min:0|max:20', 
             'fio2' => 'nullable|numeric|min:0|max:100', 
             'rr' => 'nullable|integer|min:0|max:60',
+            'ps' => 'nullable|numeric',
+            'trigger' => 'nullable|numeric',
         ];
     }
 

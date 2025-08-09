@@ -27,12 +27,12 @@ class StoreTransferRoomRequest extends FormRequest
             'lab_culture_data' => 'required',
             'main_diagnose_origin' => 'nullable|string',
             'secondary_diagnose_origin' => 'nullable|string',
+            'notes' => 'nullable|string',
 
-            'hb_icu' => 'nullable|numeric',
-            'leukosit_icu' => 'nullable|numeric',
-            'pcv_icu' => 'nullable|numeric',
-            'trombosit_icu' => 'nullable|numeric',
-            'kreatinin_icu' => 'nullable|numeric',
+            'hb_transfer' => 'nullable|numeric',
+            'leukosit_transfer' => 'nullable|numeric',
+            'pcv_transfer' => 'nullable|numeric',
+            'trombosit_transfer' => 'nullable|numeric',
             
             'sistolik' => 'nullable|numeric',
             'diastolik' => 'nullable|numeric',
@@ -40,6 +40,7 @@ class StoreTransferRoomRequest extends FormRequest
             'nadi' => 'nullable|numeric',
             'rr_ttv' => 'nullable|numeric',
             'spo2' => 'nullable|numeric',
+            'consciousness' => 'nullable|string',
         ];
     }
 
@@ -55,7 +56,6 @@ class StoreTransferRoomRequest extends FormRequest
             'leukosit_icu.numeric' => 'Leukosit harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
             'pcv_icu.numeric' => 'PCV harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
             'trombosit_icu.numeric' => 'Trombosit harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
-            'kreatinin_icu.numeric' => 'Kreatinin harus berupa angka dan gunakan titik (.) sebagai pemisah desimal.',
             
             'sistolik.numeric' => 'Sistolik harus berupa angka.',
             'diastolik.numeric' => 'Diastolik harus berupa angka.',

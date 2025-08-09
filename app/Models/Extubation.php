@@ -19,6 +19,7 @@ class Extubation extends Model
         'extubation',
         'nebulizer',
         'patient_status',
+        'extubation_notes',
     ];
 
     protected $keyType = 'string';

@@ -27,8 +27,8 @@ return new class extends Migration
             
             $table->text('pre_intubation')->nullable();
             $table->text('post_intubation')->nullable();
-            $table->float('diameter', 4, 1)->nullable();
-            $table->float('depth', 5, 1)->nullable();
+            $table->float('ett_diameter', 4, 1)->nullable();
+            $table->float('ett_depth', 5, 1)->nullable();
             $table->timestamps();
             
             $table->foreign('user_id')->references('id')->on('users')->onDelete('no action');

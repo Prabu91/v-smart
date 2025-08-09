@@ -50,8 +50,7 @@ class TransferRoomController extends Controller
                     'hb' => $request->hb_transfer,
                     'leukosit' => $request->leukosit_transfer,
                     'pcv' => $request->pcv_transfer,
-                    'trombosit' => $request->trombosit_transfer,
-                    'kreatinin' => $request->kreatinin_transfer,
+                    'trombosit' => $request->trombosit_transfer
                 ]);
 
                 $ttv = Ttv::create([
@@ -63,6 +62,7 @@ class TransferRoomController extends Controller
                     'nadi' => $request->nadi,
                     'rr' => $request->rr_ttv,
                     'spo2' => $request->spo2,
+                    'consciousness' => $request->consciousness,
                 ]);
 
                 $transferRoom = TransferRoom::create([
@@ -72,6 +72,7 @@ class TransferRoomController extends Controller
                     'lab_culture_data' => $request->lab_culture_data,
                     'main_diagnose' => $request->main_diagnose_transfer,
                     'secondary_diagnose' => $request->secondary_diagnose_transfer,
+                    'notes' => $request->notes,
                     'labresult_id' => $labResult->id,
                     'ttv_id' => $ttv->id,
                     'patient_id' => $request->patient_id,

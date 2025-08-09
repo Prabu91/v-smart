@@ -25,10 +25,11 @@ class StoreExtubationRequest extends FormRequest
             'patient_id' => 'required|uuid|exists:patients,id',
 
             'extubation_datetime' => 'required|date',
-            'preparation_extubation_therapy' => 'required|string',
-            'extubation' => 'required|string',
-            'nebulizer' => 'required|string',
+            'preparation_extubation_therapy' => 'nullable|string',
+            'extubation' => 'nullable|string',
+            'nebulizer' => 'nullable|string',
             'patient_status' => 'required|string',
+            'extubation_notes' => 'nullable|string',
 
             
             'sistolik' => 'nullable|numeric',
@@ -37,6 +38,7 @@ class StoreExtubationRequest extends FormRequest
             'nadi' => 'nullable|numeric',
             'rr_ttv' => 'nullable|numeric',
             'spo2' => 'nullable|numeric',
+            'consciousness' => 'nullable|string',
         ];
     }
 

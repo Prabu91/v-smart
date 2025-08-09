@@ -21,6 +21,7 @@ class Ttv extends Model
         'nadi',
         'rr',
         'spo2',
+        'consciousness',
     ];
 
     protected $keyType = 'string';

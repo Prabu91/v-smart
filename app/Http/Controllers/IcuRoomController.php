@@ -75,6 +75,8 @@ class IcuRoomController extends Controller
                         'peep' => $request->peep,
                         'fio2' => $request->fio2,
                         'rr' => $request->rr,
+                        'ps' => $request->ps,
+                        'trigger' => $request->trigger,
                     ]);
 
                     
@@ -136,6 +138,9 @@ class IcuRoomController extends Controller
                             'spo2' => $request->spo2,
                             'base_excees' => $request->be_icu,
                             'sbpt' => $request->sbpt,
+                            'pf_ratio' => $request->pf_ratio,
+                            'hco2' => $request->hco2,
+                            'tco2' => $request->tco2,
                         ]);
                         $agdId = $agd->id;
                     }
@@ -151,6 +156,7 @@ class IcuRoomController extends Controller
                             'nadi' => $request->nadi,
                             'rr' => $request->rr_ttv,
                             'spo2' => $request->spo2,
+                            'consciousness' => $request->consciousness,
                         ]);
                         $ttvId = $ttv->id;
                     }
@@ -166,6 +172,8 @@ class IcuRoomController extends Controller
                         'ro' => $request->ro,
                         'ro_post_intubation' => $request->ro_post_intubation,
                         'blood_culture' => $request->blood_culture,
+                        'lab_tests_sent' => $request->lab_tests_sent,
+                        'sputum_color' => $request->sputum_color,
                         'ttv_id' => $ttvId,
                         'labresult_id' => $labResultId,
                         'elektrolit_id' => $elektrolitId,

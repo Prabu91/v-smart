@@ -19,6 +19,8 @@ class Ventilator extends Model
         'peep',
         'fio2',
         'rr',
+        'ps',
+        'trigger',
     ];
 
     protected $keyType = 'string';
