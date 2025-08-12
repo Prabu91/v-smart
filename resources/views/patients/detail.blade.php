@@ -211,6 +211,21 @@
                                     <td class="px-4">:</td>
                                     <td>{{ $origin->agd->base_excees ?? '0' }} %</td>
                                 </tr>
+                                <tr>
+                                    <td>P/F Ratio</td>
+                                    <td class="px-4">:</td>
+                                    <td>{{ $origin->agd->pf_ratio ?? '0' }}</td>
+                                </tr>
+                                <tr>
+                                    <td>HCO2</td>
+                                    <td class="px-4">:</td>
+                                    <td>{{ $origin->agd->hco2 ?? '0' }}</td>
+                                </tr>
+                                <tr>
+                                    <td>TCO2</td>
+                                    <td class="px-4">:</td>
+                                    <td>{{ $origin->agd->tco2 ?? '0' }}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -289,12 +304,27 @@
 										<td>{{ $intubations->post_intubation ?? 'Tidak ada data' }}</td>
 									</tr>
 									<tr>
-										<td>ETT / Kedalaman</td>
+										<td>Tipe Intubasi</td>
+										<td class="px-2">:</td>
+										<td>{{ $intubations->intubation_type ?? 'Tidak ada data' }}</td>
+									</tr>
+									@if($intubations->intubation_type == 'ETT')
+									<tr>
+										<td>ETT Diameter / Kedalaman</td>
 										<td class="px-2">:</td>
 										<td>
-											{{ $intubations && $intubations->diameter && $intubations->depth ? $intubations->diameter . ' mm / ' . $intubations->depth . ' cm' : '0 mm / 0 cm' }}
+											{{ $intubations && $intubations->ett_diameter && $intubations->ett_depth ? $intubations->ett_diameter . ' mm / ' . $intubations->ett_depth . ' cm' : '0 mm / 0 cm' }}
 										</td>
 									</tr>
+									@else
+									<tr>
+										<td>TC Diameter / Tipe </td>
+										<td class="px-2">:</td>
+										<td>
+											{{ $intubations && $intubations->tc_diameter && $intubations->tc_depth ? $intubations->tc_diameter . ' mm / ' . $intubations->tc_depth . '' : '0 mm / ' }}
+										</td>
+									</tr>
+									@endif
 								</table>
 							</div>
 						</div>
@@ -339,6 +369,13 @@
 									{{ $intubations->ttvPre->spo2 ?? '0'}} %
 								</td>
 							</tr>
+							<tr>
+								<td>Kesadaran</td>
+								<td class="px-2">:</td>
+								<td>
+									{{ $intubations->ttvPre->consciousness ?? '0'}}
+								</td>
+							</tr>
 						</table>
 					</div>
 
@@ -379,6 +416,13 @@
 								<td class="px-2">:</td>
 								<td>
 									{{ $intubations->ttvPost->spo2 ?? '0'}} %
+								</td>
+							</tr>
+							<tr>
+								<td>Kesadaran</td>
+								<td class="px-2">:</td>
+								<td>
+									{{ $intubations->ttvPre->consciousness ?? '0'}}
 								</td>
 							</tr>
 						</table>
@@ -455,6 +499,17 @@
 						</td>
 					</tr>
 					<tr>
+						<td class="font-semibold">Kondisi Pasien</td>
+						<td class="px-4">:</td>
+						<td>
+							@if($extubation && $extubation->patient_status)
+								{{ $extubation->patient_status }}
+							@else
+								Tidak ada data
+							@endif
+						</td>
+					</tr>
+					<tr>
 						<td class="font-semibold">Therapi Persiapan Ekstubasi</td>
 						<td class="px-4">:</td>
 						<td>
@@ -488,11 +543,11 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="font-semibold">Kondisi Pasien</td>
+						<td class="font-semibold">Keterangan Tambahan</td>
 						<td class="px-4">:</td>
 						<td>
-							@if($extubation && $extubation->patient_status)
-								{{ $extubation->patient_status }}
+							@if($extubation && $extubation->extubation_notes)
+								{{ $extubation->extubation_notes }}
 							@else
 								Tidak ada data
 							@endif
@@ -538,6 +593,13 @@
 						<td class="px-2">:</td>
 						<td>
 							{{ $extubation->ttv->spo2 ?? '0'}} %
+						</td>
+					</tr>
+					<tr>
+						<td class="font-semibold">Kesadaran</td>
+						<td class="px-2">:</td>
+						<td>
+							{{ $extubation->ttv->consciousness ?? 'Tidak Ada Data'}}
 						</td>
 					</tr>
 				</table>
@@ -589,6 +651,11 @@
 						<td class="px-4">:</td>
 						<td>{{ $transfer->lab_culture_data ?? 'Tidak ada data' }}</td>
 					</tr>
+					<tr>
+						<td class="font-semibold">Keterangan Tambahan</td>
+						<td class="px-4">:</td>
+						<td>{{ $transfer->notes ?? 'Tidak ada data' }}</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
@@ -618,11 +685,6 @@
 								<td class="font-semibold">Trombosit</td>
 								<td class="px-4">:</td>
 								<td>{{ $transfer->labResult->trombosit ?? 'Tidak ada data' }} /µL</td>
-							</tr>
-							<tr>
-								<td class="font-semibold">Kreatinin</td>
-								<td class="px-4">:</td>
-								<td>{{ $transfer->labResult->kreatinin ?? 'Tidak ada data' }} mg/dL</td>
 							</tr>
 						</tbody>
 					</table>
@@ -658,6 +720,11 @@
 								<td class="font-semibold">SpO<sub>2</sub></td>
 								<td class="px-4">:</td>
 								<td>{{ $transfer->ttv->spo2 ?? 'Tidak ada data' }} %</td>
+							</tr>
+							<tr>
+								<td class="font-semibold">Kesadaran</td>
+								<td class="px-4">:</td>
+								<td>{{ $transfer->ttv->consciousness ?? 'Tidak ada data' }} %</td>
 							</tr>
 						</tbody>
 					</table>

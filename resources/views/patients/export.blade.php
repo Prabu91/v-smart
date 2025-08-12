@@ -161,6 +161,22 @@
             <th>Base Excees</th>
             <td>{{ $patient->originRoom->agd->base_excees ?? '-' }} %</td>
         </tr>
+        <tr>
+            <th>SBPT</th>
+            <td>{{ $patient->originRoom->agd->sbpt ?? '-' }}</td>
+        </tr>
+        <tr>
+            <th>P/F Ratio</th>
+            <td>{{ $patient->originRoom->agd->pf_ratio ?? '-' }} %</td>
+        </tr>
+        <tr>
+            <th>HCO2</th>
+            <td>{{ $patient->originRoom->agd->hco2 ?? '-' }} %</td>
+        </tr>
+        <tr>
+            <th>TCO2</th>
+            <td>{{ $patient->originRoom->agd->tco2 ?? '-' }} %</td>
+        </tr>
     </table>
 
     <h2 class="header">Data Intubasi</h2>
@@ -190,9 +206,20 @@
             <td>{{ $patient->intubation->post_intubation }}</td>
         </tr>
         <tr>
-            <th>ETT/Kedalaman</th>
-            <td>{{ $patient->intubation->diameter }} / {{ $patient->intubation->depth }}</td>
+            <th>Tipe Intubasi</th>
+            <td>{{ $patient->intubation->intubation_type }}</td>
         </tr>
+        @if ($patient->intubation->intubation_type == 'ETT')
+            <tr>
+                <th>Diameter/Kedalaman</th>
+                <td>{{ $patient->intubation->ett_diameter }} / {{ $patient->intubation->ett_depth }}</td>
+            </tr>
+        @else
+            <tr>
+                <th>Diameter/Tipe</th>
+                <td>{{ $patient->intubation->tc_diameter }} / {{ $patient->intubation->tc_type }}</td>
+            </tr>
+        @endif
     </table>
 
     <h3 class="header">TTV Pre Intubation</h3>
@@ -203,6 +230,7 @@
             <th>Nadi</th>
             <th>RR</th>
             <th>SpO<sub>2</sub></th>
+            <th>Kesadaran</th>
         </thead>
         <tbody>
             <td>
@@ -220,6 +248,9 @@
             <td>
                 {{ $intubations->ttvPre->spo2 ?? '0'}} %
             </td>
+            <td>
+                {{ $intubations->ttvPre->consciousness ?? '0'}}
+            </td>
         </tbody>
     </table>
     
@@ -231,6 +262,7 @@
             <th>Nadi</th>
             <th>RR</th>
             <th>SpO<sub>2</sub></th>
+            <th>Kesadaran</th>
         </thead>
         <tbody>
             <td>
@@ -247,6 +279,9 @@
             </td>
             <td>
                 {{ $intubations->ttvPost->spo2 ?? '0'}} %
+            </td>
+            <td>
+                {{ $intubations->ttvPost->consciousness ?? '0'}}
             </td>
         </tbody>
     </table>

@@ -199,6 +199,27 @@
 							{{ $icuRecords->agd->sbpt ?? '0'}} mmol/L
 						</td>
 					</tr>
+					<tr>
+						<td>P/F Ratio</td>
+						<td class="px-4">:</td>
+						<td>
+							{{ $icuRecords->agd->pf_ratio ?? '0'}}
+						</td>
+					</tr>
+					<tr>
+						<td>HCO2</td>
+						<td class="px-4">:</td>
+						<td>
+							{{ $icuRecords->agd->hco2 ?? '0'}}
+						</td>
+					</tr>
+					<tr>
+						<td>TCO2</td>
+						<td class="px-4">:</td>
+						<td>
+							{{ $icuRecords->agd->tco2 ?? '0'}}
+						</td>
+					</tr>
 				</table>
 			</div>
 
@@ -240,6 +261,13 @@
 							{{ $icuRecords->ttv->spo2 ?? '0'}} %
 						</td>
 					</tr>
+					<tr>
+						<td>Kesadaran</td>
+						<td class="px-2">:</td>
+						<td>
+							{{ $icuRecords->ttv->consciousness ?? '0'}} %
+						</td>
+					</tr>
 				</table>
 			</div>
 
@@ -268,6 +296,20 @@
 						{{ $icuRecords->blood_culture ?? 'Tidak ada data' }}
 					</td>
 				</tr>
+				<tr>
+					<td>Warna Sputum</td>
+					<td class="px-4">:</td>
+					<td>
+						{{ $icuRecords->sputum_color ?? 'Tidak ada data' }}
+					</td>
+				</tr>
+				<tr>
+					<td>Pemeriksaan yang dikirim ke Lab</td>
+					<td class="px-4">:</td>
+					<td>
+						{{ $icuRecords->lab_tests_sent ?? 'Tidak ada data' }}
+					</td>
+				</tr>
 			</table>
 		</div>
 	</div>
@@ -287,6 +329,8 @@
 								<th class="px-4 py-2">PEEP</th>
 								<th class="px-4 py-2">FiO<sub>2</sub></th>
 								<th class="px-4 py-2">RR</th>
+								<th class="px-4 py-2">PS</th>
+								<th class="px-4 py-2">Trigger</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -301,6 +345,8 @@
 									<td class="px-4 py-2">{{ $venti->peep ?? '0' }} cmH<sub>2</sub>O</td>
 									<td class="px-4 py-2">{{ $venti->fio2 ?? '0' }} %</td>
 									<td class="px-4 py-2">{{ $venti->rr ?? '0' }} Kali per menit</td>
+									<td class="px-4 py-2">{{ $venti->ps ?? '0' }}</td>
+									<td class="px-4 py-2">{{ $venti->trigger ?? '0' }}</td>
 								</tr>
 							@endforeach
 						</tbody>

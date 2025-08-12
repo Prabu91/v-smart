@@ -43,7 +43,7 @@
 	<table border="1" style="border-collapse: collapse; width: 100%;">
 		<thead>
 			<tr>
-				<th>Parameter</th>
+				<th>Waktu</th>
 				@foreach ($icuRoomsByDate as $date => $icuRooms)
 					<th>{{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}</th>
 				@endforeach
@@ -111,7 +111,7 @@
 	<table border="1" style="border-collapse: collapse; width: 100%;">
 		<thead>
 			<tr>
-				<th>Parameter</th>
+				<th>Waktu</th>
 				@foreach ($icuRoomsByDate as $date => $icuRooms)
 					<th>{{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}</th>
 				@endforeach
@@ -155,7 +155,7 @@
 	<table border="1" style="border-collapse: collapse; width: 100%;">
 		<thead>
 			<tr>
-				<th>Parameter</th>
+				<th>Waktu</th>
 				@foreach ($icuRoomsByDate as $date => $icuRooms)
 					<th>{{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}</th>
 				@endforeach
@@ -216,6 +216,18 @@
 					<td>{{ $icuRooms->first()->blood_culture ?? '-' }}</td>
 				@endforeach
 			</tr>
+			<tr>
+				<th>Warna Sputum</th>
+				@foreach ($icuRoomsByDate as $icuRooms)
+					<td>{{ $icuRooms->first()->sputum_color ?? '-' }}</td>
+				@endforeach
+			</tr>
+			<tr>
+				<th>Pemeriksaan dikirim ke Lab</th>
+				@foreach ($icuRoomsByDate as $icuRooms)
+					<td>{{ $icuRooms->first()->lab_tests_sent ?? '-' }}</td>
+				@endforeach
+			</tr>
 		</tbody>
 	</table>
 
@@ -223,7 +235,7 @@
 	<table border="1" style="border-collapse: collapse; width: 100%;">
 		<thead>
 			<tr>
-				<th>Parameter</th>
+				<th>Waktu</th>
 				@foreach ($icuRoomsByDate as $date => $icuRooms)
 					<th>{{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}</th>
 				@endforeach
@@ -260,6 +272,12 @@
 					<td>{{ $icuRooms->first()->ttv->spo2 ?? '-' }} %</td>
 				@endforeach
 			</tr>
+			<tr>
+				<th>Kesadaran</th>
+				@foreach ($icuRoomsByDate as $icuRooms)
+					<td>{{ $icuRooms->first()->ttv->consciousness ?? '-' }}</td>
+				@endforeach
+			</tr>
 		</tbody>
 	</table>
 
@@ -267,7 +285,7 @@
 	<table border="1" style="border-collapse: collapse; width: 100%;">
 		<thead>
 			<tr>
-				<th>Parameter</th>
+				<th>Waktu</th>
 				@foreach ($patient->venti as $venti)
 					<th>{{ \Carbon\Carbon::parse($venti->venti_datetime)->format('H:i d/m/Y') }}</th>
 				@endforeach
@@ -302,6 +320,18 @@
 				<th>RR</th>
 				@foreach ($patient->venti as $venti)
 					<td>{{ $venti->rr ?? '-' }} kali per menit</td>
+				@endforeach
+			</tr>
+			<tr>
+				<th>PS</th>
+				@foreach ($patient->venti as $venti)
+					<td>{{ $venti->ps ?? '-' }}</td>
+				@endforeach
+			</tr>
+			<tr>
+				<th>Trigger</th>
+				@foreach ($patient->venti as $venti)
+					<td>{{ $venti->trigger ?? '-' }}</td>
 				@endforeach
 			</tr>
 			<tr>

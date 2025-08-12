@@ -55,6 +55,10 @@
 			<td>{{ $patient->extubation->nebulizer ?? '-' }}</td>
 		</tr>
 		<tr>
+			<th>Keterangan Tambahan</th>
+			<td>{{ $patient->extubation->extubation_notes ?? '-' }}</td>
+		</tr>
+		<tr>
 			<th>Status</th>
 			<td>{{ $patient->extubation->patient_status ?? '-' }}</td>
 		</tr>
@@ -84,6 +88,10 @@
 			<th>Hasil Lab Kultur</th>
 			<td>{{ $patient->transferRoom->lab_culture_data ?? '-' }}</td>
 		</tr>
+		<tr>
+			<th>Keterangan Tambahan</th>
+			<td>{{ $patient->transferRoom->notes ?? '-' }}</td>
+		</tr>
 	</table>
 	
 
@@ -104,10 +112,6 @@
             <tr>
                 <th>Trombosit</th>
                 <td>{{ $patient->transferRoom->labResult->trombosit ?? '-' }}</td>
-            </tr>
-            <tr>
-                <th>Kreatinin</th>
-                <td>{{ $patient->transferRoom->labResult->kreatinin ?? '-' }}</td>
             </tr>
         </table>
 
@@ -132,6 +136,10 @@
             <tr>
                 <th>SpO2</th>
                 <td>{{ $patient->transferRoom->ttv->spo2 ?? '-' }} %</td>
+            </tr>
+            <tr>
+                <th>Kesadaran</th>
+                <td>{{ $patient->transferRoom->ttv->consciousness ?? '-' }} </td>
             </tr>
         </table>
     @endif
