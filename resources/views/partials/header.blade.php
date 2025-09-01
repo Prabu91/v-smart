@@ -22,7 +22,7 @@
                 </li>
 
                 <li class="relative">
-                    <a href="{{ $isDisabled ? '#' : route('patients.index') }}" 
+                    <a href="{{ $isDisabled ? '#' : route('patients.create') }}" 
                         class="flex items-center font-semibold p-3 rounded-3xl transition 
                         {{ request()->is('patients*') ? 'bg-txtd text-txtl border-txtl' : 'hover:text-txtl hover:border-txtd hover:bg-txtd' }} 
                         {{ $isDisabled ? 'cursor-not-allowed opacity-50 border-2 border-red-500 text-red-500 hover:text-red-500 hover:border-red-500' : '' }}"

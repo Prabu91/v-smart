@@ -139,7 +139,7 @@ class IcuRoomController extends Controller
                             'base_excees' => $request->be_icu,
                             'sbpt' => $request->sbpt,
                             'pf_ratio' => $request->pf_ratio,
-                            'hco2' => $request->hco2,
+                            'hco3' => $request->hco3,
                             'tco2' => $request->tco2,
                         ]);
                         $agdId = $agd->id;

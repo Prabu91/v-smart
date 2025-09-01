@@ -21,6 +21,7 @@ class Ventilator extends Model
         'rr',
         'ps',
         'trigger',
+        'venti_param',
     ];
 
     protected $keyType = 'string';

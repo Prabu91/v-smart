@@ -43,37 +43,46 @@
             </div>
         @endif
     
-        <!-- Table Section -->
-        <div class="overflow-x-auto">
-            <table class="w-1/2 text-left">
-                <tbody>
-                    <tr>
-                        <td class="font-semibold bg-gray-300 p-2">Nama Pasien</td>
-                        <td class="p-2">{{ $patient->name }}</td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold bg-gray-300 p-2">Tanggal Lahir</td>
-                        <td class="p-2">{{ Carbon::parse($patient->tanggal_lahir)->format('d-m-Y') }}</td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold bg-gray-300 p-2">Jenis Kelamin</td>
-                        <td class="p-2">{{ $patient->gender }}</td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold bg-gray-300 p-2">Nomor SEP</td>
-                        <td class="p-2">{{ $patient->no_sep }}</td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold bg-gray-300 p-2">No Kartu JKN</td>
-                        <td class="p-2">{{ $patient->no_jkn }}</td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold bg-gray-300 p-2">No Rekam Medis</td>
-                        <td class="p-2">{{ $patient->no_rm }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <!-- Patient Section -->
+        <div class="relative w-full">
+    
+			<a href="{{ route('patients.edit', $patient->id) }}" class="absolute top-4 right-4 bg-btn hover:bg-btnh text-white font-semibold py-2 px-4 rounded-md shadow-sm">
+				Edit
+			</a>
+
+			{{-- <h1 class="text-3xl text-center font-bold mb-4">Data Pasien</h1> --}}
+			
+			<div class="overflow-x-auto">
+				<table class="w-1/2 text-left">
+					<tbody>
+						<tr>
+							<td class="font-semibold bg-gray-300 p-2">Nama Pasien</td>
+							<td class="p-2">{{ $patient->name }}</td>
+						</tr>
+						<tr>
+							<td class="font-semibold bg-gray-300 p-2">Tanggal Lahir</td>
+							<td class="p-2">{{ Carbon::parse($patient->tanggal_lahir)->format('d-m-Y') }}</td>
+						</tr>
+						<tr>
+							<td class="font-semibold bg-gray-300 p-2">Jenis Kelamin</td>
+							<td class="p-2">{{ $patient->gender }}</td>
+						</tr>
+						<tr>
+							<td class="font-semibold bg-gray-300 p-2">Nomor SEP</td>
+							<td class="p-2">{{ $patient->no_sep ?? '-' }}</td>
+						</tr>
+						<tr>
+							<td class="font-semibold bg-gray-300 p-2">No Kartu JKN</td>
+							<td class="p-2">{{ $patient->no_jkn }}</td>
+						</tr>
+						<tr>
+							<td class="font-semibold bg-gray-300 p-2">No Rekam Medis</td>
+							<td class="p-2">{{ $patient->no_rm }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
     </div>
 
     {{-- OriginRoom --}}
@@ -85,6 +94,11 @@
                     class="bg-btn hover:bg-btnh text-white font-bold py-2 px-4 rounded">
                     Tambah Data
                 </a>
+			@else
+				<a href="{{ route('origin-rooms.edit', $origin->id) }}" 
+					class="bg-btn hover:bg-btnh text-white font-bold py-2 px-4 rounded">
+					Edit Data Awal
+				</a>
             @endif
         </div>
 
@@ -217,9 +231,9 @@
                                     <td>{{ $origin->agd->pf_ratio ?? '0' }}</td>
                                 </tr>
                                 <tr>
-                                    <td>HCO2</td>
+                                    <td>HCO3</td>
                                     <td class="px-4">:</td>
-                                    <td>{{ $origin->agd->hco2 ?? '0' }}</td>
+                                    <td>{{ $origin->agd->hco3 ?? '0' }}</td>
                                 </tr>
                                 <tr>
                                     <td>TCO2</td>
@@ -248,7 +262,12 @@
 								class="bg-yellow-500 hover:bg-yellow-700 text-txtd font-bold py-2 px-4 rounded text-center">
 								Tambah Data Intubasi
 							</a>
-						@elseif (!$extubation)
+						{{-- @elseif ($intubations) --}}
+						@elseif (!$extubation || $intubations)
+							<a href="{{ route('intubations.edit', $intubations->id) }}"
+								class="bg-btn hover:bg-btnh text-txtd font-bold py-2 px-4 rounded text-center">
+								Edit Data Ruang Intensif
+							</a>
 							<a href="{{ route('icu-rooms.create') }}?patient_id={{ $patient->id }}" 
 								class="bg-btn hover:bg-btnh text-txtd font-bold py-2 px-4 rounded text-center">
 								Data Ruang Intensif
@@ -321,7 +340,7 @@
 										<td>TC Diameter / Tipe </td>
 										<td class="px-2">:</td>
 										<td>
-											{{ $intubations && $intubations->tc_diameter && $intubations->tc_depth ? $intubations->tc_diameter . ' mm / ' . $intubations->tc_depth . '' : '0 mm / ' }}
+											{{ $intubations && $intubations->tc_diameter && $intubations->tc_type ? $intubations->tc_diameter . ' mm / ' . $intubations->tc_type . '' : '0 mm / ' }}
 										</td>
 									</tr>
 									@endif
@@ -470,7 +489,6 @@
 						<th class="px-4 py-2">No</th>
 						<th class="px-4 py-2">Tanggal dan Waktu Mulai</th>
 						<th class="px-4 py-2">Mode Ventilator</th>
-						<th class="px-4 py-2">Parameter<br>FiO<sub>2</sub>, PEEP</th>
 						<th class="px-4 py-2">Durasi Penggunaan Venti</th>
 						<th class="px-4 py-2">Action</th>
 					</tr>
@@ -829,7 +847,6 @@
 				}},
 				{ data: 'venti_datetime', name: 'venti_datetime', className: 'text-center'},
 				{ data: 'mode_venti', name: 'icu_room_name', defaultContent: 'Tidak ada data', className: 'text-center' },
-				{ data: 'parameters', name: 'parameters', defaultContent: 'Tidak ada data', className: 'text-center' },
 				{ data: 'venti_duration', name: 'venti_duration', defaultContent: 'Tidak ada data', className: 'text-center' },
 				{ data: 'action', name: 'action', orderable: false, searchable: false}
 			],

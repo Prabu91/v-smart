@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePatientRequest;
+use App\Http\Requests\UpdatePatientRequest;
 use App\Models\Extubation;
 use App\Models\IcuRoom;
 use App\Models\Intubation;
@@ -35,6 +36,7 @@ class PatientController extends Controller
      */
     public function create()
     {
+        return view('patients.create');
     }
 
     /**
@@ -211,15 +213,38 @@ class PatientController extends Controller
      */
     public function edit(Patient $patient)
     {
-        //
+        return view('patients.edit', compact('patient'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Patient $patient)
+    public function update(UpdatePatientRequest $request, Patient $patient)
     {
-        //
+        DB::transaction(function () use ($request, $patient, &$userId) {
+            $userId = Auth::id();
+            
+            $patient->update([
+                'name' => $request->name,
+                'no_jkn' => $request->no_jkn,
+                'no_rm' => $request->no_rm,
+                // Perhatikan baris ini:
+                // Jika request->no_sep ada, gunakan. Jika tidak, tetap gunakan nilai yang sudah ada di $patient.
+                'no_sep' => $request->no_sep,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'gender' => $request->gender,
+                'user_id' => $userId,
+            ]);
+        });
+
+        if ($patient->wasChanged()) {
+            LogHelper::log('Ubah Pasien', "(ID : {$userId}) Mengubah data pasien bernama {$request->name}");
+            return redirect()->route('patients.show', ['patient' => $patient->id])
+                ->with('success', 'Berhasil memperbarui data.');
+        } else {
+            return redirect()->route('patients.show', ['patient' => $patient->id])
+                ->with('info', 'Tidak ada perubahan yang dilakukan pada data.');
+        }
     }
 
     /**

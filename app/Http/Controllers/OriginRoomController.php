@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOriginRoomRequest;
+use App\Http\Requests\UpdateOriginRoomRequest;
 use App\Models\OriginRoom;
 use App\Models\LabResult;
 use App\Models\Agd;
@@ -60,6 +61,10 @@ class OriginRoomController extends Controller
                     'po2' => $request->po2_origin,
                     'spo2' => $request->spo2_origin,
                     'base_excees' => $request->be_origin,
+                    'sbpt' => $request->sbpt,
+                    'pf_ratio' => $request->pf_ratio,
+                    'hco3' => $request->hco3,
+                    'tco2' => $request->tco2,
                 ]);
             
                 $originId = OriginRoom::create([
@@ -87,7 +92,7 @@ class OriginRoomController extends Controller
             } catch (\Exception $e) {
             return redirect()->route('patients.show', ['patient' => $request->patient_id])
                 ->with('error', 'Gagal Menyimpan Data.' . $e->getMessage());
-            }
+        }
     }
 
 
@@ -102,17 +107,79 @@ class OriginRoomController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(OriginRoom $originRoom)
     {
-        //
+        $labResult = $originRoom->labResult;
+        $agd = $originRoom->agd;
+
+        return view('observation.origin-room.edit', compact('originRoom', 'labResult', 'agd'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateOriginRoomRequest $request, OriginRoom $originRoom)
     {
-        //
+        try {
+            DB::transaction(function () use ($request, $originRoom) {
+                $userId = Auth::id();
+
+                // Mengambil model yang terkait dari OriginRoom
+                $labResult = $originRoom->labResult;
+                $agd = $originRoom->agd;
+
+                // Perbarui LabResult
+                if ($labResult) {
+                    $labResult->update([
+                        'hb' => $request->hb_origin,
+                        'leukosit' => $request->leukosit_origin,
+                        'pcv' => $request->pcv_origin,
+                        'trombosit' => $request->trombosit_origin,
+                        'kreatinin' => $request->kreatinin_origin,
+                    ]);
+                }
+
+                // Perbarui Agd
+                if ($agd) {
+                    $agd->update([
+                        'ph' => $request->ph_origin,
+                        'pco2' => $request->pco2_origin,
+                        'po2' => $request->po2_origin,
+                        'spo2' => $request->spo2_origin,
+                        'base_excees' => $request->be_origin,
+                        'sbpt' => $request->sbpt,
+                        'pf_ratio' => $request->pf_ratio,
+                        'hco3' => $request->hco3,
+                        'tco2' => $request->tco2,
+                    ]);
+                }
+
+                // Perbarui OriginRoom
+                $originRoom->update([
+                    'user_id' => $userId,
+                    'origin_room_name' => $request->origin_room_name,
+                    'physical_check' => $request->physical_check,
+                    'radiology' => $request->radiology,
+                    'ews' => $request->ews,
+                    'natrium' => $request->na_origin,
+                    'kalium' => $request->kal_origin,
+                    'gds' => $request->gds_origin,
+                    'additional_check' => $request->additional_check,
+                    'main_diagnose' => $request->main_diagnose_origin,
+                    'secondary_diagnose' => $request->secondary_diagnose_origin,
+                ]);
+            });
+
+            // Catat dan kembalikan respons
+            LogHelper::log('Ubah Data Origin Room', "(ID : {$originRoom->user_id}) Mengubah Data Origin {$originRoom->id}");
+            return redirect()->route('patients.show', ['patient' => $originRoom->patient_id])
+                ->with('success', 'Berhasil memperbarui data.');
+
+        } catch (\Exception $e) {
+            // Tangani jika terjadi kesalahan
+            return redirect()->route('patients.show', ['patient' => $originRoom->patient_id])
+                ->with('error', 'Gagal memperbarui data. ' . $e->getMessage());
+        }
     }
 
     /**

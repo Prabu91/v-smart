@@ -257,11 +257,14 @@
                         <div>
                             <label for="venti_datetime" class="block text-md font-medium text-txtl">Tanggal dan Waktu</label>
                             <input 
-                                type="datetime-local" 
-                                name="venti_datetime" 
-                                id="venti_datetime" 
-                                class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('venti_datetime') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm"
-                                value="{{ old('venti_datetime') }}"> <x-input-error :messages="$errors->get('venti_datetime')" class="mt-2" />
+                            type="datetime-local" 
+                            name="venti_datetime" 
+                            id="venti_datetime" 
+                            class="text-black font-semibold mt-1 block w-full px-3 py-2 border @error('venti_datetime') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm"
+                            value="{{ old('venti_datetime') }}"
+                            min="{{ $minDate }}" 
+                            max="{{ $maxDate }}">
+                            <x-input-error :messages="$errors->get('venti_datetime')" class="mt-2" />
                         </div>
                         <div>
                             <label for="mode_venti" class="block text-md font-medium text-txtl">Mode Venti</label>
@@ -353,6 +356,13 @@
                             </div>
                         </div>
                     </div>
+                    <div class="my-4 grid grid-cols-1 md:grid-cols-1 gap-4">
+                    <div>
+                        <label for="venti_param" class="block text-lg font-medium text-txtl">Parameter lain : </label>
+                        <textarea name="venti_param" id="venti_param" value="{{ old('venti_param', $intubation->venti_param ?? '') }}" {{ $intubation ? 'disabled' : '' }} rows="4" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm resize-none @error('venti_param') border-red-500 @else border-gray-300 @enderror" placeholder="Masukan parameter lain ">{{ old('venti_param', $intubation->venti_param ?? '') }}</textarea>
+                        <x-input-error :messages="$errors->get('venti_param')" class="mt-2" />
+                    </div>
+                </div>
                 </div>
                 
                 <div class="flex justify-between items-center mt-16">

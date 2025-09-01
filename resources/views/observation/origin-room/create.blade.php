@@ -73,7 +73,7 @@
 				</div>
 
 				<h2 class="text-xl font-bold my-4">AGD</h2>
-				<div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 					<div>
 						<label for="ph_origin" class="block text-lg font-medium text-txtl">pH</label>
 						<input type="number" name="ph_origin" id="ph_origin" value="{{ old('ph_origin') }}" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('ph_origin') border-red-500 @else border-gray-300 @enderror" placeholder="7,35">
@@ -111,7 +111,35 @@
 						</div>
 						<x-input-error :messages="$errors->get('be_origin')" class="mt-2" />
 					</div>
-					
+					<div>
+						<label for="sbpt" class="block text-lg font-medium text-txtl">SBPT</label>
+						<div class="relative">
+							<input type="number" name="sbpt" id="sbpt" value="{{ old('sbpt') }}" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('sbpt') border-red-500 @else border-gray-300 @enderror" placeholder="22">
+							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmol/L</span>
+						</div>
+						<x-input-error :messages="$errors->get('sbpt')" class="mt-2" />
+					</div>
+					<div>
+						<label for="pf_ratio" class="block text-lg font-medium text-txtl">P/F Ratio</label>
+						<div class="relative">
+							<input type="number" name="pf_ratio" id="pf_ratio" value="{{ old('pf_ratio') }}" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('pf_ratio') border-red-500 @else border-gray-300 @enderror" placeholder="300">
+						</div>
+						<x-input-error :messages="$errors->get('pf_ratio')" class="mt-2" />
+					</div>
+					<div>
+						<label for="hco3" class="block text-lg font-medium text-txtl">HCO3</label>
+						<div class="relative">
+							<input type="number" name="hco3" id="hco3" value="{{ old('hco3') }}" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('hco3') border-red-500 @else border-gray-300 @enderror" placeholder="18">
+						</div>
+						<x-input-error :messages="$errors->get('hco2')" class="mt-2" />
+					</div>
+					<div>
+						<label for="tco2" class="block text-lg font-medium text-txtl">TCO2</label>
+						<div class="relative">
+							<input type="number" name="tco2" id="tco2" value="{{ old('tco2') }}" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('tco2') border-red-500 @else border-gray-300 @enderror" placeholder="19">
+						</div>
+						<x-input-error :messages="$errors->get('tco2')" class="mt-2" />
+					</div>
 				</div>
 
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
