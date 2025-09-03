@@ -491,8 +491,8 @@
 	{{-- Data Intensif --}}
 	<div class="bg-white shadow-md rounded-lg p-6 my-4">
 		<div class="relative pb-4 flex justify-end">
-			@if ($origin)
-				@if (!$extubation || $intubations)
+			@if ($origin && $intubations)
+				@if (!$extubation)
 					<a href="{{ route('icu-rooms.create') }}?patient_id={{ $patient->id }}" 
 						class="bg-btn hover:bg-btnh text-txtd font-bold py-2 px-4 rounded text-center">
 						Tambah Data Ruang Intensif
