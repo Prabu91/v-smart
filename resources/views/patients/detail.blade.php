@@ -99,9 +99,6 @@
     <div class="bg-white shadow-md rounded-lg p-6 my-4">
         <div class="flex items-center justify-between mb-6">
             <h2 class="text-2xl font-bold">Data Awal Pasien</h2>
-				@php
-					$canEdit = $origin->created_at->diffInHours(now()) < 24;
-				@endphp
 
 				@if(!$origin)
 					<a href="{{ route('origin-rooms.create') }}?patient_id={{ $patient->id }}" 
@@ -109,6 +106,9 @@
 						Tambah Data
 					</a>
 				@else
+				@php
+					$canEdit = $origin->created_at->diffInHours(now()) < 24;
+				@endphp
 					@if($canEdit)
 						<a href="{{ route('origin-rooms.edit', $origin->id) }}" 
 							class="bg-btn hover:bg-btnh text-white font-bold py-2 px-4 rounded">
@@ -276,9 +276,6 @@
 				<h2 class="text-3xl font-bold mb-4 md:mb-0">Data Ruang Intensif</h2>
 				<!-- Container for Buttons -->
 				<div class="flex flex-wrap gap-2">
-					@php
-						$canEdit = $intubations->created_at->diffInHours(now()) < 24;
-					@endphp
 
 					@if ($origin)
 						@if (!$icu && !$intubations)
@@ -288,6 +285,9 @@
 							</a>
 						{{-- @elseif ($intubations) --}}
 						@elseif (!$extubation || $intubations)
+						@php
+							$canEdit = $intubations->created_at->diffInHours(now()) < 24;
+						@endphp
 							@if($canEdit)
 								<a href="{{ route('intubations.edit', $intubations->id) }}"
 									class="bg-btn hover:bg-btnh text-txtd font-bold py-2 px-4 rounded text-center">
@@ -682,9 +682,6 @@
 	<div class="bg-white shadow-md rounded-lg p-6 my-4">
 		<div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-6">
 			<h2 class="text-2xl text-left font-bold mb-4 md:mb-0">Pindah Ruangan Pasien</h2>
-			@php
-				$canEdit = $transfer->created_at->diffInHours(now()) < 24;
-			@endphp
 
 			@if ($extubation->patient_status === 'Tidak Meninggal' && !$transfer)
 				<a href="{{ route('transfer-rooms.create') }}?patient_id={{ $patient->id }}" 
@@ -692,6 +689,9 @@
 					Tambah Data Pindah Ruangan
 				</a>
 			@elseif ($transfer)
+			@php
+				$canEdit = $transfer->created_at->diffInHours(now()) < 24;
+			@endphp
 				@if($canEdit)
 					<a href="{{ route('transfer-rooms.edit', $transfer->id) }}"
 						class="bg-btn hover:bg-btnh text-txtd font-bold py-2 px-4 rounded text-center">
