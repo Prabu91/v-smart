@@ -199,6 +199,24 @@
 				@endforeach
 			</tr>
 			<tr>
+				<th>P/F Ratio</th>
+				@foreach ($icuRoomsByDate as $icuRooms)
+					<td>{{ $icuRooms->first()->agd->pf_ratio ?? '-' }}</td>
+				@endforeach
+			</tr>
+			<tr>
+				<th>HCO3</th>
+				@foreach ($icuRoomsByDate as $icuRooms)
+					<td>{{ $icuRooms->first()->agd->hco3 ?? '-' }}</td>
+				@endforeach
+			</tr>
+			<tr>
+				<th>TCO2</th>
+				@foreach ($icuRoomsByDate as $icuRooms)
+					<td>{{ $icuRooms->first()->agd->tco2 ?? '-' }}</td>
+				@endforeach
+			</tr>
+			<tr>
 				<th>RO</th>
 				@foreach ($icuRoomsByDate as $icuRooms)
 					<td>{{ $icuRooms->first()->ro ?? '-' }}</td>
@@ -332,6 +350,12 @@
 				<th>Trigger</th>
 				@foreach ($patient->venti as $venti)
 					<td>{{ $venti->trigger ?? '-' }}</td>
+				@endforeach
+			</tr>
+			<tr>
+				<th>Parameter Lain</th>
+				@foreach ($patient->venti as $venti)
+					<td>{{ $venti->venti_param ?? '-' }}</td>
 				@endforeach
 			</tr>
 			<tr>

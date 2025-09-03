@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreIcuRoomRequest;
+use App\Http\Requests\UpdateIcuRoomRequest;
 use App\Models\Agd;
 use App\Models\Elektrolit;
 use App\Models\IcuRoom;
@@ -35,8 +36,9 @@ class IcuRoomController extends Controller
         $patient_id = $request->query('patient_id');
         
         $icuData = IcuRoom::where('patient_id', $patient_id)->first(); 
+        $intubation = Intubation::where('patient_id', $icuData->patient_id)->first();
     
-        return view('observation.icu-room.create', compact('patient_id', 'icuData'));
+        return view('observation.icu-room.create', compact('patient_id', 'icuData', 'intubation'));
     }
     
 
@@ -77,6 +79,7 @@ class IcuRoomController extends Controller
                         'rr' => $request->rr,
                         'ps' => $request->ps,
                         'trigger' => $request->trigger,
+                        'venti_param' => $request->venti_param,
                     ]);
 
                     
@@ -90,6 +93,34 @@ class IcuRoomController extends Controller
                         
                         LogHelper::log('Lepas Venti', "(ID : {$user->name}) Lepas Ventilator: ({$previousVentilator->id})");
                     }
+                }
+
+                // intubation Type
+                if ($request->filled('intubation_type')) {
+                    $intubationData = [
+                        'patient_id' => $request->patient_id,
+                        'user_id' => $userId,
+                        'intubation_type' => $request->intubation_type,
+                    ];
+
+                    if ($request->intubation_type === 'ETT') {
+                        $intubationData['ett_diameter'] = $request->ett_diameter;
+                        $intubationData['ett_depth'] = $request->ett_depth;
+                        $intubationData['tc_diameter'] = null; // Set null agar data TC tidak tersimpan
+                        $intubationData['tc_type'] = null;
+                    } elseif ($request->intubation_type === 'TC') {
+                        $intubationData['tc_diameter'] = $request->tc_diameter;
+                        $intubationData['tc_type'] = $request->tc_type;
+                        $intubationData['ett_diameter'] = null; // Set null agar data ETT tidak tersimpan
+                        $intubationData['ett_depth'] = null;
+                    }
+
+                    $intubation = Intubation::updateOrCreate(
+                        ['patient_id' => $request->patient_id],
+                        $intubationData
+                    );
+
+                    LogHelper::log('Intubasi', "(ID : {$user->name}) Data Intubasi untuk Pasien {$request->patient_id} diperbarui/dibuat.");
                 }
 
                 if ($request->filled([
@@ -135,7 +166,7 @@ class IcuRoomController extends Controller
                             'ph' => $request->ph_icu,
                             'pco2' => $request->pco2_icu,
                             'po2' => $request->po2_icu,
-                            'spo2' => $request->spo2,
+                            'spo2' => $request->spo2_icu,
                             'base_excees' => $request->be_icu,
                             'sbpt' => $request->sbpt,
                             'pf_ratio' => $request->pf_ratio,
@@ -163,7 +194,7 @@ class IcuRoomController extends Controller
                 }
 
                 // ICU Room
-                if ($ttvId || $labResultId || $elektrolitId || $agdId) {
+                if ($ttvId || $labResultId || $elektrolitId || $agdId || $icuDatetime) {
                     $icuId = IcuRoom::create([
                         'user_id' => $userId,
                         'icu_room_datetime' => $icuDatetime,
@@ -188,9 +219,9 @@ class IcuRoomController extends Controller
             return redirect()->route('patients.show', ['patient' => $request->patient_id])
                 ->with('success', 'Berhasil Menyimpan Data.');
         } catch (\Exception $e) {
-            dd($e->getMessage(), $e->getFile(), $e->getLine());
-            // return redirect()->route('patients.show', ['patient' => $request->patient_id])
-            //     ->with('error', 'Gagal Menyimpan Data!'. $e->getMessage());
+            // dd($e->getMessage(), $e->getFile(), $e->getLine());
+            return redirect()->route('patients.show', ['patient' => $request->patient_id])
+                ->with('error', 'Gagal Menyimpan Data!'. $e->getMessage());
         }
     }
 
@@ -222,17 +253,166 @@ class IcuRoomController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(IcuRoom $icuRoom)
     {
-        //
+        $icuRecord = IcuRoom::with(['ttv', 'labResult', 'elektrolit', 'agd', 'venti'])
+                            ->findOrFail($icuRoom->id);
+        
+        $intubation = Intubation::where('patient_id', $icuRecord->patient_id)->first();
+
+        $patient = $icuRecord->patient;
+
+        return view('observation.icu-room.edit', compact('icuRecord', 'patient', 'intubation'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateIcuRoomRequest $request, IcuRoom $icuRoom)
     {
-        //
+        try {
+            DB::transaction(function () use ($request, $icuRoom) {
+                $userId = Auth::id();
+                $user = User::find($userId);
+
+                // Perbarui data utama IcuRoom
+                $icuRoom->update([
+                    'user_id' => $userId,
+                    'icu_room_datetime' => Carbon::parse($request->icu_room_datetime),
+                    'icu_room_name' => $request->icu_room_name,
+                    'icu_room_bednum' => $request->icu_room_bednum,
+                ]);
+
+                // Perbarui data TTV jika ada
+                if ($request->filled(['sistolik', 'diastolik', 'suhu', 'nadi', 'rr_ttv', 'consciousness'])) {
+                    Ttv::updateOrCreate(
+                        ['id' => $icuRoom->ttv_id],
+                        [
+                            'patient_id' => $request->patient_id,
+                            'user_id' => $userId,
+                            'sistolik' => $request->sistolik,
+                            'diastolik' => $request->diastolik,
+                            'suhu' => $request->suhu,
+                            'nadi' => $request->nadi,
+                            'rr' => $request->rr_ttv,
+                            'consciousness' => $request->consciousness,
+                        ]
+                    );
+                }
+
+                // Perbarui data Lab Result jika ada
+                if ($request->filled(['hb_icu', 'leukosit_icu', 'pcv_icu', 'trombosit_icu', 'kreatinin_icu', 'albumin', 'laktat', 'sbut', 'ureum'])) {
+                    LabResult::updateOrCreate(
+                        ['id' => $icuRoom->labresult_id],
+                        [
+                            'patient_id' => $request->patient_id,
+                            'user_id' => $userId,
+                            'hb' => $request->hb_icu,
+                            'leukosit' => $request->leukosit_icu,
+                            'pcv' => $request->pcv_icu,
+                            'trombosit' => $request->trombosit_icu,
+                            'kreatinin' => $request->kreatinin_icu,
+                            'albumin' => $request->albumin,
+                            'laktat' => $request->laktat,
+                            'sbut' => $request->sbut,
+                            'ureum' => $request->ureum,
+                        ]
+                    );
+                }
+
+                // Perbarui data Elektrolit jika ada
+                if ($request->filled(['natrium', 'kalium', 'calsium', 'magnesium', 'clorida'])) {
+                    Elektrolit::updateOrCreate(
+                        ['id' => $icuRoom->elektrolit_id],
+                        [
+                            'patient_id' => $request->patient_id,
+                            'user_id' => $userId,
+                            'natrium' => $request->natrium,
+                            'kalium' => $request->kalium,
+                            'calsium' => $request->calsium,
+                            'magnesium' => $request->magnesium,
+                            'clorida' => $request->clorida,
+                        ]
+                    );
+                }
+
+                // Perbarui data AGD jika ada
+                if ($request->filled(['ph_icu', 'pco2_icu', 'po2_icu', 'spo2', 'be_icu', 'sbpt', 'pf_ratio', 'hco3', 'tco2'])) {
+                    Agd::updateOrCreate(
+                        ['id' => $icuRoom->agd_id],
+                        [
+                            'patient_id' => $request->patient_id,
+                            'user_id' => $userId,
+                            'ph' => $request->ph_icu,
+                            'pco2' => $request->pco2_icu,
+                            'po2' => $request->po2_icu,
+                            'spo2' => $request->spo2_icu,
+                            'base_excees' => $request->be_icu,
+                            'sbpt' => $request->sbpt,
+                            'pf_ratio' => $request->pf_ratio,
+                            'hco3' => $request->hco3,
+                            'tco2' => $request->tco2,
+                        ]
+                    );
+                }
+
+                // Perbarui data Ventilator jika ada
+                if ($request->filled(['venti_datetime', 'mode_venti'])) {
+                    Ventilator::updateOrCreate(
+                        ['id' => $icuRoom->ventilator_id],
+                        [
+                            'patient_id' => $request->patient_id,
+                            'user_id' => $userId,
+                            'venti_datetime' => Carbon::parse($request->venti_datetime),
+                            'mode_venti' => $request->mode_venti,
+                            'ipl' => $request->ipl,
+                            'peep' => $request->peep,
+                            'fio2' => $request->fio2,
+                            'rr' => $request->rr,
+                            'ps' => $request->ps,
+                            'trigger' => $request->trigger,
+                            'venti_param' => $request->venti_param,
+                        ]
+                    );
+                }
+                
+                // Logika Baru untuk Intubasi
+                if ($request->filled('intubation_type')) {
+                    $intubationData = [
+                        'patient_id' => $request->patient_id,
+                        'user_id' => $userId,
+                        'intubation_type' => $request->intubation_type,
+                    ];
+
+                    if ($request->intubation_type === 'ETT') {
+                        $intubationData['ett_diameter'] = $request->ett_diameter;
+                        $intubationData['ett_depth'] = $request->ett_depth;
+                        $intubationData['tc_diameter'] = null;
+                        $intubationData['tc_type'] = null;
+                    } elseif ($request->intubation_type === 'TC') {
+                        $intubationData['tc_diameter'] = $request->tc_diameter;
+                        $intubationData['tc_type'] = $request->tc_type;
+                        $intubationData['ett_diameter'] = null;
+                        $intubationData['ett_depth'] = null;
+                    }
+
+                    // Gunakan updateOrCreate untuk memperbarui atau membuat data intubasi
+                    Intubation::updateOrCreate(
+                        ['patient_id' => $request->patient_id],
+                        $intubationData
+                    );
+
+                    LogHelper::log('Intubasi', "(ID : {$user->name}) Data Intubasi untuk Pasien {$request->patient_id} diperbarui/dibuat.");
+                }
+            });
+
+            return redirect()->route('patients.show', ['patient' => $request->patient_id])
+                ->with('success', 'Berhasil Memperbarui Data.');
+
+        } catch (\Exception $e) {
+            return redirect()->route('patients.show', ['patient' => $request->patient_id])
+                ->with('error', 'Gagal Memperbarui Data!'. $e->getMessage());
+        }
     }
 
     /**

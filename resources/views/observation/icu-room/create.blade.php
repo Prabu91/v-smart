@@ -111,9 +111,7 @@
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mmol/L</span>
 							</div>
 								<x-input-error :messages="$errors->get('clorida')" class="mt-2" />
-
 						</div>
-						
 					</div>
 				</div>
 
@@ -320,7 +318,7 @@
 					</div>
 					<div>
 						<label for="lab_tests_sent" class="block text-md font-medium text-gray-700">Pemeriksaan yang dikirim ke lab</label>
-						<textarea name="lab_tests_sent" id="lab_tests_sent" value="{{ old('lab_tests_sent', $icuData->lab_tests_sent ?? '') }}" {{ $icuData ? 'disabled' : '' }} rows="4" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm resize-none @error('lab_tests_sent') border-red-500 @else border-gray-300 @enderror" placeholder="">{{ old('lab_tests_sent', $icuData->lab_tests_sent ?? '') }}</textarea>
+						<textarea name="lab_tests_sent" id="lab_tests_sent" value="{{ old('lab_tests_sent', $icuData->lab_tests_sent ?? '') }}" rows="4" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm resize-none @error('lab_tests_sent') border-red-500 @else border-gray-300 @enderror" placeholder="">{{ old('lab_tests_sent', $icuData->lab_tests_sent ?? '') }}</textarea>
 						<x-input-error :messages="$errors->get('lab_tests_sent')" class="mt-2" />
 					</div>
 				</div>
@@ -385,8 +383,8 @@
 					<div class="mb-4">
 						<label for="intubation_type" class="block text-md font-medium text-txtl">Jenis Intubasi</label>
 						<select name="intubation_type" id="intubation_type" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
-							<option value="ETT" {{ old('intubation_type') == 'ETT' ? 'selected' : '' }}>ETT (Endotracheal Tube)</option>
-							<option value="TC" {{ old('intubation_type') == 'TC' ? 'selected' : '' }}>TC (Tracheostomy Tube)</option>
+							<option value="ETT" {{ old('intubation_type', $intubation->intubation_type ?? '') == 'ETT' ? 'selected' : '' }}>ETT (Endotracheal Tube)</option>
+							<option value="TC" {{ old('intubation_type', $intubation->intubation_type ?? '') == 'TC' ? 'selected' : '' }}>TC (Tracheostomy Tube)</option>
 						</select>
 					</div>
 					
@@ -395,7 +393,7 @@
 						<div>
 							<label for="ett_diameter" class="block text-md font-medium text-txtl">Diameter ETT</label>
 							<div class="relative">
-								<input type="number" name="ett_diameter" id="ett_diameter" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('ett_diameter') border-red-500 @else border-gray-300 @enderror" placeholder="7.5" value="{{ old('ett_diameter') }}" min="0" step="any">
+								<input type="number" name="ett_diameter" id="ett_diameter" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('ett_diameter') border-red-500 @else border-gray-300 @enderror" placeholder="7.5" value="{{ old('ett_diameter', $intubation->ett_diameter ?? '') }}" min="0" step="any">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mm</span>
 							</div>
 							<x-input-error :messages="$errors->get('ett_diameter')" class="mt-2" />
@@ -404,7 +402,7 @@
 						<div class="mt-4">
 							<label for="ett_depth" class="block text-md font-medium text-txtl">Kedalaman ETT</label>
 							<div class="relative">
-								<input type="number" name="ett_depth" id="ett_depth" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('ett_depth') border-red-500 @else border-gray-300 @enderror" placeholder="22" value="{{ old('ett_depth') }}" min="0" step="any">
+								<input type="number" name="ett_depth" id="ett_depth" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('ett_depth') border-red-500 @else border-gray-300 @enderror" placeholder="22" value="{{ old('ett_depth', $intubation->ett_depth ?? '') }}" min="0" step="any">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">cm</span>
 							</div>
 							<x-input-error :messages="$errors->get('ett_depth')" class="mt-2" />
@@ -416,7 +414,7 @@
 						<div>
 							<label for="tc_diameter" class="block text-md font-medium text-txtl">Diameter TC</label>
 							<div class="relative">
-								<input type="number" name="tc_diameter" id="tc_diameter" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('tc_diameter') border-red-500 @else border-gray-300 @enderror" placeholder="8.0" value="{{ old('tc_diameter') }}" min="0" step="any">
+								<input type="number" name="tc_diameter" id="tc_diameter" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('tc_diameter') border-red-500 @else border-gray-300 @enderror" placeholder="8.0" value="{{ old('tc_diameter', $intubation->tc_diameter ?? '') }}" min="0" step="any">
 								<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mm</span>
 							</div>
 							<x-input-error :messages="$errors->get('tc_diameter')" class="mt-2" />
@@ -424,7 +422,7 @@
 
 						<div class="mt-4">
 							<label for="tc_type" class="block text-md font-medium text-txtl">Jenis TC</label>
-							<input type="text" name="tc_type" id="tc_type" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('tc_type') border-red-500 @else border-gray-300 @enderror" placeholder="Masukkan jenis TC" value="{{ old('tc_type') }}">
+							<input type="text" name="tc_type" id="tc_type" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('tc_type') border-red-500 @else border-gray-300 @enderror" placeholder="Masukkan jenis TC" value="{{ old('tc_type', $intubation->tc_type ?? '') }}">
 							<x-input-error :messages="$errors->get('tc_type')" class="mt-2" />
 						</div>
 					</div>
@@ -511,6 +509,11 @@
                                     value="{{ old('trigger') }}"> <x-input-error :messages="$errors->get('trigger')" class="mt-2" />
                             </div>
                         </div>
+					</div>
+					<div>
+						<label for="venti_param" class="block text-lg font-medium text-txtl">Parameter lain : </label>
+						<textarea name="venti_param" id="venti_param" rows="4" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm resize-none @error('venti_param') border-red-500 @else border-gray-300 @enderror" placeholder="Masukan parameter lain ">{{ old('venti_param') }}</textarea>
+						<x-input-error :messages="$errors->get('venti_param')" class="mt-2" />
 					</div>
 				</div>
 

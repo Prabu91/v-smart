@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTransferRoomRequest;
+use App\Http\Requests\UpdateTransferRoomRequest;
 use App\Models\LabResult;
 use App\Models\TransferRoom;
 use App\Models\Ttv;
@@ -99,17 +100,69 @@ class TransferRoomController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(TransferRoom $transferRoom)
     {
-        //
+        // Muat relasi ttv dan labResult untuk mengisi formulir
+        $transferRoom->load(['ttv', 'labResult']);
+
+        // Kembalikan view edit dengan data yang ada
+        return view('observation.transfer-room.edit', compact('transferRoom'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateTransferRoomRequest $request, TransferRoom $transferRoom)
     {
-        //
+        try {
+            DB::transaction(function () use ($request, $transferRoom) {
+                $userId = Auth::id();
+                $user = User::find($userId);
+                $transferDatetime = Carbon::parse($request->transfer_room_datetime)->format('Y-m-d H:i:s');
+
+                // Perbarui data LabResult
+                if ($transferRoom->labResult) {
+                    $transferRoom->labResult->update([
+                        'hb' => $request->hb_transfer,
+                        'leukosit' => $request->leukosit_transfer,
+                        'pcv' => $request->pcv_transfer,
+                        'trombosit' => $request->trombosit_transfer
+                    ]);
+                }
+
+                // Perbarui data Ttv
+                if ($transferRoom->ttv) {
+                    $transferRoom->ttv->update([
+                        'sistolik' => $request->sistolik,
+                        'diastolik' => $request->diastolik,
+                        'suhu' => $request->suhu,
+                        'nadi' => $request->nadi,
+                        'rr' => $request->rr_ttv,
+                        'spo2' => $request->spo2,
+                        'consciousness' => $request->consciousness,
+                    ]);
+                }
+                
+                // Perbarui data TransferRoom
+                $transferRoom->update([
+                    'user_id' => $userId,
+                    'transfer_room_datetime' => $transferDatetime,
+                    'transfer_room_name' => $request->transfer_room_name,
+                    'lab_culture_data' => $request->lab_culture_data,
+                    'main_diagnose' => $request->main_diagnose_transfer,
+                    'secondary_diagnose' => $request->secondary_diagnose_transfer,
+                    'notes' => $request->notes,
+                ]);
+
+                LogHelper::log('Perbarui Data TransferRoom', "(ID : {$user->name}) Memperbarui Data TransferRoom {$transferRoom->id}");
+            });
+
+            return redirect()->route('patients.show', ['patient' => $transferRoom->patient_id])
+                ->with('success', 'Berhasil Memperbarui Data.');
+        } catch (\Exception $e) {
+            return redirect()->route('patients.show', ['patient' => $transferRoom->patient_id])
+                ->with('error', 'Gagal Memperbarui Data! Error: ' . $e->getMessage());
+        }
     }
 
     /**

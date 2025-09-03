@@ -42,7 +42,21 @@
 	<h2 class="text-2xl text-center font-bold mb-2">{{ Carbon::parse($icuRecords->icu_room_datetime)->format('d/m/Y') }}</h2>
 	<h2 class="text-xl text-center mb-10">Ruang : {{ $icuRecords->icu_room_name }}</h2>
 
-	<div class="bg-white shadow-xl rounded-lg p-6 my-4">
+	<div class="bg-white shadow-xl rounded-lg p-6 my-4 relative">
+		@php
+			$canEdit = $icuRecords->created_at->diffInHours(now()) < 24;
+		@endphp
+
+		@if($canEdit)
+			<a href="{{ route('icu-rooms.edit', $icuRecords->id) }}" class="absolute top-4 right-4 bg-btn hover:bg-btnh text-white font-semibold py-2 px-4 rounded-md shadow-sm">
+				Edit
+			</a>
+		@else
+			<a href="#" class="absolute top-4 right-4 bg-gray-400 text-white font-semibold py-2 px-4 rounded-md shadow-sm cursor-not-allowed">
+				Edit
+			</a>
+		@endif
+		
 		<div class="grid grid-cols-4 gap-4">
 			<div>
 				<h2 class="text-xl font-bold my-4">Hasil Lab</h2>
@@ -207,10 +221,10 @@
 						</td>
 					</tr>
 					<tr>
-						<td>HCO2</td>
+						<td>HCO3</td>
 						<td class="px-4">:</td>
 						<td>
-							{{ $icuRecords->agd->hco2 ?? '0'}}
+							{{ $icuRecords->agd->hco3 ?? '0'}}
 						</td>
 					</tr>
 					<tr>
@@ -230,7 +244,7 @@
 						<td>TD</td>
 						<td class="px-2">:</td>
 						<td>
-							{{ $icuRecords && $icuRecords->ttv->sistolik && $icuRecords->ttv->diastolik ? $icuRecords->ttv->sistolik . ' / ' . $icuRecords->ttv->diastolik : '0' }}
+							{{ optional($icuRecords->ttv)->sistolik ?? '0' }} / {{ optional($icuRecords->ttv)->diastolik ?? '0' }}
 						</td>
 					</tr>
 					<tr>
@@ -265,7 +279,7 @@
 						<td>Kesadaran</td>
 						<td class="px-2">:</td>
 						<td>
-							{{ $icuRecords->ttv->consciousness ?? '0'}} %
+							{{ $icuRecords->ttv->consciousness ?? 'Tidak ada data'}} 
 						</td>
 					</tr>
 				</table>
@@ -331,6 +345,7 @@
 								<th class="px-4 py-2">RR</th>
 								<th class="px-4 py-2">PS</th>
 								<th class="px-4 py-2">Trigger</th>
+								<th class="px-4 py-2">Parameter Lain</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -347,6 +362,7 @@
 									<td class="px-4 py-2">{{ $venti->rr ?? '0' }} Kali per menit</td>
 									<td class="px-4 py-2">{{ $venti->ps ?? '0' }}</td>
 									<td class="px-4 py-2">{{ $venti->trigger ?? '0' }}</td>
+									<td class="px-4 py-2">{{ $venti->venti_param ?? '-' }}</td>
 								</tr>
 							@endforeach
 						</tbody>

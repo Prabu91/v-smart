@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreIcuRoomRequest extends FormRequest
+class UpdateIcuRoomRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,14 +24,9 @@ class StoreIcuRoomRequest extends FormRequest
         return [
             'patient_id' => 'required|uuid|exists:patients,id',
 
-            'icu_room_datetime' => [
-                    'required',
-                    'date',
-                    'after_or_equal:today',
-                    'before_or_equal:' . now()->addDay()->endOfDay()->toDateString(),
-                ],
-            'icu_room_name' => 'required', 
-            'icu_room_bednum' => 'required|integer|min:1', 
+            'icu_room_datetime' => 'nullable|date|after_or_equal:today',
+            'icu_room_name' => 'nullable|string', 
+            'icu_room_bednum' => 'nullable|integer|min:1', 
 
             'natrium' => 'nullable|numeric', 
             'kalium' => 'nullable|numeric', 
@@ -67,13 +61,13 @@ class StoreIcuRoomRequest extends FormRequest
             'sputum_color' => 'nullable|string|max:255',
             'lab_tests_sent' => 'nullable|string|max:255',
 
-            'sistolik' => 'required|integer', 
-            'diastolik' => 'required|integer', 
-            'suhu' => 'required|numeric', 
-            'nadi' => 'required|integer', 
-            'rr_ttv' => 'required|integer', 
-            'spo2' => 'required|integer', 
-            'consciousness' => 'required|string', 
+            'sistolik' => 'nullable|integer', 
+            'diastolik' => 'nullable|integer', 
+            'suhu' => 'nullable|numeric', 
+            'nadi' => 'nullable|integer', 
+            'rr_ttv' => 'nullable|integer', 
+            'spo2' => 'nullable|integer', 
+            'consciousness' => 'nullable|string', 
 
             'intubation_type' => 'nullable|string',
             'ett_diameter' => 'nullable|numeric',
@@ -90,15 +84,6 @@ class StoreIcuRoomRequest extends FormRequest
             'ps' => 'nullable|numeric',
             'trigger' => 'nullable|numeric',
             'venti_param' => 'nullable|string',
-        ];
-    }
-
-    public function messages(): array
-    {
-        return [
-            'icu_room_datetime.required' => 'Tanggal dan Waktu wajib diisi.',
-            'icu_room_name.required' => 'Nama Ruangan wajib diisi.',
-            'icu_room_bednum.required' => 'Nomor Bed wajib diisi.',
         ];
     }
 }

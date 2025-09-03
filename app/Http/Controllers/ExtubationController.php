@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreExtubationRequest;
+use App\Http\Requests\UpdateExtubationRequest;
 use App\Models\Extubation;
 use App\Models\Ttv;
 use App\Models\User;
@@ -95,15 +96,79 @@ class ExtubationController extends Controller
      */
     public function edit(Extubation $extubation)
     {
-        //
+        $extubation = $extubation->load(['ttv', 'patient']);
+        $patient = $extubation->patient;
+
+        $ttv = $extubation->ttv;
+
+        return view('observation.icu-room.extubation.edit', compact('extubation', 'patient', 'ttv'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Extubation $extubation)
+    public function update(UpdateExtubationRequest $request, Extubation $extubation)
     {
-        //
+        try {
+            DB::transaction(function () use ($request, $extubation) {
+                $userId = Auth::id();
+                $user = User::find($userId);
+                $extubationDatetime = Carbon::parse($request->extubation_datetime)->format('Y-m-d H:i:s');
+
+                $ttvId = $extubation->ttv_id;
+
+                if ($request->patient_status == "Tidak Meninggal") {
+                    // Jika status 'Tidak Meninggal', buat atau perbarui TTV
+                    $ttv = Ttv::updateOrCreate(
+                        ['id' => $ttvId],
+                        [
+                            'patient_id' => $request->patient_id,
+                            'user_id' => $userId,
+                            'sistolik' => $request->sistolik,
+                            'diastolik' => $request->diastolik,
+                            'suhu' => $request->suhu,
+                            'nadi' => $request->nadi,
+                            'rr' => $request->rr_ttv,
+                            'spo2' => $request->spo2,
+                            'consciousness' => $request->consciousness,
+                        ]
+                    );
+                    $ttvId = $ttv->id;
+                } else {
+                    // Jika status 'Meninggal'
+                    if ($ttvId) {
+                        // Perbarui extubation terlebih dahulu untuk memutuskan foreign key
+                        $extubation->update([
+                            'ttv_id' => null,
+                        ]);
+                        // Hapus data TTV setelah foreign key diatur null
+                        Ttv::destroy($ttvId);
+                    }
+                    $ttvId = null; // Pastikan ttvId null untuk update Extubation di bawah
+                }
+
+                // Perbarui data Extubation utama
+                $extubation->update([
+                    'patient_id' => $request->patient_id,
+                    'user_id' => $userId,
+                    'ttv_id' => $ttvId,
+                    'extubation_datetime' => $extubationDatetime,
+                    'preparation_extubation_therapy' => $request->preparation_extubation_therapy,
+                    'extubation' => $request->extubation,
+                    'nebulizer' => $request->nebulizer,
+                    'patient_status' => $request->patient_status,
+                    'extubation_notes' => $request->extubation_notes,
+                ]);
+
+                LogHelper::log('Perbarui Extubation', "(ID: {$user->name}) Memperbarui data Extubation {$extubation->id}");
+            });
+
+            return redirect()->route('patients.show', ['patient' => $request->patient_id])
+                ->with('success', 'Berhasil Memperbarui Data.');
+        } catch (\Exception $e) {
+            return redirect()->route('patients.show', ['patient' => $request->patient_id])
+                ->with('error', 'Gagal Memperbarui Data! Error: ' . $e->getMessage());
+        }
     }
 
     /**

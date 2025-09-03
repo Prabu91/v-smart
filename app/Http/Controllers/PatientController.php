@@ -86,8 +86,7 @@ class PatientController extends Controller
         $icu = IcuRoom::where('patient_id', $id)->exists();
         
         if ($request->ajax()) {
-            $icuRecords = IcuRoom::with(['elektrolit', 'labResult', 'agd', 'ttv'])
-            ->where('patient_id', $id)
+            $icuRecords = IcuRoom::where('patient_id', $id)
             ->orderBy('icu_room_datetime', 'asc')
             ->get();
 
@@ -167,22 +166,11 @@ class PatientController extends Controller
                 if ($icu->icu_room_bednum) {
                     $icuRoomNameBed .= " - Bed {$icu->icu_room_bednum}";
                 }
-
-                $elektrolit = "Na: " . $icu->elektrolit->natrium . " K: " .  number_format($icu->elektrolit->kalium, 1);
-                $lb1 = "Hb: " . $icu->labResult->hb . " L: " . $icu->labResult->leukosit;
-                $lb2 = "Alb: " . number_format($icu->labResult->albumin, 1) . " L: " .  number_format($icu->labResult->laktat,1);
-                $agd = $icu->agd->ph . " / " . $icu->agd->pco2;
-                $ttv = $icu->ttv->sistolik . " / " . $icu->ttv->diastolik . ", " . $icu->ttv->nadi;
                 
                 $records[] = [
                     'id' => $icu->id,
                     'icu_room_datetime' => Carbon::parse($icu->icu_room_datetime)->format('H:i d/m/Y'),
                     'icu_room_name' => $icuRoomNameBed,
-                    'elektrolit' => $elektrolit,
-                    'lb1' => $lb1,
-                    'lb2' => $lb2,
-                    'agd' => $agd,
-                    'ttv' => $ttv,
                     'action' => '<a href="' . route('icu-rooms.show', $icu->id) . '" style="background-color: #2f4157; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; margin-right: 5px; 
                         transition: background-color 0.3s;"
                         onmouseover="this.style.backgroundColor=\'#577c8e\'" 

@@ -46,9 +46,19 @@
         <!-- Patient Section -->
         <div class="relative w-full">
     
-			<a href="{{ route('patients.edit', $patient->id) }}" class="absolute top-4 right-4 bg-btn hover:bg-btnh text-white font-semibold py-2 px-4 rounded-md shadow-sm">
-				Edit
-			</a>
+			@php
+				$canEdit = $patient->created_at->diffInHours(now()) < 24;
+			@endphp
+
+			@if($canEdit)
+				<a href="{{ route('patients.edit', $patient->id) }}" class="absolute top-4 right-4 bg-btn hover:bg-btnh text-white font-semibold py-2 px-4 rounded-md shadow-sm">
+					Edit
+				</a>
+			@else
+				<a href="#" class="absolute top-4 right-4 bg-gray-400 text-white font-semibold py-2 px-4 rounded-md shadow-sm cursor-not-allowed">
+					Edit
+				</a>
+			@endif
 
 			{{-- <h1 class="text-3xl text-center font-bold mb-4">Data Pasien</h1> --}}
 			
@@ -89,17 +99,27 @@
     <div class="bg-white shadow-md rounded-lg p-6 my-4">
         <div class="flex items-center justify-between mb-6">
             <h2 class="text-2xl font-bold">Data Awal Pasien</h2>
-            @if(!$origin)
-                <a href="{{ route('origin-rooms.create') }}?patient_id={{ $patient->id }}" 
-                    class="bg-btn hover:bg-btnh text-white font-bold py-2 px-4 rounded">
-                    Tambah Data
-                </a>
-			@else
-				<a href="{{ route('origin-rooms.edit', $origin->id) }}" 
-					class="bg-btn hover:bg-btnh text-white font-bold py-2 px-4 rounded">
-					Edit Data Awal
-				</a>
-            @endif
+				@php
+					$canEdit = $origin->created_at->diffInHours(now()) < 24;
+				@endphp
+
+				@if(!$origin)
+					<a href="{{ route('origin-rooms.create') }}?patient_id={{ $patient->id }}" 
+						class="bg-btn hover:bg-btnh text-white font-bold py-2 px-4 rounded">
+						Tambah Data
+					</a>
+				@else
+					@if($canEdit)
+						<a href="{{ route('origin-rooms.edit', $origin->id) }}" 
+							class="bg-btn hover:bg-btnh text-white font-bold py-2 px-4 rounded">
+							Edit Data Awal
+						</a>
+					@else
+						<a href="#" class="bg-gray-400 text-white font-bold py-2 px-4 rounded cursor-not-allowed">
+							Edit Data Awal
+						</a>
+					@endif
+				@endif
         </div>
 
         @if ($origin)
@@ -256,6 +276,10 @@
 				<h2 class="text-3xl font-bold mb-4 md:mb-0">Data Ruang Intensif</h2>
 				<!-- Container for Buttons -->
 				<div class="flex flex-wrap gap-2">
+					@php
+						$canEdit = $intubations->created_at->diffInHours(now()) < 24;
+					@endphp
+
 					@if ($origin)
 						@if (!$icu && !$intubations)
 							<a href="{{ route('intubations.create') }}?patient_id={{ $patient->id }}" 
@@ -264,14 +288,17 @@
 							</a>
 						{{-- @elseif ($intubations) --}}
 						@elseif (!$extubation || $intubations)
-							<a href="{{ route('intubations.edit', $intubations->id) }}"
-								class="bg-btn hover:bg-btnh text-txtd font-bold py-2 px-4 rounded text-center">
-								Edit Data Ruang Intensif
-							</a>
-							<a href="{{ route('icu-rooms.create') }}?patient_id={{ $patient->id }}" 
-								class="bg-btn hover:bg-btnh text-txtd font-bold py-2 px-4 rounded text-center">
-								Data Ruang Intensif
-							</a>
+							@if($canEdit)
+								<a href="{{ route('intubations.edit', $intubations->id) }}"
+									class="bg-btn hover:bg-btnh text-txtd font-bold py-2 px-4 rounded text-center">
+									Edit Data Intubasi
+								</a>
+							@else
+								{{-- Tombol dinonaktifkan secara visual --}}
+								<a href="#" class="bg-gray-400 text-txtd font-bold py-2 px-4 rounded text-center cursor-not-allowed">
+									Edit Data Intubasi
+								</a>
+							@endif
 						@endif
 					@endif
 			
@@ -463,6 +490,16 @@
 			
 	{{-- Data Intensif --}}
 	<div class="bg-white shadow-md rounded-lg p-6 my-4">
+		<div class="relative pb-4 flex justify-end">
+			@if ($origin)
+				@if (!$extubation || $intubations)
+					<a href="{{ route('icu-rooms.create') }}?patient_id={{ $patient->id }}" 
+						class="bg-btn hover:bg-btnh text-txtd font-bold py-2 px-4 rounded text-center">
+						Tambah Data Ruang Intensif
+					</a>
+				@endif
+			@endif
+		</div>
 		<div class="overflow-x-auto">
 			<table id="icu-table" class="table-auto w-full text-left">
 				<thead class="bg-gray-200">
@@ -470,11 +507,6 @@
 						<th class="px-4 py-2">No</th>
 						<th class="px-4 py-2">Tanggal dan Waktu Periksa</th>
 						<th class="px-4 py-2">Ruangan/Bed</th>
-						<th class="px-4 py-2">Elektrolit</th>
-						<th class="px-4 py-2">Hb/Leukosit</th>
-						<th class="px-4 py-2">Albumin/Laktat</th>
-						<th class="px-4 py-2">AGD<br>(ph/pCO2)</th>
-						<th class="px-4 py-2">TTV<br>(TD, Nadi)</th>
 						<th class="px-4 py-2">Action</th>
 					</tr>
 				</thead>
@@ -501,7 +533,25 @@
 	{{-- EXTUBATION --}}
 	@if ($extubation)
 	<div class="bg-white shadow-md rounded-lg p-6 my-4">
-		<h2 class="text-2xl font-bold mb-6">Extubasi Pasien</h2>
+		<div class="relative pb-4 flex justify-between">
+			<h2 class="text-2xl font-bold">Extubasi Pasien</h2>
+			@php
+				$canEdit = $extubation->created_at->diffInHours(now()) < 24;
+			@endphp
+			@if ($extubation)
+				@if($canEdit)
+					<a href="{{ route('extubations.edit', $extubation->id) }}"
+						class="bg-btn hover:bg-btnh text-txtd font-bold py-2 px-4 rounded text-center">
+						Edit Data Extubasi
+					</a>
+				@else
+					{{-- Tombol dinonaktifkan secara visual --}}
+					<a href="#" class="bg-gray-400 text-txtd font-bold py-2 px-4 rounded text-center cursor-not-allowed">
+						Edit Data Extubasi
+					</a>
+				@endif
+			@endif
+		</div>
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 			<div>
 				<table class="my-4 w-full">
@@ -632,11 +682,27 @@
 	<div class="bg-white shadow-md rounded-lg p-6 my-4">
 		<div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-6">
 			<h2 class="text-2xl text-left font-bold mb-4 md:mb-0">Pindah Ruangan Pasien</h2>
+			@php
+				$canEdit = $transfer->created_at->diffInHours(now()) < 24;
+			@endphp
+
 			@if ($extubation->patient_status === 'Tidak Meninggal' && !$transfer)
-			<a href="{{ route('transfer-rooms.create') }}?patient_id={{ $patient->id }}" 
-			class="bg-btn hover:bg-btnh text-txtd font-bold py-2 px-4 rounded">
-				Tambah Data Pindah Ruangan
-			</a>
+				<a href="{{ route('transfer-rooms.create') }}?patient_id={{ $patient->id }}" 
+				class="bg-btn hover:bg-btnh text-txtd font-bold py-2 px-4 rounded">
+					Tambah Data Pindah Ruangan
+				</a>
+			@elseif ($transfer)
+				@if($canEdit)
+					<a href="{{ route('transfer-rooms.edit', $transfer->id) }}"
+						class="bg-btn hover:bg-btnh text-txtd font-bold py-2 px-4 rounded text-center">
+						Edit Data Pindah Ruangan
+					</a>
+				@else
+					{{-- Tombol dinonaktifkan secara visual --}}
+					<a href="#" class="bg-gray-400 text-txtd font-bold py-2 px-4 rounded text-center cursor-not-allowed">
+						Edit Data Pindah Ruangan
+					</a>
+				@endif
 			@endif
 		</div>
 
@@ -742,7 +808,7 @@
 							<tr>
 								<td class="font-semibold">Kesadaran</td>
 								<td class="px-4">:</td>
-								<td>{{ $transfer->ttv->consciousness ?? 'Tidak ada data' }} %</td>
+								<td>{{ $transfer->ttv->consciousness ?? 'Tidak ada data' }} </td>
 							</tr>
 						</tbody>
 					</table>
@@ -822,11 +888,6 @@
 				}},
 				{ data: 'icu_room_datetime', name: 'icu_room_datetime', className: 'text-center'},
 				{ data: 'icu_room_name', name: 'icu_room_name', defaultContent: 'Tidak ada data', className: 'text-center' },
-				{ data: 'elektrolit', name: 'elektrolit', defaultContent: 'Tidak ada data', className: 'text-center' },
-				{ data: 'lb1', name: 'lb1', defaultContent: 'Tidak ada data', className: 'text-center' },
-				{ data: 'lb2', name: 'lb2', defaultContent: 'Tidak ada data', className: 'text-center' },
-				{ data: 'agd', name: 'agd', defaultContent: 'Tidak ada data', className: 'text-center' },
-				{ data: 'ttv', name: 'ttv', defaultContent: 'Tidak ada data', className: 'text-center' },
 				{ data: 'action', name: 'action', orderable: false, searchable: false}
 			],
 			language: {

@@ -167,15 +167,15 @@
         </tr>
         <tr>
             <th>P/F Ratio</th>
-            <td>{{ $patient->originRoom->agd->pf_ratio ?? '-' }} %</td>
+            <td>{{ $patient->originRoom->agd->pf_ratio ?? '-' }}</td>
         </tr>
         <tr>
-            <th>HCO2</th>
-            <td>{{ $patient->originRoom->agd->hco2 ?? '-' }} %</td>
+            <th>HCO3</th>
+            <td>{{ $patient->originRoom->agd->hco3 ?? '-' }}</td>
         </tr>
         <tr>
             <th>TCO2</th>
-            <td>{{ $patient->originRoom->agd->tco2 ?? '-' }} %</td>
+            <td>{{ $patient->originRoom->agd->tco2 ?? '-' }}</td>
         </tr>
     </table>
 
