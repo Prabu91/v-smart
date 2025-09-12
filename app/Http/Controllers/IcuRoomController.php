@@ -34,12 +34,13 @@ class IcuRoomController extends Controller
     public function create(Request $request)
     {
         $patient_id = $request->query('patient_id');
-        
+
         $icuData = IcuRoom::where('patient_id', $patient_id)->first(); 
-        $intubation = Intubation::where('patient_id', $icuData->patient_id)->first();
-    
+        $intubation = Intubation::where('patient_id', $patient_id)->first();
+
         return view('observation.icu-room.create', compact('patient_id', 'icuData', 'intubation'));
     }
+
     
 
     /**
