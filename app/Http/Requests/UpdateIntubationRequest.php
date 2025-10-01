@@ -21,6 +21,7 @@ class UpdateIntubationRequest extends FormRequest
      */
     public function rules(): array
     {
+        $minDate = now()->subHours(5);
         $maxDate = now();
 
         return [
@@ -29,6 +30,7 @@ class UpdateIntubationRequest extends FormRequest
             'intubation_datetime' => [
                 'required',
                 'date',
+                'after_or_equal:' . $minDate,
                 'before_or_equal:' . $maxDate,
             ],
             'dr_intubation_name' => 'nullable|string|max:255',

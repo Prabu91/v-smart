@@ -62,7 +62,7 @@
 
 					</div>
 					<div>
-						<label for="kreatinin_origin" class="block text-lg font-medium text-txtl">Kreatitin</label>
+						<label for="kreatinin_origin" class="block text-lg font-medium text-txtl">Kreatinin</label>
 						<div class="relative">
 							<input type="number" name="kreatinin_origin" id="kreatinin_origin" value="{{ old('kreatinin_origin') }}" class="text-black font-semibold mt-1 block w-full px-3 py-2 border rounded-md shadow-sm @error('kreatinin_origin') border-red-500 @else border-gray-300 @enderror" placeholder="1,0">
 							<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-grey-500">mg/dL</span>
