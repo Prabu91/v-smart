@@ -79,7 +79,7 @@ class PatientSeeder extends Seeder
                 'base_excees' => -2,
                 'sbpt' => 1,
                 'pf_ratio' => 200,
-                'hco2' => 13,
+                'hco3' => 13,
                 'tco2' => 15,
             ]);
 
