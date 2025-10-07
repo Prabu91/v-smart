@@ -24,7 +24,7 @@ class StorePatientRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'no_jkn' => 'required|string|size:13|unique:patients',
+            'no_jkn' => 'nullable|string|size:13|unique:patients',
             'no_rm' => 'required|string|unique:patients',
             'tanggal_lahir' => 'required|date',
             'no_sep' => 'nullable|string',
