@@ -83,7 +83,7 @@
 						</tr>
 						<tr>
 							<td class="font-semibold bg-gray-300 p-2">No Kartu JKN</td>
-							<td class="p-2">{{ $patient->no_jkn }}</td>
+							<td class="p-2">{{ $patient->no_jkn ?? '-' }}</td>
 						</tr>
 						<tr>
 							<td class="font-semibold bg-gray-300 p-2">No Rekam Medis</td>
